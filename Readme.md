@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Денис Попов](https://up.htmlacademy.ru/ecmascript/8/user/505149).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Ключковский](https://htmlacademy.ru/profile/id44700).
 
 ---
 
