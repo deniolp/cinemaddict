@@ -70,3 +70,6 @@ const mostCommentedContainer = document.querySelector(`.films-list--extra:nth-ch
 
 FILTERS.forEach((item) => filtersContainer.appendChild(getFilterElement(item.name, item.hasAmount, getRandomNumber(), item.isActive, item.isAdditional)));
 
+for (let i = 0; i < 7; i++) {
+  cinemaCardsContainer.appendChild(getCinemaCard());
+}
