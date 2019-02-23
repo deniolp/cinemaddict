@@ -1,3 +1,5 @@
+import makeFilter from '../src/make-filter';
+
 const FILTERS = [
   {
     name: `All`,
@@ -24,16 +26,6 @@ const getRandomNumber = (first = 0, second = 15) => {
   const min = Math.floor(first);
   const max = Math.ceil(second);
   return Math.round(Math.random() * (max - min) + min);
-};
-
-const getFilterElement = (name, hasAmount = true, amount, isActive = false, isAdditional = false) => {
-  const filterMarkdown = `
-  <a href="#${name.toLowerCase()}" class="main-navigation__item main-navigation__item--${isActive ? `active` : ``}${isAdditional ? `additional` : ``}">${name} ${hasAmount ? `<span class="main-navigation__item-count">${amount}</span>` : ``}</a>
-    </label>
-`;
-  const filterTemplate = document.createElement(`template`);
-  filterTemplate.innerHTML = filterMarkdown;
-  return filterTemplate.content.cloneNode(true);
 };
 
 const getCinemaCard = (isControls = true) => {
@@ -75,7 +67,7 @@ const cinemaCardsContainer = document.querySelector(`.films-list__container`);
 const topRatedContainer = document.querySelector(`section.films-list--extra .films-list__container`);
 const mostCommentedContainer = document.querySelector(`section.films-list--extra:last-of-type .films-list__container`);
 
-FILTERS.forEach((item) => filtersContainer.appendChild(getFilterElement(item.name, item.hasAmount, getRandomNumber(), item.isActive, item.isAdditional)));
+FILTERS.forEach((item) => filtersContainer.appendChild(makeFilter(item.name, item.hasAmount, getRandomNumber(), item.isActive, item.isAdditional)));
 
 for (let i = 0; i < 7; i++) {
   cinemaCardsContainer.appendChild(getCinemaCard());
