@@ -88,3 +88,14 @@ for (let i = 0; i < 2; i++) {
 for (let i = 0; i < 2; i++) {
   mostCommentedContainer.appendChild(getCinemaCard(false));
 }
+
+const filters = filtersContainer.querySelectorAll(`.main-navigation__item:not(.main-navigation__item--active):not(.main-navigation__item--additional)`);
+
+filters.forEach((item) => item.addEventListener(`click`, () => {
+  const tempAmount = item.textContent.match(/\d+/)[0];
+  cinemaCardsContainer.innerHTML = ``;
+
+  for (let i = 0; i < tempAmount; i++) {
+    cinemaCardsContainer.appendChild(getCinemaCard());
+  }
+}));
