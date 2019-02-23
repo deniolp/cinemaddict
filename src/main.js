@@ -1,4 +1,5 @@
 import makeFilter from '../src/make-filter';
+import makeCard from '../src/make-card';
 
 const FILTERS = [
   {
@@ -28,40 +29,6 @@ const getRandomNumber = (first = 0, second = 15) => {
   return Math.round(Math.random() * (max - min) + min);
 };
 
-const getCinemaCard = (isControls = true) => {
-  const descriptionElement = `
-  <p class="film-card__description">A priests Romania and confront a malevolent force in the form of a demonic nun.</p>
-  `;
-  const formElement = `
-  <form class="film-card__controls">
-  <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
-  <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
-  <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
-</form>
-  `;
-
-  const cardMarkdown = `
-  <article class="film-card${isControls ? `` : ` film-card--no-controls`}">
-    <h3 class="film-card__title">Incredibles 2</h3>
-    <p class="film-card__rating">9.8</p>
-    <p class="film-card__info">
-      <span class="film-card__year">2018</span>
-      <span class="film-card__duration">1h&nbsp;13m</span>
-      <span class="film-card__genre">Comedy</span>
-    </p>
-    <img src="./images/posters/moonrise.jpg" alt="" class="film-card__poster">
-    ${isControls ? descriptionElement : ``}
-    <button class="film-card__comments">13 comments</button>
-
-    ${isControls ? formElement : ``}
-  </article>
-  `;
-
-  const cardTemplate = document.createElement(`template`);
-  cardTemplate.innerHTML = cardMarkdown;
-  return cardTemplate.content.cloneNode(true);
-};
-
 const filtersContainer = document.querySelector(`.main-navigation`);
 const cinemaCardsContainer = document.querySelector(`.films-list__container`);
 const topRatedContainer = document.querySelector(`section.films-list--extra .films-list__container`);
@@ -70,15 +37,15 @@ const mostCommentedContainer = document.querySelector(`section.films-list--extra
 FILTERS.forEach((item) => filtersContainer.appendChild(makeFilter(item.name, item.hasAmount, getRandomNumber(), item.isActive, item.isAdditional)));
 
 for (let i = 0; i < 7; i++) {
-  cinemaCardsContainer.appendChild(getCinemaCard());
+  cinemaCardsContainer.appendChild(makeCard());
 }
 
 for (let i = 0; i < 2; i++) {
-  topRatedContainer.appendChild(getCinemaCard(false));
+  topRatedContainer.appendChild(makeCard(false));
 }
 
 for (let i = 0; i < 2; i++) {
-  mostCommentedContainer.appendChild(getCinemaCard(false));
+  mostCommentedContainer.appendChild(makeCard(false));
 }
 
 const filters = filtersContainer.querySelectorAll(`.main-navigation__item:not(.main-navigation__item--active):not(.main-navigation__item--additional)`);
@@ -88,6 +55,6 @@ filters.forEach((item) => item.addEventListener(`click`, () => {
   cinemaCardsContainer.innerHTML = ``;
 
   for (let i = 0; i < tempAmount; i++) {
-    cinemaCardsContainer.appendChild(getCinemaCard());
+    cinemaCardsContainer.appendChild(makeCard());
   }
 }));
