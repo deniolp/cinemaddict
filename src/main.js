@@ -14,6 +14,12 @@ const FILTERS = [
   }
 ];
 
+const getRandomNumber = (first = 0, second = 15) => {
+  const min = Math.floor(first);
+  const max = Math.ceil(second);
+  return Math.round(Math.random() * (max - min) + min);
+};
+
 const getFilterElement = (name, hasAmount = true, amount) => {
   const spanElement = hasAmount ? `<span class="main-navigation__item-count">${amount}</span>` : ``;
   const filterMarkdown = `
@@ -51,3 +57,10 @@ const getCinemaCard = () => {
   cardTemplate.innerHTML = cardMarkdown;
   return cardTemplate.content.cloneNode(true);
 };
+
+const filtersContainer = document.querySelector(`.main-navigation`);
+const cinemaCardsContainer = document.querySelector(`.films-list__container`);
+const topRatedContainer = document.querySelector(`.films-list--extra:first-child .films-list__container`);
+const mostCommentedContainer = document.querySelector(`.films-list--extra:nth-child(2) .films-list__container`);
+
+
