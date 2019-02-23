@@ -1,7 +1,8 @@
 const FILTERS = [
   {
     name: `All`,
-    hasAmount: false
+    hasAmount: false,
+    isActive: true
   },
   {
     name: `Watchlist`
@@ -11,6 +12,11 @@ const FILTERS = [
   },
   {
     name: `Favorites`
+  },
+  {
+    name: `Stats`,
+    hasAmount: false,
+    isAdditional: true
   }
 ];
 
@@ -20,10 +26,9 @@ const getRandomNumber = (first = 0, second = 15) => {
   return Math.round(Math.random() * (max - min) + min);
 };
 
-const getFilterElement = (name, hasAmount = true, amount) => {
-  const spanElement = hasAmount ? `<span class="main-navigation__item-count">${amount}</span>` : ``;
+const getFilterElement = (name, hasAmount = true, amount, isActive = false, isAdditional = false) => {
   const filterMarkdown = `
-  <a href="#${name.toLowercase()}" class="main-navigation__item">${name} ${spanElement}</a>
+  <a href="#${name.toLowerCase()}" class="main-navigation__item main-navigation__item--${isActive ? `active` : ``}${isAdditional ? `additional` : ``}">${name} ${hasAmount ? `<span class="main-navigation__item-count">${amount}</span>` : ``}</a>
     </label>
 `;
   const filterTemplate = document.createElement(`template`);
@@ -63,4 +68,5 @@ const cinemaCardsContainer = document.querySelector(`.films-list__container`);
 const topRatedContainer = document.querySelector(`.films-list--extra:first-child .films-list__container`);
 const mostCommentedContainer = document.querySelector(`.films-list--extra:nth-child(2) .films-list__container`);
 
+FILTERS.forEach((item) => filtersContainer.appendChild(getFilterElement(item.name, item.hasAmount, getRandomNumber(), item.isActive, item.isAdditional)));
 
