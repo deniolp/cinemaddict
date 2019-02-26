@@ -1,3 +1,5 @@
+import utils from '../src/utils';
+
 export default (card, isControls = true) => {
   const descriptionElement = `
   <p class="film-card__description">${card.description}</p>
@@ -13,15 +15,15 @@ export default (card, isControls = true) => {
   const cardMarkdown = `
   <article class="film-card${isControls ? `` : ` film-card--no-controls`}">
     <h3 class="film-card__title">${card.title}</h3>
-    <p class="film-card__rating">9.8</p>
+    <p class="film-card__rating">${card.rating}</p>
     <p class="film-card__info">
-      <span class="film-card__year">2018</span>
-      <span class="film-card__duration">1h&nbsp;13m</span>
-      <span class="film-card__genre">Comedy</span>
+      <span class="film-card__year">${card.year}</span>
+      <span class="film-card__duration">${utils.countDuration(card.duration)[0]}h&nbsp;${utils.countDuration(card.duration)[1]}m</span>
+      <span class="film-card__genre">${card.genre}</span>
     </p>
-    <img src="./images/posters/moonrise.jpg" alt="" class="film-card__poster">
+    <img src="./images/posters/${card.poster}.jpg" alt="" class="film-card__poster">
     ${isControls ? descriptionElement : ``}
-    <button class="film-card__comments">13 comments</button>
+    <button class="film-card__comments">${card.commentsQuantity} comments</button>
 
     ${isControls ? formElement : ``}
   </article>

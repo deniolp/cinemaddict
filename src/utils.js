@@ -4,4 +4,10 @@ export default {
     const max = Math.ceil(second);
     return Math.round(Math.random() * (max - min) + min);
   },
+  countDuration: (duration) => {
+    const hour = Math.floor(duration / 60);
+    const min = duration - hour * 60;
+    const arr = [hour, min];
+    return arr;
+  },
 };
