@@ -12,7 +12,7 @@ export default (card, isControls = true) => {
 
   const cardMarkdown = `
   <article class="film-card${isControls ? `` : ` film-card--no-controls`}">
-    <h3 class="film-card__title">Incredibles 2</h3>
+    <h3 class="film-card__title">${card.title}</h3>
     <p class="film-card__rating">9.8</p>
     <p class="film-card__info">
       <span class="film-card__year">2018</span>
