@@ -1,6 +1,6 @@
-export default (isControls = true) => {
+export default (card, isControls = true) => {
   const descriptionElement = `
-  <p class="film-card__description">A priests Romania and confront a malevolent force in the form of a demonic nun.</p>
+  <p class="film-card__description">${card.description}</p>
   `;
   const formElement = `
   <form class="film-card__controls">
