@@ -1,7 +1,7 @@
 import makeFilter from '../src/make-filter';
 import makeCard from '../src/make-card';
 import utils from '../src/utils';
-import getCard from '../src/get-card';
+import getCards from '../src/get-cards';
 
 const FILTERS = [
   {
@@ -32,17 +32,11 @@ const mostCommentedContainer = document.querySelector(`section.films-list--extra
 
 FILTERS.forEach((item) => filtersContainer.appendChild(makeFilter(item.name, item.hasAmount, utils.getRandomNumber(), item.isActive, item.isAdditional)));
 
-for (let i = 0; i < 7; i++) {
-  cinemaCardsContainer.appendChild(makeCard(getCard()));
-}
+getCards(7).forEach((item) => cinemaCardsContainer.appendChild(makeCard(item)));
 
-for (let i = 0; i < 2; i++) {
-  topRatedContainer.appendChild(makeCard(getCard(), false));
-}
+getCards(2).forEach((item) => topRatedContainer.appendChild(makeCard(item, false)));
 
-for (let i = 0; i < 2; i++) {
-  mostCommentedContainer.appendChild(makeCard(getCard(), false));
-}
+getCards(2).forEach((item) => mostCommentedContainer.appendChild(makeCard(item, false)));
 
 const filters = filtersContainer.querySelectorAll(`.main-navigation__item:not(.main-navigation__item--active):not(.main-navigation__item--additional)`);
 
