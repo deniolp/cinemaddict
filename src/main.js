@@ -44,7 +44,5 @@ filters.forEach((item) => item.addEventListener(`click`, () => {
   const tempAmount = item.textContent.match(/\d+/)[0];
   cinemaCardsContainer.innerHTML = ``;
 
-  for (let i = 0; i < tempAmount; i++) {
-    cinemaCardsContainer.appendChild(makeCard());
-  }
+  getCards(tempAmount).forEach((elem) => cinemaCardsContainer.appendChild(makeCard(elem)));
 }));
