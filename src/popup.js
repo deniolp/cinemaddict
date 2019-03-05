@@ -1,4 +1,4 @@
-class Card {
+class Popup {
   constructor({title, poster, description, rating, year, duration, genre, commentsQuantity}) {
     this._title = title;
     this._poster = poster;
@@ -182,4 +182,11 @@ class Card {
     cardTemplate.innerHTML = cardMarkdown;
     return cardTemplate.content.cloneNode(true);
   }
+
+  render() {
+    this._element = this.template;
+    return this._element;
+  }
 }
+
+export {Popup};
