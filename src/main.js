@@ -1,7 +1,8 @@
-import makeFilter from '../src/make-filter';
-import makeCard from '../src/make-card';
-import utils from '../src/utils';
-import getCards from '../src/get-cards';
+import makeFilter from './make-filter';
+import utils from './utils';
+import getCards from './get-cards';
+import {Card} from './card';
+import renderCards from './render-cards';
 
 const FILTERS = [
   {
@@ -32,11 +33,17 @@ const mostCommentedContainer = document.querySelector(`section.films-list--extra
 
 FILTERS.forEach((item) => filtersContainer.appendChild(makeFilter(item.name, item.hasAmount, utils.getRandomNumber(), item.isActive, item.isAdditional)));
 
-getCards(7).forEach((item) => cinemaCardsContainer.appendChild(makeCard(item)));
+getCards(7).forEach((item) => renderCards(item, cinemaCardsContainer));
 
-getCards(2).forEach((item) => topRatedContainer.appendChild(makeCard(item, false)));
+getCards(2).forEach((item) => {
+  const cardComponent = new Card(item, false);
+  topRatedContainer.appendChild(cardComponent.render());
+});
 
-getCards(2).forEach((item) => mostCommentedContainer.appendChild(makeCard(item, false)));
+getCards(2).forEach((item) => {
+  const cardComponent = new Card(item, false);
+  mostCommentedContainer.appendChild(cardComponent.render());
+});
 
 const filters = filtersContainer.querySelectorAll(`.main-navigation__item:not(.main-navigation__item--active):not(.main-navigation__item--additional)`);
 
@@ -44,5 +51,8 @@ filters.forEach((item) => item.addEventListener(`click`, () => {
   const tempAmount = item.textContent.match(/\d+/)[0];
   cinemaCardsContainer.innerHTML = ``;
 
-  getCards(tempAmount).forEach((elem) => cinemaCardsContainer.appendChild(makeCard(elem)));
+  getCards(tempAmount).forEach((elem) => {
+    const cardComponent = new Card(elem);
+    cinemaCardsContainer.appendChild(cardComponent.render());
+  });
 }));

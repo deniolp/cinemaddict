@@ -1,4 +1,4 @@
-import getCard from '../src/get-card';
+import getCard from './get-card';
 
 export default (amount) => {
   const arr = [];
