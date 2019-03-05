@@ -200,6 +200,7 @@ class Popup {
 
   render() {
     this._element = this.template;
+    this.bind();
     return this._element;
   }
 

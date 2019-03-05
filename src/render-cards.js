@@ -11,4 +11,8 @@ export default (item, container, flag = true) => {
     popupComponent.render();
     body.appendChild(popupComponent.element);
   };
+
+  popupComponent.onClose = () => {
+    body.removeChild(popupComponent.element);
+  };
 };
