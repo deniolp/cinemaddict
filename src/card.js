@@ -37,7 +37,7 @@ class Card {
       <span class="film-card__duration">${utils.countDuration(this._duration)[0]}h&nbsp;${utils.countDuration(this._duration)[1]}m</span>
       <span class="film-card__genre">${this._genre}</span>
     </p>
-    <img src="./images/posters/${this._poster}.jpg" alt="" class="film-card__poster">
+    <img src="./images/posters/${this._poster}.jpg" alt="${this._title}" class="film-card__poster">
     ${this._isControls ? descriptionElement : ``}
     <button class="film-card__comments">${this._commentsQuantity} comments</button>
 
@@ -55,7 +55,6 @@ class Card {
   }
 
   _onPopupClick() {
-    console.log(`ljcejec`);
     return typeof this._onPopup === `function` && this._onPopup();
   }
 
