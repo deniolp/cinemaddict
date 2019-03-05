@@ -8,6 +8,9 @@ class Popup {
     this._duration = duration;
     this._genre = genre;
     this._commentsQuantity = commentsQuantity;
+
+    this._element = null;
+    this._onClose = null;
   }
 
   get template() {
@@ -183,9 +186,21 @@ class Popup {
     return cardTemplate.content.cloneNode(true);
   }
 
+  set onClose(fn) {
+    this._onClose = fn;
+  }
+
+  _onCloseClick() {
+    return typeof this._onClose === `function` && this._onClose();
+  }
+
   render() {
     this._element = this.template;
     return this._element;
+  }
+
+  bind() {
+    this._element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._onCloseClick.bind(this));
   }
 }
 
