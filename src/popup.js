@@ -204,8 +204,17 @@ class Popup {
     return this._element;
   }
 
+  unrender() {
+    this.unbind();
+    this._element = null;
+  }
+
   bind() {
     this._element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._onCloseClick.bind(this));
+  }
+
+  unbind() {
+    this._element.querySelector(`.film-details__close-btn`).removeEventListener(`click`, this._onCloseClick.bind(this));
   }
 }
 
