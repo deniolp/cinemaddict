@@ -183,7 +183,11 @@ class Popup {
 
     const cardTemplate = document.createElement(`template`);
     cardTemplate.innerHTML = cardMarkdown;
-    return cardTemplate.content.cloneNode(true);
+    return cardTemplate.content.cloneNode(true).firstChild;
+  }
+
+  get element() {
+    return this._element;
   }
 
   set onClose(fn) {

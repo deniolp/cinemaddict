@@ -50,11 +50,15 @@ class Card {
     return cardTemplate.content.cloneNode(true);
   }
 
+  get element() {
+    return this._element;
+  }
+
   set onPopup(fn) {
     this._onPopup = fn;
   }
 
-  _onPopupClick() {
+  _onClick() {
     return typeof this._onPopup === `function` && this._onPopup();
   }
 
@@ -65,7 +69,7 @@ class Card {
   }
 
   bind() {
-    this._element.querySelector(`.film-card__poster`).addEventListener(`click`, this._onPopupClick.bind(this));
+    this._element.querySelector(`.film-card__comments`).addEventListener(`click`, this._onClick.bind(this));
   }
 }
 
