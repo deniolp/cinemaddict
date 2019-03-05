@@ -1,7 +1,6 @@
 import makeFilter from './make-filter';
 import utils from './utils';
 import getCards from './get-cards';
-import {Card} from './card';
 import renderCards from './render-cards';
 
 const FILTERS = [

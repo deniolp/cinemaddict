@@ -13,6 +13,7 @@ class Card {
     this._isControls = isControls;
 
     this._element = null;
+    this._onPopup = null;
   }
 
   get template() {
@@ -49,12 +50,24 @@ class Card {
     return cardTemplate.content.cloneNode(true);
   }
 
+  set onPopup(fn) {
+    this._onPopup = fn;
+  }
+
+  _onPopupClick() {
+    console.log(`ljcejec`);
+    return typeof this._onPopup === `function` && this._onPopup();
+  }
+
   render() {
     this._element = this.template;
+    this.bind();
     return this._element;
   }
 
-
+  bind() {
+    this._element.querySelector(`.film-card__poster`).addEventListener(`click`, this._onPopupClick.bind(this));
+  }
 }
 
 export {Card};
