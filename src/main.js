@@ -35,15 +35,9 @@ FILTERS.forEach((item) => filtersContainer.appendChild(makeFilter(item.name, ite
 
 getCards(7).forEach((item) => renderCards(item, cinemaCardsContainer));
 
-getCards(2).forEach((item) => {
-  const cardComponent = new Card(item, false);
-  topRatedContainer.appendChild(cardComponent.render());
-});
+getCards(2).forEach((item) => renderCards(item, topRatedContainer, false));
 
-getCards(2).forEach((item) => {
-  const cardComponent = new Card(item, false);
-  mostCommentedContainer.appendChild(cardComponent.render());
-});
+getCards(2).forEach((item) => renderCards(item, mostCommentedContainer, false));
 
 const filters = filtersContainer.querySelectorAll(`.main-navigation__item:not(.main-navigation__item--active):not(.main-navigation__item--additional)`);
 
@@ -51,8 +45,5 @@ filters.forEach((item) => item.addEventListener(`click`, () => {
   const tempAmount = item.textContent.match(/\d+/)[0];
   cinemaCardsContainer.innerHTML = ``;
 
-  getCards(tempAmount).forEach((elem) => {
-    const cardComponent = new Card(elem);
-    cinemaCardsContainer.appendChild(cardComponent.render());
-  });
+  getCards(tempAmount).forEach((elem) => renderCards(elem, cinemaCardsContainer));
 }));
