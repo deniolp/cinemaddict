@@ -11,6 +11,8 @@ class Card {
     this._genre = genre;
     this._commentsQuantity = commentsQuantity;
     this._isControls = isControls;
+
+    this._element = null;
   }
 
   get template() {
@@ -46,6 +48,14 @@ class Card {
     cardTemplate.innerHTML = cardMarkdown;
     return cardTemplate.content.cloneNode(true);
   }
+
+  render() {
+    this._element = this.template;
+    this.bind();
+    return this._element;
+  }
+
+
 }
 
 export {Card};
