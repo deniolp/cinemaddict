@@ -17,6 +17,8 @@ class Card {
   }
 
   get template() {
+    const [hours, mins] = utils.countDuration(this._duration);
+
     const descriptionElement = `
   <p class="film-card__description">${this._description}</p>
   `;
@@ -34,7 +36,7 @@ class Card {
     <p class="film-card__rating">${this._rating}</p>
     <p class="film-card__info">
       <span class="film-card__year">${this._year}</span>
-      <span class="film-card__duration">${utils.countDuration(this._duration)[0]}h&nbsp;${utils.countDuration(this._duration)[1]}m</span>
+      <span class="film-card__duration">${hours}h&nbsp;${mins}m</span>
       <span class="film-card__genre">${this._genre}</span>
     </p>
     <img src="./images/posters/${this._poster}.jpg" alt="${this._title}" class="film-card__poster">
