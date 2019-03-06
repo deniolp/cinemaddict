@@ -14,7 +14,7 @@ class Popup {
   }
 
   get template() {
-    const cardMarkdown = `
+    const cardMarkup = `
     <section class="film-details">
     <form class="film-details__inner" action="" method="get">
       <div class="film-details__close">
@@ -182,7 +182,7 @@ class Popup {
   `.trim();
 
     const cardTemplate = document.createElement(`template`);
-    cardTemplate.innerHTML = cardMarkdown;
+    cardTemplate.innerHTML = cardMarkup;
     return cardTemplate.content.cloneNode(true).firstChild;
   }
 

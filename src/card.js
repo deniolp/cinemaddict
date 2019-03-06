@@ -30,7 +30,7 @@ class Card {
 </form>
   `;
 
-    const cardMarkdown = `
+    const cardMarkup = `
   <article class="film-card${this._isControls ? `` : ` film-card--no-controls`}">
     <h3 class="film-card__title">${this._title}</h3>
     <p class="film-card__rating">${this._rating}</p>
@@ -48,7 +48,7 @@ class Card {
   `;
 
     const cardTemplate = document.createElement(`template`);
-    cardTemplate.innerHTML = cardMarkdown;
+    cardTemplate.innerHTML = cardMarkup;
     return cardTemplate.content.cloneNode(true);
   }
 
