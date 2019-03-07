@@ -11,6 +11,7 @@ class Popup {
 
     this._element = null;
     this._onClose = null;
+    this._onCloseClick = this._onCloseClick.bind(this);
   }
 
   _getScore() {
@@ -196,11 +197,11 @@ class Popup {
   }
 
   bind() {
-    this._element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._onCloseClick.bind(this));
+    this._element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._onCloseClick);
   }
 
   unbind() {
-    this._element.querySelector(`.film-details__close-btn`).removeEventListener(`click`, this._onCloseClick.bind(this));
+    this._element.querySelector(`.film-details__close-btn`).removeEventListener(`click`, this._onCloseClick);
   }
 }
 
