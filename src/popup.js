@@ -1,5 +1,8 @@
-class Popup {
+import {Component} from './component';
+
+class Popup extends Component {
   constructor({title, poster, description, rating, year, duration, genre, commentsQuantity}) {
+    super();
     this._title = title;
     this._poster = poster;
     this._description = description;
@@ -9,7 +12,6 @@ class Popup {
     this._genre = genre;
     this._commentsQuantity = commentsQuantity;
 
-    this._element = null;
     this._onClose = null;
     this._onCloseClick = this._onCloseClick.bind(this);
   }
@@ -173,10 +175,6 @@ class Popup {
     return cardTemplate.content.cloneNode(true).firstChild;
   }
 
-  get element() {
-    return this._element;
-  }
-
   set onClose(fn) {
     this._onClose = fn;
   }
@@ -185,22 +183,16 @@ class Popup {
     return typeof this._onClose === `function` && this._onClose();
   }
 
-  render() {
-    this._element = this.template;
-    this.bind();
-    return this._element;
-  }
-
   unrender() {
-    this.unbind();
+    this.removeListeners();
     this._element = null;
   }
 
-  bind() {
+  createListeners() {
     this._element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._onCloseClick);
   }
 
-  unbind() {
+  removeListeners() {
     this._element.querySelector(`.film-details__close-btn`).removeEventListener(`click`, this._onCloseClick);
   }
 }

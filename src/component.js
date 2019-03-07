@@ -21,13 +21,7 @@ class Component {
     return this._element;
   }
 
-  unrender() {
-    this.removeListeners();
-    this._element = null;
-  }
-
   createListeners() {}
-  removeListeners() {}
 }
 
 export {Component};
