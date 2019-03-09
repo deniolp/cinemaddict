@@ -1,7 +1,9 @@
 import utils from './utils';
+import {Component} from './component';
 
-class Card {
+class Card extends Component {
   constructor({title, poster, description, rating, year, duration, genre, commentsQuantity}, isControls = true) {
+    super();
     this._title = title;
     this._poster = poster;
     this._description = description;
@@ -12,7 +14,6 @@ class Card {
     this._commentsQuantity = commentsQuantity;
     this._isControls = isControls;
 
-    this._element = null;
     this._onPopup = null;
   }
 
@@ -52,10 +53,6 @@ class Card {
     return cardTemplate.content.cloneNode(true);
   }
 
-  get element() {
-    return this._element;
-  }
-
   set onPopup(fn) {
     this._onPopup = fn;
   }
@@ -64,13 +61,7 @@ class Card {
     return typeof this._onPopup === `function` && this._onPopup();
   }
 
-  render() {
-    this._element = this.template;
-    this.bind();
-    return this._element;
-  }
-
-  bind() {
+  createListeners() {
     this._element.querySelector(`.film-card__comments`).addEventListener(`click`, this._onClick.bind(this));
   }
 }
