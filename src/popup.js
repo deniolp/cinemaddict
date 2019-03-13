@@ -162,7 +162,7 @@ class Popup extends Component {
 
       <section class="film-details__user-rating-wrap">
         <div class="film-details__user-rating-controls">
-          <span class="film-details__watched-status film-details__watched-status--active">Already watched</span>
+          <span class="film-details__watched-status film-details__watched-status${this._isWatched ? `--active` : ``}">Already watched</span>
           <button class="film-details__watched-reset" type="button">undo</button>
         </div>
 
