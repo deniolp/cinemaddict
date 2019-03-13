@@ -40,7 +40,7 @@ export default () => ({
   ][utils.getRandomNumber(0, 5)],
   isInWatchlist: false,
   isWatched: false,
-  isFavourite: true,
+  isFavourite: false,
   comments: [
     {
       author: `Tim Macoveev`,

@@ -3,7 +3,7 @@ import {Component} from './component';
 const KEYCODE_ENTER = 13;
 
 class Popup extends Component {
-  constructor({title, poster, description, rating, year, duration, genre, comments, score}) {
+  constructor({title, poster, description, rating, year, duration, genre, comments, score, isInWatchlist, isWatched, isFavourite}) {
     super();
     this._title = title;
     this._poster = poster;
@@ -14,8 +14,12 @@ class Popup extends Component {
     this._genre = genre;
     this._comments = comments;
     this._score = score;
+    this._isInWatchlist = isInWatchlist;
+    this._isWatched = isWatched;
+    this._isFavourite = isFavourite;
 
     this._onClose = null;
+    this._onSubmit = null;
     this._onCloseClick = this._onCloseClick.bind(this);
     this._onAddCommentKeydown = this._onAddCommentKeydown.bind(this);
   }
@@ -116,13 +120,13 @@ class Popup extends Component {
       </div>
 
       <section class="film-details__controls">
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${this._isInWatchlist ? `checked` : ``}>
         <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" checked>
+        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${this._isWatched ? `checked` : ``}>
         <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${this._isFavourite ? `checked` : ``}>
         <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
       </section>
 
@@ -191,6 +195,10 @@ class Popup extends Component {
     this._onClose = fn;
   }
 
+  set onSubmit(fn) {
+    this._onSubmit = fn;
+  }
+
   _onCloseClick() {
     return typeof this._onClose === `function` && this._onClose();
   }
@@ -210,9 +218,9 @@ class Popup extends Component {
 
   _processForm(formData) {
     const entry = {
-      isInWatchlist: false,
-      isWatched: false,
-      isFavourite: true,
+      isInWatchlist: ``,
+      isWatched: ``,
+      isFavourite: ``,
       comment: {},
       score: ``,
     };
@@ -241,13 +249,12 @@ class Popup extends Component {
       });
 
       this.removeListeners();
+      this.update(newData);
       this._partialUpdate();
       this.addListeners();
+
+      this._onSubmit(newData, this._comments);
     }
-  }
-
-  _onVoteClick() {
-
   }
 
   _partialUpdate() {
@@ -255,12 +262,10 @@ class Popup extends Component {
   }
 
   update(data) {
-    this._title = data.title;
-    this._tags = data.tags;
-    this._color = data.color;
-    this._repeatingDays = data.repeatingDays;
-    this._dueDate = data.dueDate;
-    this._dueTime = data.dueTime;
+    this._isInWatchlist = data.isInWatchlist;
+    this._isWatched = data.isWatched;
+    this._isFavourite = data.isFavourite;
+    this._score = data.score;
   }
 
   addListeners() {
@@ -282,17 +287,17 @@ class Popup extends Component {
   static createMapper(target) {
     return {
       'watched': (value) => {
-        if (value) {
+        if (value === `on`) {
           target.isWatched = true;
         }
       },
       'watchlist': (value) => {
-        if (value) {
+        if (value === `on`) {
           target.isInWatchlist = true;
         }
       },
       'favorite': (value) => {
-        if (value) {
+        if (value === `on`) {
           target.isFavourite = true;
         }
       },

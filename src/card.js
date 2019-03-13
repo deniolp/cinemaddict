@@ -2,7 +2,7 @@ import utils from './utils';
 import {Component} from './component';
 
 class Card extends Component {
-  constructor({title, poster, description, rating, year, duration, genre, comments}, isControls = true) {
+  constructor({title, poster, description, rating, year, duration, genre, comments, score, isInWatchlist, isWatched, isFavourite}, isControls = true) {
     super();
     this._title = title;
     this._poster = poster;
@@ -11,8 +11,12 @@ class Card extends Component {
     this._year = year;
     this._duration = duration;
     this._genre = genre;
-    this._comments = comments;
     this._isControls = isControls;
+    this._comments = comments;
+    this._score = score;
+    this._isInWatchlist = isInWatchlist;
+    this._isWatched = isWatched;
+    this._isFavourite = isFavourite;
 
     this._onPopup = null;
   }
@@ -46,11 +50,11 @@ class Card extends Component {
 
     ${this._isControls ? formElement : ``}
   </article>
-  `;
+  `.trim();
 
     const cardTemplate = document.createElement(`template`);
     cardTemplate.innerHTML = cardMarkup;
-    return cardTemplate.content.cloneNode(true);
+    return cardTemplate.content.cloneNode(true).firstChild;
   }
 
   set onPopup(fn) {
@@ -63,6 +67,22 @@ class Card extends Component {
 
   addListeners() {
     this._element.querySelector(`.film-card__comments`).addEventListener(`click`, this._onClick.bind(this));
+  }
+
+  _partialUpdate() {
+    this._element.innerHTML = this.template.innerHTML;
+  }
+
+  update(data) {
+    this._isInWatchlist = data.isInWatchlist;
+    this._isWatched = data.isWatched;
+    this._isFavourite = data.isFavourite;
+    this._score = data.score;
+    this._comments = data.comments;
+
+    this.removeListeners();
+    this._partialUpdate();
+    this.addListeners();
   }
 }
 
