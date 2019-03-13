@@ -210,7 +210,9 @@ class Popup extends Component {
         emoji,
       });
 
+      this.removeListeners();
       this._partialUpdate();
+      this.addListeners();
     }
   }
 
@@ -225,6 +227,7 @@ class Popup extends Component {
 
   removeListeners() {
     this._element.querySelector(`.film-details__close-btn`).removeEventListener(`click`, this._onCloseClick);
+    this._element.querySelector(`.film-details__comment-input`).removeEventListener(`keydown`, this._onAddComment);
   }
 
   unrender() {
