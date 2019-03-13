@@ -3,13 +3,13 @@ import {Component} from './component';
 const KEYCODE_ENTER = 13;
 
 class Popup extends Component {
-  constructor({title, poster, description, rating, year, duration, genre, comments, score, isInWatchlist, isWatched, isFavourite}) {
+  constructor({title, poster, description, rating, releaseDate, duration, genre, comments, score, isInWatchlist, isWatched, isFavourite}) {
     super();
     this._title = title;
     this._poster = poster;
     this._description = description;
     this._rating = rating;
-    this._year = year;
+    this._releaseDate = releaseDate;
     this._duration = duration;
     this._genre = genre;
     this._comments = comments;
@@ -95,7 +95,7 @@ class Popup extends Component {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">15 June 2018 (USA)</td>
+              <td class="film-details__cell">${this._releaseDate} (USA)</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>

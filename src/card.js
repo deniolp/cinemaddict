@@ -2,13 +2,13 @@ import utils from './utils';
 import {Component} from './component';
 
 class Card extends Component {
-  constructor({title, poster, description, rating, year, duration, genre, comments, score, isInWatchlist, isWatched, isFavourite}, isControls = true) {
+  constructor({title, poster, description, rating, releaseDate, duration, genre, comments, score, isInWatchlist, isWatched, isFavourite}, isControls = true) {
     super();
     this._title = title;
     this._poster = poster;
     this._description = description;
     this._rating = rating;
-    this._year = year;
+    this._releaseDate = releaseDate;
     this._duration = duration;
     this._genre = genre;
     this._isControls = isControls;
@@ -40,7 +40,7 @@ class Card extends Component {
     <h3 class="film-card__title">${this._title}</h3>
     <p class="film-card__rating">${this._rating}</p>
     <p class="film-card__info">
-      <span class="film-card__year">${this._year}</span>
+      <span class="film-card__year">${this._releaseDate.match(/\d{4}/)[0]}</span>
       <span class="film-card__duration">${hours}h&nbsp;${mins}m</span>
       <span class="film-card__genre">${this._genre}</span>
     </p>
