@@ -22,13 +22,14 @@ class Popup extends Component {
     this._onSubmit = null;
     this._onCloseClick = this._onCloseClick.bind(this);
     this._onAddCommentKeydown = this._onAddCommentKeydown.bind(this);
+    this._onVoteClick = this._onVoteClick.bind(this);
   }
 
   _getScore() {
     const arr = [];
     for (let i = 1; i < 10; i++) {
       arr.push(`
-      <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${i}" id="rating-${i}" ${i === 5 ? `checked` : ``}>
+      <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${i}" id="rating-${i}" ${i === +this._score ? `checked` : ``}>
       <label class="film-details__user-rating-label" for="rating-${i}">${i}</label>
       `);
     }
@@ -257,6 +258,20 @@ class Popup extends Component {
     }
   }
 
+  _onVoteClick(evt) {
+    if (evt.target.tagName === `INPUT`) {
+      const formData = new FormData(this._element.querySelector(`.film-details__inner`));
+      const newData = this._processForm(formData);
+
+      this.removeListeners();
+      this.update(newData);
+      this._partialUpdate();
+      this.addListeners();
+
+      this._onSubmit(newData);
+    }
+  }
+
   _partialUpdate() {
     this._element.innerHTML = this.template.innerHTML;
   }
@@ -271,7 +286,7 @@ class Popup extends Component {
   addListeners() {
     this._element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._onCloseClick);
     this._element.querySelector(`.film-details__comment-input`).addEventListener(`keydown`, this._onAddCommentKeydown);
-    this._element.querySelector(`.film-details__comment-input`).addEventListener(`click`, this._onVoteClick);
+    this._element.querySelector(`.film-details__user-rating-score`).addEventListener(`click`, this._onVoteClick);
   }
 
   removeListeners() {
