@@ -209,7 +209,13 @@ class Popup extends Component {
         comment,
         emoji,
       });
+
+      this._partialUpdate();
     }
+  }
+
+  _partialUpdate() {
+    this._element.innerHTML = this.template.innerHTML;
   }
 
   addListeners() {
