@@ -1,5 +1,7 @@
 import {Component} from './component';
 
+const KEYCODE_ENTER = 13;
+
 class Popup extends Component {
   constructor({title, poster, description, rating, year, duration, genre, comments}) {
     super();
@@ -14,6 +16,7 @@ class Popup extends Component {
 
     this._onClose = null;
     this._onCloseClick = this._onCloseClick.bind(this);
+    this._onAddComment = this._onAddComment.bind(this);
   }
 
   _getScore() {
@@ -191,31 +194,36 @@ class Popup extends Component {
     return typeof this._onClose === `function` && this._onClose();
   }
 
-  unrender() {
-    this.removeListeners();
-    this._element = null;
-  }
+  _onAddComment(evt) {
+    if (evt.keyCode === KEYCODE_ENTER) {
+      evt.preventDefault();
+      const comment = this._element.querySelector(`.film-details__comment-input`).value;
+      this._element.querySelector(`.film-details__comment-input`).value = ``;
+      const emoji = this._element.querySelector(`.film-details__emoji-item:checked + .film-details__emoji-label`).textContent;
+      const author = `Someone`;
+      const time = new Date();
 
-  _onAddComment() {
-    this._state.isDate = !this._state.isDate;
-    this._removeListeners();
-    this._partialUpdate();
-    this._addListeners();
-  }
-
-  _onVote() {
-    this._state.isRepeated = !this._state.isRepeated;
-    this._removeListeners();
-    this._partialUpdate();
-    this._addListeners();
+      this._comments.push({
+        author,
+        time,
+        comment,
+        emoji,
+      });
+    }
   }
 
   addListeners() {
     this._element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._onCloseClick);
+    this._element.querySelector(`.film-details__comment-input`).addEventListener(`keydown`, this._onAddComment);
   }
 
   removeListeners() {
     this._element.querySelector(`.film-details__close-btn`).removeEventListener(`click`, this._onCloseClick);
+  }
+
+  unrender() {
+    this.removeListeners();
+    this._element = null;
   }
 }
 
