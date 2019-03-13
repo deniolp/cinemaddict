@@ -17,11 +17,11 @@ class Component {
 
   render() {
     this._element = this.template;
-    this.createListeners();
+    this.addListeners();
     return this._element;
   }
 
-  createListeners() {}
+  addListeners() {}
 }
 
 export {Component};

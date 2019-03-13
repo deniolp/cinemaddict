@@ -2,7 +2,7 @@ import utils from './utils';
 import {Component} from './component';
 
 class Card extends Component {
-  constructor({title, poster, description, rating, year, duration, genre, commentsQuantity}, isControls = true) {
+  constructor({title, poster, description, rating, year, duration, genre, comments}, isControls = true) {
     super();
     this._title = title;
     this._poster = poster;
@@ -11,7 +11,7 @@ class Card extends Component {
     this._year = year;
     this._duration = duration;
     this._genre = genre;
-    this._commentsQuantity = commentsQuantity;
+    this._comments = comments;
     this._isControls = isControls;
 
     this._onPopup = null;
@@ -42,7 +42,7 @@ class Card extends Component {
     </p>
     <img src="./images/posters/${this._poster}.jpg" alt="${this._title}" class="film-card__poster">
     ${this._isControls ? descriptionElement : ``}
-    <button class="film-card__comments">${this._commentsQuantity} comments</button>
+    <button class="film-card__comments">${this._comments.length} comments</button>
 
     ${this._isControls ? formElement : ``}
   </article>
@@ -61,7 +61,7 @@ class Card extends Component {
     return typeof this._onPopup === `function` && this._onPopup();
   }
 
-  createListeners() {
+  addListeners() {
     this._element.querySelector(`.film-card__comments`).addEventListener(`click`, this._onClick.bind(this));
   }
 }

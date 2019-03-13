@@ -41,5 +41,18 @@ export default () => ({
   isInWatchlist: false,
   isWatched: false,
   isFavourite: true,
-  commentsQuantity: utils.getRandomNumber(0, 51),
+  comments: [
+    {
+      author: `Tim Macoveev`,
+      time: `3 days ago`,
+      comment: `So long-long story, boring!`,
+      emoji: `😴`,
+    },
+    {
+      author: `Denis Popov`,
+      time: `1 days ago`,
+      comment: `Pretty good!`,
+      emoji: `😀`,
+    },
+  ],
 });
