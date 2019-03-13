@@ -55,4 +55,5 @@ export default () => ({
       emoji: `😀`,
     },
   ],
+  score: 5,
 });

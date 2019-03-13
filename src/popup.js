@@ -3,7 +3,7 @@ import {Component} from './component';
 const KEYCODE_ENTER = 13;
 
 class Popup extends Component {
-  constructor({title, poster, description, rating, year, duration, genre, comments}) {
+  constructor({title, poster, description, rating, year, duration, genre, comments, score}) {
     super();
     this._title = title;
     this._poster = poster;
@@ -13,10 +13,11 @@ class Popup extends Component {
     this._duration = duration;
     this._genre = genre;
     this._comments = comments;
+    this._score = score;
 
     this._onClose = null;
     this._onCloseClick = this._onCloseClick.bind(this);
-    this._onAddComment = this._onAddComment.bind(this);
+    this._onAddCommentKeydown = this._onAddCommentKeydown.bind(this);
   }
 
   _getScore() {
@@ -70,7 +71,7 @@ class Popup extends Component {
 
             <div class="film-details__rating">
               <p class="film-details__total-rating">${this._rating}</p>
-              <p class="film-details__user-rating">Your rate 8</p>
+              <p class="film-details__user-rating">Your rate ${this._score}</p>
             </div>
           </div>
 
@@ -194,20 +195,49 @@ class Popup extends Component {
     return typeof this._onClose === `function` && this._onClose();
   }
 
-  _onAddComment(evt) {
+  _emojiMapper(key) {
+    switch (key) {
+      case `sleeping`:
+        return `😴`;
+      case `neutral-face`:
+        return `😐`;
+      case `grinning`:
+        return `😀`;
+      default:
+        return ``;
+    }
+  }
+
+  _processForm(formData) {
+    const entry = {
+      isInWatchlist: false,
+      isWatched: false,
+      isFavourite: true,
+      comment: {},
+      score: ``,
+    };
+    const cardSubmitMapper = Popup.createMapper(entry);
+
+    for (const pair of formData.entries()) {
+      const [property, value] = pair;
+      if (cardSubmitMapper[property]) {
+        cardSubmitMapper[property](value);
+      }
+    }
+    return entry;
+  }
+
+  _onAddCommentKeydown(evt) {
     if (evt.keyCode === KEYCODE_ENTER) {
       evt.preventDefault();
-      const comment = this._element.querySelector(`.film-details__comment-input`).value;
-      this._element.querySelector(`.film-details__comment-input`).value = ``;
-      const emoji = this._element.querySelector(`.film-details__emoji-item:checked + .film-details__emoji-label`).textContent;
-      const author = `Someone`;
-      const time = new Date();
+      const formData = new FormData(this._element.querySelector(`.film-details__inner`));
+      const newData = this._processForm(formData);
 
       this._comments.push({
-        author,
-        time,
-        comment,
-        emoji,
+        author: `Someone`,
+        time: new Date(),
+        comment: newData.comment.comment,
+        emoji: this._emojiMapper(newData.comment.emoji),
       });
 
       this.removeListeners();
@@ -216,13 +246,27 @@ class Popup extends Component {
     }
   }
 
+  _onVoteClick() {
+
+  }
+
   _partialUpdate() {
     this._element.innerHTML = this.template.innerHTML;
   }
 
+  update(data) {
+    this._title = data.title;
+    this._tags = data.tags;
+    this._color = data.color;
+    this._repeatingDays = data.repeatingDays;
+    this._dueDate = data.dueDate;
+    this._dueTime = data.dueTime;
+  }
+
   addListeners() {
     this._element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._onCloseClick);
-    this._element.querySelector(`.film-details__comment-input`).addEventListener(`keydown`, this._onAddComment);
+    this._element.querySelector(`.film-details__comment-input`).addEventListener(`keydown`, this._onAddCommentKeydown);
+    this._element.querySelector(`.film-details__comment-input`).addEventListener(`click`, this._onVoteClick);
   }
 
   removeListeners() {
@@ -233,6 +277,35 @@ class Popup extends Component {
   unrender() {
     this.removeListeners();
     this._element = null;
+  }
+
+  static createMapper(target) {
+    return {
+      'watched': (value) => {
+        if (value) {
+          target.isWatched = true;
+        }
+      },
+      'watchlist': (value) => {
+        if (value) {
+          target.isInWatchlist = true;
+        }
+      },
+      'favorite': (value) => {
+        if (value) {
+          target.isFavourite = true;
+        }
+      },
+      'comment': (value) => {
+        target.comment.comment = value;
+      },
+      'comment-emoji': (value) => {
+        target.comment.emoji = value;
+      },
+      'score': (value) => {
+        target.score = value;
+      }
+    };
   }
 }
 
