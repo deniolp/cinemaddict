@@ -25,5 +25,7 @@ export default (item, container, flag = true) => {
     item._comments = comments;
 
     cardComponent.update(item);
+    body.removeChild(popupComponent.element);
+    popupComponent.unrender();
   };
 };
