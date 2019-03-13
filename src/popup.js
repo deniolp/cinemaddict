@@ -201,7 +201,9 @@ class Popup extends Component {
   }
 
   _onCloseClick() {
-    return typeof this._onClose === `function` && this._onClose();
+    if (typeof this._onClose === `function`) {
+      this._onClose();
+    }
   }
 
   _emojiMapper(key) {
@@ -292,6 +294,7 @@ class Popup extends Component {
   removeListeners() {
     this._element.querySelector(`.film-details__close-btn`).removeEventListener(`click`, this._onCloseClick);
     this._element.querySelector(`.film-details__comment-input`).removeEventListener(`keydown`, this._onAddComment);
+    this._element.querySelector(`.film-details__user-rating-score`).removeEventListener(`click`, this._onVoteClick);
   }
 
   unrender() {
