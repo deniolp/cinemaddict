@@ -1,4 +1,5 @@
 import {Component} from './component';
+import moment from 'moment';
 
 const KEYCODE_ENTER = 13;
 
@@ -246,7 +247,7 @@ class Popup extends Component {
 
       this._comments.push({
         author: `Someone`,
-        time: new Date(),
+        time: moment(`${new Date()}`).fromNow(),
         comment: newData.comment.comment,
         emoji: this._emojiMapper(newData.comment.emoji),
       });
