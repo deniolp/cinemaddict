@@ -46,7 +46,7 @@ class Popup extends Component {
         <p class="film-details__comment-text">${item.comment}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${item.author}</span>
-          <span class="film-details__comment-day">${item.time}</span>
+          <span class="film-details__comment-day">${moment(item.time).fromNow()}</span>
         </p>
       </div>
     </li>
@@ -247,7 +247,7 @@ class Popup extends Component {
 
       this._comments.push({
         author: `Someone`,
-        time: moment(`${new Date()}`).fromNow(),
+        time: new Date(),
         comment: newData.comment.comment,
         emoji: this._emojiMapper(newData.comment.emoji),
       });

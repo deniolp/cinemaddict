@@ -45,13 +45,13 @@ export default () => ({
   comments: [
     {
       author: `Tim Macoveev`,
-      time: `3 days ago`,
+      time: `20190313`,
       comment: `So long-long story, boring!`,
       emoji: `😴`,
     },
     {
       author: `Denis Popov`,
-      time: `1 days ago`,
+      time: `20190314`,
       comment: `Pretty good!`,
       emoji: `😀`,
     },
