@@ -4,7 +4,7 @@ import moment from 'moment';
 const KEYCODE_ENTER = 13;
 
 class Popup extends Component {
-  constructor({title, poster, description, rating, releaseDate, duration, genre, comments, score, isInWatchlist, isWatched, isFavourite}) {
+  constructor({title, poster, description, rating, releaseDate, duration, genres, comments, score, isInWatchlist, isWatched, isFavourite}) {
     super();
     this._title = title;
     this._poster = poster;
@@ -12,7 +12,7 @@ class Popup extends Component {
     this._rating = rating;
     this._releaseDate = releaseDate;
     this._duration = duration;
-    this._genre = genre;
+    this._genres = genres;
     this._comments = comments;
     this._score = score;
     this._isInWatchlist = isInWatchlist;
@@ -109,9 +109,9 @@ class Popup extends Component {
             <tr class="film-details__row">
               <td class="film-details__term">Genres</td>
               <td class="film-details__cell">
-                <span class="film-details__genre">${this._genre}</span>
-                <span class="film-details__genre">Action</span>
-                <span class="film-details__genre">Adventure</span></td>
+                <span class="film-details__genre">${[...this._genres][0]}</span>
+                <span class="film-details__genre">${[...this._genres][1]}</span>
+                <span class="film-details__genre">${[...this._genres][2]}</span></td>
             </tr>
           </table>
 
@@ -173,7 +173,7 @@ class Popup extends Component {
           </div>
 
           <section class="film-details__user-rating-inner">
-            <h3 class="film-details__user-rating-title">Incredibles 2</h3>
+            <h3 class="film-details__user-rating-title">${this._title}</h3>
 
             <p class="film-details__user-rating-feelings">How you feel it?</p>
 
