@@ -4,7 +4,8 @@ import moment from 'moment';
 const KEYCODE_ENTER = 13;
 
 class Popup extends Component {
-  constructor({title, poster, description, rating, releaseDate, duration, genres, comments, score, isInWatchlist, isWatched, isFavourite}) {
+  constructor({title, poster, description, rating, releaseDate, duration,
+    genres, comments, score, isInWatchlist, isWatched, isFavourite}) {
     super();
     this._title = title;
     this._poster = poster;

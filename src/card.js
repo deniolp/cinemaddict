@@ -2,7 +2,8 @@ import utils from './utils';
 import {Component} from './component';
 
 class Card extends Component {
-  constructor({title, poster, description, rating, releaseDate, duration, genres, comments, score, isInWatchlist, isWatched, isFavourite}, isControls = true) {
+  constructor({title, poster, description, rating, releaseDate, duration,
+    genres, comments, score, isInWatchlist, isWatched, isFavourite}, isControls = true) {
     super();
     this._title = title;
     this._poster = poster;
@@ -19,6 +20,7 @@ class Card extends Component {
     this._isFavourite = isFavourite;
 
     this._onPopup = null;
+    this._onCommentsClick = this._onCommentsClick.bind(this);
   }
 
   get template() {
@@ -61,12 +63,16 @@ class Card extends Component {
     this._onPopup = fn;
   }
 
-  _onClick() {
+  _onCommentsClick() {
     return typeof this._onPopup === `function` && this._onPopup();
   }
 
   addListeners() {
-    this._element.querySelector(`.film-card__comments`).addEventListener(`click`, this._onClick.bind(this));
+    this._element.querySelector(`.film-card__comments`).addEventListener(`click`, this._onCommentsClick);
+  }
+
+  removeListeners() {
+    this._element.querySelector(`.film-card__comments`).removeEventListener(`click`, this._onCommentsClick);
   }
 
   _partialUpdate() {
