@@ -310,15 +310,24 @@ class Popup extends Component {
         if (value === `on`) {
           target.isWatched = true;
         }
+        if (value === ``) {
+          target.isWatched = false;
+        }
       },
       'watchlist': (value) => {
         if (value === `on`) {
           target.isInWatchlist = true;
         }
+        if (value === ``) {
+          target.isInWatchlist = false;
+        }
       },
       'favorite': (value) => {
         if (value === `on`) {
           target.isFavourite = true;
+        }
+        if (value === ``) {
+          target.isFavourite = false;
         }
       },
       'comment': (value) => {
