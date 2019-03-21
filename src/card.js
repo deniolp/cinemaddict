@@ -22,6 +22,7 @@ class Card extends Component {
     this._onPopup = null;
     this._onAddToWatchList = null;
     this._onMarkAsWatched = null;
+    this._onMarkAsFavorite = null;
     this._onCommentsClick = this._onCommentsClick.bind(this);
     this._onControlFormClick = this._onControlFormClick.bind(this);
   }
@@ -74,6 +75,10 @@ class Card extends Component {
     this._onMarkAsWatched = fn;
   }
 
+  set onMarkAsFavorite(fn) {
+    this._onMarkAsFavorite = fn;
+  }
+
   _onCommentsClick() {
     return typeof this._onPopup === `function` && this._onPopup();
   }
@@ -90,6 +95,12 @@ class Card extends Component {
       if (typeof this._onAddToWatchList === `function`) {
         this._isWatched = !this._isWatched;
         this._onMarkAsWatched(this._isWatched);
+      }
+    }
+    if (evt.target.tagName.toLowerCase() === `button` && evt.target.classList.contains(`film-card__controls-item--favorite`)) {
+      if (typeof this._onAddToWatchList === `function`) {
+        this._isFavourite = !this._isFavourite;
+        this._onMarkAsFavorite(this._isFavourite);
       }
     }
   }
@@ -117,9 +128,9 @@ class Card extends Component {
     this._score = data.score;
     this._comments = data.comments;
 
-    this.removeListeners();
+    this._removeListeners();
     this._partialUpdate();
-    this.addListeners();
+    this._addListeners();
   }
 }
 

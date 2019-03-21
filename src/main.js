@@ -54,6 +54,9 @@ const filterCards = (cards, filterName) => {
     case `History`:
       return cards.filter((it) => it.isWatched);
 
+    case `Favorites`:
+      return cards.filter((it) => it.isFavourite);
+
     default:
       return cards;
   }

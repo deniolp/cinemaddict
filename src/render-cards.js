@@ -23,6 +23,11 @@ export default (item, container, flag = true) => {
     popupComponent.update(item);
   };
 
+  cardComponent.onMarkAsFavorite = (boolean) => {
+    item.isFavourite = boolean;
+    popupComponent.update(item);
+  };
+
   popupComponent.onClose = () => {
     body.removeChild(popupComponent.element);
     popupComponent.unrender();

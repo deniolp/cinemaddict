@@ -253,10 +253,10 @@ class Popup extends Component {
         emoji: this._emojiMapper(newData.comment.emoji),
       });
 
-      this.removeListeners();
+      this._removeListeners();
       this.update(newData);
       this._partialUpdate();
-      this.addListeners();
+      this._addListeners();
 
       this._onSubmit(newData, this._comments);
     }
@@ -267,10 +267,10 @@ class Popup extends Component {
       const formData = new FormData(this._element.querySelector(`.film-details__inner`));
       const newData = this._processForm(formData);
 
-      this.removeListeners();
+      this._removeListeners();
       this.update(newData);
       this._partialUpdate();
-      this.addListeners();
+      this._addListeners();
 
       this._onSubmit(newData);
     }
@@ -300,7 +300,7 @@ class Popup extends Component {
   }
 
   unrender() {
-    this.removeListeners();
+    this._removeListeners();
     this._element = null;
   }
 
