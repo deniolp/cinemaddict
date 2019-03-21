@@ -20,7 +20,9 @@ class Card extends Component {
     this._isFavourite = isFavourite;
 
     this._onPopup = null;
+    this._onAddToWatchList = null;
     this._onCommentsClick = this._onCommentsClick.bind(this);
+    this._onAddToWatchedClick = this._onAddToWatchedClick.bind(this);
   }
 
   get template() {
@@ -63,12 +65,24 @@ class Card extends Component {
     this._onPopup = fn;
   }
 
+  set onAddToWatchList(fn) {
+    this._onAddToWatchList = fn;
+  }
+
   _onCommentsClick() {
     return typeof this._onPopup === `function` && this._onPopup();
   }
 
+  _onAddToWatchedClick(evt) {
+    evt.preventDefault();
+    return typeof this._onAddToWatchList === `function` && this._onAddToWatchList();
+  }
+
   addListeners() {
     this._element.querySelector(`.film-card__comments`).addEventListener(`click`, this._onCommentsClick);
+    if (this._element.querySelector(`.film-card__controls-item--add-to-watchlist`)) {
+      this._element.querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, this._onAddToWatchedClick);
+    }
   }
 
   removeListeners() {

@@ -25,6 +25,9 @@ const FILTERS = [
   }
 ];
 
+const initialCards = getCards(7);
+const watchList = [];
+
 const filtersContainer = document.querySelector(`.main-navigation`);
 const cinemaCardsContainer = document.querySelector(`.films-list__container`);
 const topRatedContainer = document.querySelector(`section.films-list--extra .films-list__container`);
@@ -32,7 +35,7 @@ const mostCommentedContainer = document.querySelector(`section.films-list--extra
 
 FILTERS.forEach((item) => filtersContainer.appendChild(makeFilter(item.name, item.hasAmount, utils.getRandomNumber(), item.isActive, item.isAdditional)));
 
-getCards(7).forEach((item) => renderCards(item, cinemaCardsContainer));
+initialCards.forEach((item) => renderCards(item, cinemaCardsContainer));
 
 getCards(2).forEach((item) => renderCards(item, topRatedContainer, false));
 
@@ -46,3 +49,11 @@ filters.forEach((item) => item.addEventListener(`click`, () => {
 
   getCards(tempAmount).forEach((elem) => renderCards(elem, cinemaCardsContainer));
 }));
+
+const addToWatchList = (card) => {
+  if (watchList.indexOf(card) === -1) {
+    watchList.push(card);
+  }
+};
+
+export {addToWatchList};

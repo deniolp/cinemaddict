@@ -1,5 +1,6 @@
 import {Card} from './card';
 import {Popup} from './popup';
+import {addToWatchList} from './main';
 
 export default (item, container, flag = true) => {
   const cardComponent = new Card(item, flag);
@@ -10,6 +11,10 @@ export default (item, container, flag = true) => {
   cardComponent.onPopup = () => {
     popupComponent.render();
     body.appendChild(popupComponent.element);
+  };
+
+  cardComponent.onAddToWatchList = () => {
+    addToWatchList(item);
   };
 
   popupComponent.onClose = () => {
