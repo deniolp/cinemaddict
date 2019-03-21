@@ -1,6 +1,7 @@
 import {Filter} from './filter';
 import getCards from './get-cards';
 import renderCards from './render-cards';
+import {drawStat} from './draw-stat';
 
 const FILTERS = [
   {
@@ -80,5 +81,18 @@ initialCards.forEach((item) => renderCards(item, cinemaCardsContainer));
 getCards(2).forEach((item) => renderCards(item, topRatedContainer, false));
 
 getCards(2).forEach((item) => renderCards(item, mostCommentedContainer, false));
+
+const statButtonElement = document.querySelector(`.main-navigation__item--additional`);
+const filmBoard = document.querySelector(`.films`);
+const statBoard = document.querySelector(`.statistic`);
+
+const onStatClick = () => {
+  drawStat(initialCards);
+
+  statBoard.classList.remove(`visually-hidden`);
+  filmBoard.classList.add(`visually-hidden`);
+};
+
+statButtonElement.addEventListener(`click`, onStatClick);
 
 export {updateCard};
