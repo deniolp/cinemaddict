@@ -287,13 +287,13 @@ class Popup extends Component {
     this._score = data.score;
   }
 
-  addListeners() {
+  _addListeners() {
     this._element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._onCloseClick);
     this._element.querySelector(`.film-details__comment-input`).addEventListener(`keydown`, this._onAddCommentKeydown);
     this._element.querySelector(`.film-details__user-rating-score`).addEventListener(`click`, this._onVoteClick);
   }
 
-  removeListeners() {
+  _removeListeners() {
     this._element.querySelector(`.film-details__close-btn`).removeEventListener(`click`, this._onCloseClick);
     this._element.querySelector(`.film-details__comment-input`).removeEventListener(`keydown`, this._onAddComment);
     this._element.querySelector(`.film-details__user-rating-score`).removeEventListener(`click`, this._onVoteClick);

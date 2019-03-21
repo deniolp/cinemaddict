@@ -14,7 +14,7 @@ class Filter extends Component {
 
   get template() {
     const filterMarkup = `
-    <a href="#" class="main-navigation__item main-navigation__item--${this._isActive ? `active` : ``}${this._isAdditional ? `additional` : ``}">${this._name} ${this._hasAmount ? `<span class="main-navigation__item-count"></span>` : ``}</a>
+    <a href="#" class="main-navigation__item ${this._isActive ? `main-navigation__item--active` : ``}${this._isAdditional ? `main-navigation__item--additional` : ``}">${this._name} ${this._hasAmount ? `<span class="main-navigation__item-count"></span>` : ``}</a>
       </label>
   `.trim();
 
@@ -29,7 +29,6 @@ class Filter extends Component {
 
   _onFilterClick(evt) {
     evt.preventDefault();
-
     if (typeof this._onFilter === `function`) {
       this._onFilter(evt);
     }
@@ -37,6 +36,10 @@ class Filter extends Component {
 
   _addListeners() {
     this._element.querySelector(`.main-navigation__item`).addEventListener(`click`, this._onFilterClick);
+  }
+
+  _removeListeners() {
+    this._element.querySelector(`.main-navigation__item`).removeEventListener(`click`, this._onFilterClick);
   }
 }
 

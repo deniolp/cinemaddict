@@ -94,14 +94,14 @@ class Card extends Component {
     }
   }
 
-  addListeners() {
+  _addListeners() {
     this._element.querySelector(`.film-card__comments`).addEventListener(`click`, this._onCommentsClick);
     if (this._element.querySelector(`.film-card__controls`)) {
       this._element.querySelector(`.film-card__controls`).addEventListener(`click`, this._onControlFormClick);
     }
   }
 
-  removeListeners() {
+  _removeListeners() {
     this._element.querySelector(`.film-card__comments`).removeEventListener(`click`, this._onCommentsClick);
     this._element.querySelector(`.film-card__controls`).removeEventListener(`click`, this._onControlFormClick);
   }

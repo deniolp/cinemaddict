@@ -43,12 +43,32 @@ const updateCard = (cardToUpdate, newCard) => {
   return initialCards[index];
 };
 
+const filterCards = (cards, filterName) => {
+  switch (filterName.trim()) {
+    case `All`:
+      return cards;
+
+    case `Watchlist`:
+      return cards.filter((it) => it.isInWatchlist);
+
+    case `History`:
+      return cards.filter((it) => it.isWatched);
+
+    default:
+      return cards;
+  }
+};
+
 FILTERS.forEach((item) => {
   const filterComponent = new Filter(item.name, item.hasAmount, item.isActive, item.isAdditional);
   filtersContainer.appendChild(filterComponent.render());
 
-  filterComponent.onFilter = () => {
+  filterComponent.onFilter = (evt) => {
+    const filterName = evt.target.textContent;
+    const filteredTasks = filterCards(initialCards, filterName);
 
+    cinemaCardsContainer.innerHTML = ``;
+    filteredTasks.forEach((card) => renderCards(card, cinemaCardsContainer));
   };
 });
 

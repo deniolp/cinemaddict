@@ -17,17 +17,17 @@ class Component {
 
   render() {
     this._element = this.template;
-    this.addListeners();
+    this._addListeners();
     return this._element;
   }
 
   unrender() {
-    this.removeListeners();
+    this._removeListeners();
     this._element = null;
   }
 
-  addListeners() {}
-  removeListeners() {}
+  _addListeners() {}
+  _removeListeners() {}
 }
 
 export {Component};
