@@ -21,8 +21,9 @@ class Card extends Component {
 
     this._onPopup = null;
     this._onAddToWatchList = null;
+    this._onMarkAsWatched = null;
     this._onCommentsClick = this._onCommentsClick.bind(this);
-    this._onAddToWatchedClick = this._onAddToWatchedClick.bind(this);
+    this._onControlFormClick = this._onControlFormClick.bind(this);
   }
 
   get template() {
@@ -69,24 +70,40 @@ class Card extends Component {
     this._onAddToWatchList = fn;
   }
 
+  set onMarkAsWatched(fn) {
+    this._onMarkAsWatched = fn;
+  }
+
   _onCommentsClick() {
     return typeof this._onPopup === `function` && this._onPopup();
   }
 
-  _onAddToWatchedClick(evt) {
+  _onControlFormClick(evt) {
     evt.preventDefault();
-    return typeof this._onAddToWatchList === `function` && this._onAddToWatchList();
+    if (evt.target.tagName.toLowerCase() === `button` && evt.target.classList.contains(`film-card__controls-item--add-to-watchlist`)) {
+      if (typeof this._onAddToWatchList === `function`) {
+        this._isInWatchlist = !this._isInWatchlist;
+        this._onAddToWatchList(this._isInWatchlist);
+      }
+    }
+    if (evt.target.tagName.toLowerCase() === `button` && evt.target.classList.contains(`film-card__controls-item--mark-as-watched`)) {
+      if (typeof this._onAddToWatchList === `function`) {
+        this._isWatched = !this._isWatched;
+        this._onMarkAsWatched(this._isWatched);
+      }
+    }
   }
 
   addListeners() {
     this._element.querySelector(`.film-card__comments`).addEventListener(`click`, this._onCommentsClick);
-    if (this._element.querySelector(`.film-card__controls-item--add-to-watchlist`)) {
-      this._element.querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, this._onAddToWatchedClick);
+    if (this._element.querySelector(`.film-card__controls`)) {
+      this._element.querySelector(`.film-card__controls`).addEventListener(`click`, this._onControlFormClick);
     }
   }
 
   removeListeners() {
     this._element.querySelector(`.film-card__comments`).removeEventListener(`click`, this._onCommentsClick);
+    this._element.querySelector(`.film-card__controls`).removeEventListener(`click`, this._onControlFormClick);
   }
 
   _partialUpdate() {

@@ -1,6 +1,6 @@
 import {Card} from './card';
 import {Popup} from './popup';
-import {addToWatchList} from './main';
+import {updateCard} from './main';
 
 export default (item, container, flag = true) => {
   const cardComponent = new Card(item, flag);
@@ -13,8 +13,14 @@ export default (item, container, flag = true) => {
     body.appendChild(popupComponent.element);
   };
 
-  cardComponent.onAddToWatchList = () => {
-    addToWatchList(item);
+  cardComponent.onAddToWatchList = (boolean) => {
+    item.isInWatchlist = boolean;
+    popupComponent.update(item);
+  };
+
+  cardComponent.onMarkAsWatched = (boolean) => {
+    item.isWatched = boolean;
+    popupComponent.update(item);
   };
 
   popupComponent.onClose = () => {
@@ -22,14 +28,12 @@ export default (item, container, flag = true) => {
     popupComponent.unrender();
   };
 
-  popupComponent.onSubmit = (obj, comments = ``) => {
-    item._isInWatchlist = obj.isInWatchlist;
-    item._isWatched = obj.isWatched;
-    item._isFavourite = obj.isFavourite;
-    item._score = obj.score;
-    item._comments = comments;
-
-    cardComponent.update(item);
+  popupComponent.onSubmit = (obj, comments) => {
+    const updatedCard = updateCard(item, obj);
+    if (comments) {
+      updatedCard.comments = comments;
+    }
+    cardComponent.update(updatedCard);
     body.removeChild(popupComponent.element);
     popupComponent.unrender();
   };
