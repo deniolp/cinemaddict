@@ -25,7 +25,7 @@ const FILTERS = [
   }
 ];
 
-const initialCards = getCards(7);
+const initialCards = getCards(15);
 
 const filtersContainer = document.querySelector(`.main-navigation`);
 const cinemaCardsContainer = document.querySelector(`.films-list__container`);

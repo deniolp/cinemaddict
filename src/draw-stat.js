@@ -6,16 +6,18 @@ const BAR_HEIGHT = 50;
 const statisticCtx = document.querySelector(`.statistic__chart`);
 statisticCtx.height = BAR_HEIGHT * 5;
 
-let myChart = null;
-
 const drawStat = (cards) => {
+  const genresStat = getStat(cards);
+
   const myChart = new Chart(statisticCtx, {
     plugins: [ChartDataLabels],
     type: `horizontalBar`,
     data: {
-      labels: [`Comedy`, `History`, `Drama`, `Horror`, `Series`, `Western`, `Action`, `Adventure`],
+      labels: genresStat.labels,
       datasets: [{
-        data: [11, 8, 7, 4, 3, 2, 1, 1],
+        data: genresStat.values.sort((a, b) => {
+          return b - a;
+        }),
         backgroundColor: `#ffe800`,
         hoverBackgroundColor: `tomato`,
         anchor: `start`
@@ -65,6 +67,22 @@ const drawStat = (cards) => {
       }
     }
   });
+};
+
+const getStat = (cards) => {
+  const genresStats = {};
+  cards.forEach((card) => {
+    if (genresStats.hasOwnProperty([...card.genres][0])) {
+      genresStats[[...card.genres][0]]++;
+    } else {
+      genresStats[[...card.genres][0]] = 1;
+    }
+  });
+
+  const labels = Object.keys(genresStats);
+  const values = Object.values(genresStats);
+
+  return {labels, values};
 };
 
 export {drawStat};
