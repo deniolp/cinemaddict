@@ -97,10 +97,12 @@ const onStatClick = () => {
   textStatistic[0].innerHTML = `
   ${watchedStatistics.watchedAmount} <span class="statistic__item-description">movies</span>
   `;
+
   const [hours, mins] = utils.countDuration(watchedStatistics.watchedDuration);
   textStatistic[1].innerHTML = `
   ${hours} <span class="statistic__item-description">h</span> ${mins} <span class="statistic__item-description">m</span>
   `;
+  textStatistic[2].innerHTML = watchedStatistics.mostWatchedGenre;
 };
 
 statButtonElement.addEventListener(`click`, onStatClick);

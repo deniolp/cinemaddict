@@ -16,9 +16,7 @@ const drawStat = (cards) => {
     data: {
       labels: genresStat.labels,
       datasets: [{
-        data: genresStat.values.sort((a, b) => {
-          return b - a;
-        }),
+        data: genresStat.values,
         backgroundColor: `#ffe800`,
         hoverBackgroundColor: `tomato`,
         anchor: `start`
@@ -76,6 +74,13 @@ const getTotalDuration = (cards) => {
   }, 0);
 };
 
+const sortObject = (obj) => {
+  const sorted = Object.entries(obj).sort((a, b) => {
+    return b[1] - a[1];
+  });
+  return sorted;
+};
+
 const getStat = (cards) => {
   const genresStats = {};
   const filteredCards = cards.filter((card) => card.isWatched);
@@ -89,8 +94,9 @@ const getStat = (cards) => {
     }
   });
 
-  const labels = Object.keys(genresStats);
-  const values = Object.values(genresStats);
+  const labels = sortObject(genresStats).map((item) => item[0]);
+  const values = sortObject(genresStats).map((item) => item[1]);
+  watchedStatistics.mostWatchedGenre = labels[0];
 
   return {labels, values};
 };
