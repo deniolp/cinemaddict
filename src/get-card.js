@@ -42,7 +42,7 @@ export default () => ({
   duration: utils.getRandomNumber(65, 211),
   genres: getSet(),
   isInWatchlist: false,
-  isWatched: false,
+  isWatched: true,
   isFavourite: false,
   comments: [
     {

@@ -1,7 +1,8 @@
 import {Filter} from './filter';
 import getCards from './get-cards';
 import renderCards from './render-cards';
-import {drawStat} from './draw-stat';
+import {drawStat, watchedStatistics} from './draw-stat';
+import utils from './utils';
 
 const FILTERS = [
   {
@@ -25,7 +26,7 @@ const FILTERS = [
   }
 ];
 
-const initialCards = getCards(15);
+const initialCards = getCards(7);
 
 const filtersContainer = document.querySelector(`.main-navigation`);
 const cinemaCardsContainer = document.querySelector(`.films-list__container`);
@@ -85,12 +86,21 @@ getCards(2).forEach((item) => renderCards(item, mostCommentedContainer, false));
 const statButtonElement = document.querySelector(`.main-navigation__item--additional`);
 const filmBoard = document.querySelector(`.films`);
 const statBoard = document.querySelector(`.statistic`);
+const textStatistic = document.querySelectorAll(`p.statistic__item-text`);
 
 const onStatClick = () => {
   drawStat(initialCards);
 
   statBoard.classList.remove(`visually-hidden`);
   filmBoard.classList.add(`visually-hidden`);
+
+  textStatistic[0].innerHTML = `
+  ${watchedStatistics.watchedAmount} <span class="statistic__item-description">movies</span>
+  `;
+  const [hours, mins] = utils.countDuration(watchedStatistics.watchedDuration);
+  textStatistic[1].innerHTML = `
+  ${hours} <span class="statistic__item-description">h</span> ${mins} <span class="statistic__item-description">m</span>
+  `;
 };
 
 statButtonElement.addEventListener(`click`, onStatClick);

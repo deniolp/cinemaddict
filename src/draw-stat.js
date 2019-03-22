@@ -5,6 +5,7 @@ const BAR_HEIGHT = 50;
 
 const statisticCtx = document.querySelector(`.statistic__chart`);
 statisticCtx.height = BAR_HEIGHT * 5;
+let watchedStatistics = {};
 
 const drawStat = (cards) => {
   const genresStat = getStat(cards);
@@ -69,9 +70,18 @@ const drawStat = (cards) => {
   });
 };
 
+const getTotalDuration = (cards) => {
+  return cards.reduce((acc, card) => {
+    return acc + card.duration;
+  }, 0);
+};
+
 const getStat = (cards) => {
   const genresStats = {};
-  cards.forEach((card) => {
+  const filteredCards = cards.filter((card) => card.isWatched);
+  watchedStatistics.watchedAmount = filteredCards.length;
+  watchedStatistics.watchedDuration = getTotalDuration(filteredCards);
+  filteredCards.forEach((card) => {
     if (genresStats.hasOwnProperty([...card.genres][0])) {
       genresStats[[...card.genres][0]]++;
     } else {
@@ -85,4 +95,4 @@ const getStat = (cards) => {
   return {labels, values};
 };
 
-export {drawStat};
+export {drawStat, watchedStatistics};
