@@ -87,6 +87,38 @@ const statButtonElement = document.querySelector(`.main-navigation__item--additi
 const filmBoard = document.querySelector(`.films`);
 const statBoard = document.querySelector(`.statistic`);
 const textStatistic = document.querySelectorAll(`p.statistic__item-text`);
+const rankLabelElement = document.querySelector(`.statistic__rank-label`);
+
+const getRankLabel = (genre) => {
+  switch (genre) {
+    case `Comedy`:
+      return `ComedyMan`;
+
+    case `History`:
+      return `HistoryLover`;
+
+    case `Drama`:
+      return `DramaTic`;
+
+    case `Horror`:
+      return `HorrorAble`;
+
+    case `Series`:
+      return `SeriesLonger`;
+
+    case `Western`:
+      return `Gunner`;
+
+    case `Action`:
+      return `ActionEr`;
+
+    case `Adventure`:
+      return `Driver`;
+
+    default:
+      return `Uups`;
+  }
+};
 
 const onStatClick = () => {
   drawStat(initialCards);
@@ -103,6 +135,10 @@ const onStatClick = () => {
   ${hours} <span class="statistic__item-description">h</span> ${mins} <span class="statistic__item-description">m</span>
   `;
   textStatistic[2].innerHTML = watchedStatistics.mostWatchedGenre;
+
+  const rankLabel = getRankLabel(watchedStatistics.mostWatchedGenre);
+
+  rankLabelElement.innerHTML = rankLabel;
 };
 
 statButtonElement.addEventListener(`click`, onStatClick);

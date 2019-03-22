@@ -10,6 +10,7 @@ let watchedStatistics = {};
 const drawStat = (cards) => {
   const genresStat = getStat(cards);
 
+  // eslint-disable-next-line no-unused-vars
   const myChart = new Chart(statisticCtx, {
     plugins: [ChartDataLabels],
     type: `horizontalBar`,
