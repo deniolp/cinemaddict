@@ -48,6 +48,8 @@ const updateCard = (cardToUpdate, newCard) => {
 const filterCards = (cards, filterName) => {
   switch (filterName.trim()) {
     case `All`:
+      statBoard.classList.add(`visually-hidden`);
+      filmBoard.classList.remove(`visually-hidden`);
       return cards;
 
     case `Watchlist`:
