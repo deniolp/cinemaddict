@@ -125,10 +125,6 @@ class Card extends Component {
     this._element.querySelector(`.film-card__controls-item--favorite`).removeEventListener(`click`, this._onMarkAsFavoriteClick);
   }
 
-  _partialUpdate() {
-    this._element.innerHTML = this.template.innerHTML;
-  }
-
   update(data) {
     this._isInWatchlist = data.isInWatchlist;
     this._isWatched = data.isWatched;
@@ -136,9 +132,7 @@ class Card extends Component {
     this._score = data.score;
     this._comments = data.comments;
 
-    this._removeListeners();
-    this._partialUpdate();
-    this._addListeners();
+    this._rerender();
   }
 }
 

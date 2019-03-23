@@ -26,6 +26,12 @@ class Component {
     this._element = null;
   }
 
+  _rerender() {
+    this._removeListeners();
+    this._element.innerHTML = this.template.innerHTML;
+    this._addListeners();
+  }
+
   _addListeners() {}
   _removeListeners() {}
 }
