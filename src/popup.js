@@ -202,6 +202,59 @@ class Popup extends Component {
     this._onClose = fn;
   }
 
+  _onCloseClick() {
+    const newData = this._prepareData();
+
+    this.update(newData);
+
+    if (typeof this._onSubmit === `function`) {
+      this._onSubmit(newData);
+    }
+    if (typeof this._onClose === `function`) {
+      this._onClose();
+    }
+  }
+
+  _onAddCommentKeydown(evt) {
+    if (evt.keyCode === KEYCODE_ENTER) {
+      evt.preventDefault();
+      const newData = this._prepareData();
+
+      this._comments.push({
+        author: `Someone`,
+        time: new Date(),
+        comment: newData.comment.comment,
+        emoji: this._emojiMapper(newData.comment.emoji),
+      });
+
+      this.update(newData);
+
+      if (typeof this._onSubmit === `function`) {
+        this._onSubmit(newData, this._comments);
+      }
+
+      this._rerender();
+    }
+  }
+
+  _onVoteClick(evt) {
+    if (evt.target.tagName === `INPUT`) {
+      const newData = this._prepareData();
+      this.update(newData);
+
+      if (typeof this._onSubmit === `function`) {
+        this._onSubmit(newData);
+      }
+
+      this._rerender();
+    }
+  }
+
+  _prepareData() {
+    const formData = new FormData(this._element.querySelector(`.film-details__inner`));
+    return this._processForm(formData);
+  }
+
   _emojiMapper(key) {
     switch (key) {
       case `sleeping`:
@@ -232,58 +285,6 @@ class Popup extends Component {
       }
     }
     return entry;
-  }
-
-  _onCloseClick() {
-    const formData = new FormData(this._element.querySelector(`.film-details__inner`));
-    const newData = this._processForm(formData);
-
-    this.update(newData);
-
-    if (typeof this._onSubmit === `function`) {
-      this._onSubmit(newData);
-    }
-    if (typeof this._onClose === `function`) {
-      this._onClose();
-    }
-  }
-
-  _onAddCommentKeydown(evt) {
-    if (evt.keyCode === KEYCODE_ENTER) {
-      evt.preventDefault();
-      const formData = new FormData(this._element.querySelector(`.film-details__inner`));
-      const newData = this._processForm(formData);
-
-      this._comments.push({
-        author: `Someone`,
-        time: new Date(),
-        comment: newData.comment.comment,
-        emoji: this._emojiMapper(newData.comment.emoji),
-      });
-
-      this.update(newData);
-
-      if (typeof this._onSubmit === `function`) {
-        this._onSubmit(newData, this._comments);
-      }
-
-      this._rerender();
-    }
-  }
-
-  _onVoteClick(evt) {
-    if (evt.target.tagName === `INPUT`) {
-      const formData = new FormData(this._element.querySelector(`.film-details__inner`));
-      const newData = this._processForm(formData);
-
-      this.update(newData);
-
-      if (typeof this._onSubmit === `function`) {
-        this._onSubmit(newData);
-      }
-
-      this._rerender();
-    }
   }
 
   update(data) {
