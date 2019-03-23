@@ -35,13 +35,15 @@ class Filter extends Component {
   }
 
   _addListeners() {
-    if (!this._element.querySelector(`.main-navigation__item--additional`)) {
+    if (!this._element.querySelector(`.main-navigation__item`).classList.contains(`.main-navigation__item--additional`)) {
       this._element.querySelector(`.main-navigation__item`).addEventListener(`click`, this._onFilterClick);
     }
   }
 
   _removeListeners() {
-    this._element.querySelector(`.main-navigation__item`).removeEventListener(`click`, this._onFilterClick);
+    if (!this._element.querySelector(`.main-navigation__item`).classList.contains(`.main-navigation__item--additional`)) {
+      this._element.querySelector(`.main-navigation__item`).removeEventListener(`click`, this._onFilterClick);
+    }
   }
 }
 

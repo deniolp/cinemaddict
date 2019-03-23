@@ -665,7 +665,7 @@ a:hover {
   box-sizing: border-box;
   font-weight: 600;
   color: #212126;
-  font-size: 20px;
+  font-size: 15px;
   resize: none;
 }
 .film-details__comment-input::placeholder {

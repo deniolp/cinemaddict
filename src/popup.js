@@ -20,8 +20,8 @@ class Popup extends Component {
     this._isWatched = isWatched;
     this._isFavourite = isFavourite;
 
-    this._onClose = null;
     this._onSubmit = null;
+    this._onClose = null;
     this._onCloseClick = this._onCloseClick.bind(this);
     this._onAddCommentKeydown = this._onAddCommentKeydown.bind(this);
     this._onVoteClick = this._onVoteClick.bind(this);
@@ -56,7 +56,7 @@ class Popup extends Component {
   }
 
   get template() {
-    const cardMarkup = `
+    const popupMarkup = `
     <section class="film-details">
     <form class="film-details__inner" action="" method="get">
       <div class="film-details__close">
@@ -189,23 +189,70 @@ class Popup extends Component {
   </section>
   `.trim();
 
-    const cardTemplate = document.createElement(`template`);
-    cardTemplate.innerHTML = cardMarkup;
-    return cardTemplate.content.cloneNode(true).firstChild;
-  }
-
-  set onClose(fn) {
-    this._onClose = fn;
+    const popupTemplate = document.createElement(`template`);
+    popupTemplate.innerHTML = popupMarkup;
+    return popupTemplate.content.cloneNode(true).firstChild;
   }
 
   set onSubmit(fn) {
     this._onSubmit = fn;
   }
 
+  set onClose(fn) {
+    this._onClose = fn;
+  }
+
   _onCloseClick() {
+    const newData = this._prepareData();
+
+    this.update(newData);
+
+    if (typeof this._onSubmit === `function`) {
+      this._onSubmit(newData);
+    }
     if (typeof this._onClose === `function`) {
       this._onClose();
     }
+  }
+
+  _onAddCommentKeydown(evt) {
+    if (evt.keyCode === KEYCODE_ENTER && evt.metaKey) {
+      evt.preventDefault();
+      const newData = this._prepareData();
+
+      this._comments.push({
+        author: `Someone`,
+        time: new Date(),
+        comment: newData.comment.comment,
+        emoji: this._emojiMapper(newData.comment.emoji),
+      });
+
+      this.update(newData);
+
+      if (typeof this._onSubmit === `function`) {
+        this._onSubmit(newData, this._comments);
+      }
+
+      this._rerender();
+    }
+  }
+
+  _onVoteClick(evt) {
+    if (evt.target.tagName === `INPUT`) {
+      const newData = this._prepareData();
+      this.update(newData);
+
+      if (typeof this._onSubmit === `function`) {
+        this._onSubmit(newData);
+      }
+
+      this._rerender();
+    }
+  }
+
+  _prepareData() {
+    const formData = new FormData(this._element.querySelector(`.film-details__inner`));
+    return this._processForm(formData);
   }
 
   _emojiMapper(key) {
@@ -229,55 +276,15 @@ class Popup extends Component {
       comment: {},
       score: ``,
     };
-    const cardSubmitMapper = Popup.createMapper(entry);
+    const popupSubmitMapper = Popup.createMapper(entry);
 
     for (const pair of formData.entries()) {
       const [property, value] = pair;
-      if (cardSubmitMapper[property]) {
-        cardSubmitMapper[property](value);
+      if (popupSubmitMapper[property]) {
+        popupSubmitMapper[property](value);
       }
     }
     return entry;
-  }
-
-  _onAddCommentKeydown(evt) {
-    if (evt.keyCode === KEYCODE_ENTER) {
-      evt.preventDefault();
-      const formData = new FormData(this._element.querySelector(`.film-details__inner`));
-      const newData = this._processForm(formData);
-
-      this._comments.push({
-        author: `Someone`,
-        time: new Date(),
-        comment: newData.comment.comment,
-        emoji: this._emojiMapper(newData.comment.emoji),
-      });
-
-      this._removeListeners();
-      this.update(newData);
-      this._partialUpdate();
-      this._addListeners();
-
-      this._onSubmit(newData, this._comments);
-    }
-  }
-
-  _onVoteClick(evt) {
-    if (evt.target.tagName === `INPUT`) {
-      const formData = new FormData(this._element.querySelector(`.film-details__inner`));
-      const newData = this._processForm(formData);
-
-      this._removeListeners();
-      this.update(newData);
-      this._partialUpdate();
-      this._addListeners();
-
-      this._onSubmit(newData);
-    }
-  }
-
-  _partialUpdate() {
-    this._element.innerHTML = this.template.innerHTML;
   }
 
   update(data) {
