@@ -164,10 +164,14 @@ const getRankLabel = (genre) => {
 };
 
 drawStat(initialMovies);
-const rankLabel = getRankLabel(watchedStatistics.mostWatchedGenre);
+let rankLabel = getRankLabel(watchedStatistics.mostWatchedGenre);
 profileRankElement.innerHTML = rankLabel;
 
 const onStatClick = () => {
+  drawStat(initialMovies);
+  rankLabel = getRankLabel(watchedStatistics.mostWatchedGenre);
+  profileRankElement.innerHTML = rankLabel;
+
   statBoard.classList.remove(`visually-hidden`);
   filmBoard.classList.add(`visually-hidden`);
 
