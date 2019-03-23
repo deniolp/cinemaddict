@@ -20,7 +20,11 @@ class Card extends Component {
     this._isFavourite = isFavourite;
 
     this._onPopup = null;
+    this._onAddToWatchList = null;
+    this._onMarkAsWatched = null;
+    this._onMarkAsFavorite = null;
     this._onCommentsClick = this._onCommentsClick.bind(this);
+    this._onControlFormClick = this._onControlFormClick.bind(this);
   }
 
   get template() {
@@ -63,16 +67,54 @@ class Card extends Component {
     this._onPopup = fn;
   }
 
+  set onAddToWatchList(fn) {
+    this._onAddToWatchList = fn;
+  }
+
+  set onMarkAsWatched(fn) {
+    this._onMarkAsWatched = fn;
+  }
+
+  set onMarkAsFavorite(fn) {
+    this._onMarkAsFavorite = fn;
+  }
+
   _onCommentsClick() {
     return typeof this._onPopup === `function` && this._onPopup();
   }
 
-  addListeners() {
-    this._element.querySelector(`.film-card__comments`).addEventListener(`click`, this._onCommentsClick);
+  _onControlFormClick(evt) {
+    evt.preventDefault();
+    if (evt.target.tagName.toLowerCase() === `button` && evt.target.classList.contains(`film-card__controls-item--add-to-watchlist`)) {
+      if (typeof this._onAddToWatchList === `function`) {
+        this._isInWatchlist = !this._isInWatchlist;
+        this._onAddToWatchList(this._isInWatchlist);
+      }
+    }
+    if (evt.target.tagName.toLowerCase() === `button` && evt.target.classList.contains(`film-card__controls-item--mark-as-watched`)) {
+      if (typeof this._onAddToWatchList === `function`) {
+        this._isWatched = !this._isWatched;
+        this._onMarkAsWatched(this._isWatched);
+      }
+    }
+    if (evt.target.tagName.toLowerCase() === `button` && evt.target.classList.contains(`film-card__controls-item--favorite`)) {
+      if (typeof this._onAddToWatchList === `function`) {
+        this._isFavourite = !this._isFavourite;
+        this._onMarkAsFavorite(this._isFavourite);
+      }
+    }
   }
 
-  removeListeners() {
+  _addListeners() {
+    this._element.querySelector(`.film-card__comments`).addEventListener(`click`, this._onCommentsClick);
+    if (this._element.querySelector(`.film-card__controls`)) {
+      this._element.querySelector(`.film-card__controls`).addEventListener(`click`, this._onControlFormClick);
+    }
+  }
+
+  _removeListeners() {
     this._element.querySelector(`.film-card__comments`).removeEventListener(`click`, this._onCommentsClick);
+    this._element.querySelector(`.film-card__controls`).removeEventListener(`click`, this._onControlFormClick);
   }
 
   _partialUpdate() {
@@ -86,9 +128,9 @@ class Card extends Component {
     this._score = data.score;
     this._comments = data.comments;
 
-    this.removeListeners();
+    this._removeListeners();
     this._partialUpdate();
-    this.addListeners();
+    this._addListeners();
   }
 }
 
