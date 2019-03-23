@@ -20,8 +20,8 @@ class Popup extends Component {
     this._isWatched = isWatched;
     this._isFavourite = isFavourite;
 
-    this._onClose = null;
     this._onSubmit = null;
+    this._onClose = null;
     this._onCloseClick = this._onCloseClick.bind(this);
     this._onAddCommentKeydown = this._onAddCommentKeydown.bind(this);
     this._onVoteClick = this._onVoteClick.bind(this);
@@ -194,18 +194,12 @@ class Popup extends Component {
     return popupTemplate.content.cloneNode(true).firstChild;
   }
 
-  set onClose(fn) {
-    this._onClose = fn;
-  }
-
   set onSubmit(fn) {
     this._onSubmit = fn;
   }
 
-  _onCloseClick() {
-    if (typeof this._onClose === `function`) {
-      this._onClose();
-    }
+  set onClose(fn) {
+    this._onClose = fn;
   }
 
   _emojiMapper(key) {
@@ -240,6 +234,20 @@ class Popup extends Component {
     return entry;
   }
 
+  _onCloseClick() {
+    const formData = new FormData(this._element.querySelector(`.film-details__inner`));
+    const newData = this._processForm(formData);
+
+    this.update(newData);
+
+    if (typeof this._onSubmit === `function`) {
+      this._onSubmit(newData);
+    }
+    if (typeof this._onClose === `function`) {
+      this._onClose();
+    }
+  }
+
   _onAddCommentKeydown(evt) {
     if (evt.keyCode === KEYCODE_ENTER) {
       evt.preventDefault();
@@ -254,9 +262,12 @@ class Popup extends Component {
       });
 
       this.update(newData);
-      this._rerender();
 
-      this._onSubmit(newData, this._comments);
+      if (typeof this._onSubmit === `function`) {
+        this._onSubmit(newData, this._comments);
+      }
+
+      this._rerender();
     }
   }
 
@@ -266,9 +277,12 @@ class Popup extends Component {
       const newData = this._processForm(formData);
 
       this.update(newData);
-      this._rerender();
 
-      this._onSubmit(newData);
+      if (typeof this._onSubmit === `function`) {
+        this._onSubmit(newData);
+      }
+
+      this._rerender();
     }
   }
 

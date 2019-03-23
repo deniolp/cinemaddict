@@ -39,7 +39,5 @@ export default (item, container, flag = true) => {
       updatedMovie.comments = comments;
     }
     movieComponent.update(updatedMovie);
-    body.removeChild(popupComponent.element);
-    popupComponent.unrender();
   };
 };

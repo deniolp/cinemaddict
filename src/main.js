@@ -34,15 +34,13 @@ const topRatedContainer = document.querySelector(`section.films-list--extra .fil
 const mostCommentedContainer = document.querySelector(`section.films-list--extra:last-of-type .films-list__container`);
 
 const updateMovie = (movieToUpdate, newMovie) => {
-  const index = initialMovies.findIndex((item) => item === movieToUpdate);
-
   for (const key of Object.keys(newMovie)) {
-    if (key in initialMovies[index] && newMovie[key] !== ``) {
-      initialMovies[index][key] = newMovie[key];
+    if (key in movieToUpdate && newMovie[key] !== ``) {
+      movieToUpdate[key] = newMovie[key];
     }
   }
 
-  return initialMovies[index];
+  return movieToUpdate;
 };
 
 const filterMovies = (movies, filterName) => {
