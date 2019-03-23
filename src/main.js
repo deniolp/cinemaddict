@@ -35,7 +35,7 @@ const mostCommentedContainer = document.querySelector(`section.films-list--extra
 
 const updateMovie = (movieToUpdate, newMovie) => {
   for (const key of Object.keys(newMovie)) {
-    if (key in movieToUpdate && newMovie[key] !== ``) {
+    if (key in movieToUpdate) {
       movieToUpdate[key] = newMovie[key];
     }
   }
