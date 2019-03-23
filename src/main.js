@@ -9,13 +9,13 @@ const FILTERS = [
   {
     name: `All`,
     hasAmount: false,
-    isActive: true
+    isActive: true,
   },
   {
     name: `Watchlist`
   },
   {
-    name: `History`
+    name: `History`,
   },
   {
     name: `Favorites`
@@ -108,11 +108,11 @@ const renderMovie = (item, container, flag = true) => {
 
 
 FILTERS.forEach((item) => {
-  const filterComponent = new Filter(item.name, item.hasAmount, item.isActive, item.isAdditional);
+  const filterComponent = new Filter(item.name, item.hasAmount, item.isActive, item.isAdditional, item.amount);
   filtersContainer.appendChild(filterComponent.render());
 
   filterComponent.onFilter = (evt) => {
-    const filterName = evt.target.textContent;
+    const filterName = evt.target.firstChild.textContent;
     const filteredTasks = filterMovies(initialMovies, filterName);
 
     moviesContainer.innerHTML = ``;

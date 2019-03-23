@@ -1,12 +1,13 @@
 import {Component} from './component';
 
 class Filter extends Component {
-  constructor(name, hasAmount = true, isActive = false, isAdditional = false) {
+  constructor(name, hasAmount = true, isActive = false, isAdditional = false, amount = 0) {
     super();
     this._name = name;
     this._hasAmount = hasAmount;
     this._isActive = isActive;
     this._isAdditional = isAdditional;
+    this._amount = amount;
 
     this._onFilter = null;
     this._onFilterClick = this._onFilterClick.bind(this);
@@ -14,7 +15,7 @@ class Filter extends Component {
 
   get template() {
     const filterMarkup = `
-    <a href="#" class="main-navigation__item ${this._isActive ? `main-navigation__item--active` : ``}${this._isAdditional ? `main-navigation__item--additional` : ``}">${this._name} ${this._hasAmount ? `<span class="main-navigation__item-count"></span>` : ``}</a>
+    <a href="#" class="main-navigation__item ${this._isActive ? `main-navigation__item--active` : ``}${this._isAdditional ? `main-navigation__item--additional` : ``}">${this._name} ${this._hasAmount ? `<span class="main-navigation__item-count">${this._amount}</span>` : ``}</a>
       </label>
   `.trim();
 
