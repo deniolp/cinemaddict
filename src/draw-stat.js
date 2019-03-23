@@ -7,8 +7,8 @@ const statisticCtx = document.querySelector(`.statistic__chart`);
 statisticCtx.height = BAR_HEIGHT * 5;
 let watchedStatistics = {};
 
-const drawStat = (cards) => {
-  const genresStat = getStat(cards);
+const drawStat = (movies) => {
+  const genresStat = getStat(movies);
 
   // eslint-disable-next-line no-unused-vars
   const myChart = new Chart(statisticCtx, {
@@ -69,9 +69,9 @@ const drawStat = (cards) => {
   });
 };
 
-const getTotalDuration = (cards) => {
-  return cards.reduce((acc, card) => {
-    return acc + card.duration;
+const getTotalDuration = (movies) => {
+  return movies.reduce((acc, movie) => {
+    return acc + movie.duration;
   }, 0);
 };
 
@@ -82,16 +82,16 @@ const sortObject = (obj) => {
   return sorted;
 };
 
-const getStat = (cards) => {
+const getStat = (movies) => {
   const genresStats = {};
-  const filteredCards = cards.filter((card) => card.isWatched);
-  watchedStatistics.watchedAmount = filteredCards.length;
-  watchedStatistics.watchedDuration = getTotalDuration(filteredCards);
-  filteredCards.forEach((card) => {
-    if (genresStats.hasOwnProperty([...card.genres][0])) {
-      genresStats[[...card.genres][0]]++;
+  const filteredMovies = movies.filter((movie) => movie.isWatched);
+  watchedStatistics.watchedAmount = filteredMovies.length;
+  watchedStatistics.watchedDuration = getTotalDuration(filteredMovies);
+  filteredMovies.forEach((movie) => {
+    if (genresStats.hasOwnProperty([...movie.genres][0])) {
+      genresStats[[...movie.genres][0]]++;
     } else {
-      genresStats[[...card.genres][0]] = 1;
+      genresStats[[...movie.genres][0]] = 1;
     }
   });
 

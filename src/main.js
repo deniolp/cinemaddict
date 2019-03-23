@@ -1,6 +1,6 @@
 import {Filter} from './filter';
-import getCards from './get-cards';
-import renderCards from './render-cards';
+import getMovies from './get-movies';
+import renderMovie from './render-movie';
 import {drawStat, watchedStatistics} from './draw-stat';
 import utils from './utils';
 
@@ -26,43 +26,43 @@ const FILTERS = [
   }
 ];
 
-const initialCards = getCards(7);
+const initialMovies = getMovies(7);
 
 const filtersContainer = document.querySelector(`.main-navigation`);
-const cinemaCardsContainer = document.querySelector(`.films-list__container`);
+const moviesContainer = document.querySelector(`.films-list__container`);
 const topRatedContainer = document.querySelector(`section.films-list--extra .films-list__container`);
 const mostCommentedContainer = document.querySelector(`section.films-list--extra:last-of-type .films-list__container`);
 
-const updateCard = (cardToUpdate, newCard) => {
-  const index = initialCards.findIndex((item) => item === cardToUpdate);
+const updateMovie = (movieToUpdate, newMovie) => {
+  const index = initialMovies.findIndex((item) => item === movieToUpdate);
 
-  for (const key of Object.keys(newCard)) {
-    if (key in initialCards[index] && newCard[key] !== ``) {
-      initialCards[index][key] = newCard[key];
+  for (const key of Object.keys(newMovie)) {
+    if (key in initialMovies[index] && newMovie[key] !== ``) {
+      initialMovies[index][key] = newMovie[key];
     }
   }
 
-  return initialCards[index];
+  return initialMovies[index];
 };
 
-const filterCards = (cards, filterName) => {
+const filterMovies = (movies, filterName) => {
   switch (filterName.trim()) {
     case `All`:
       statBoard.classList.add(`visually-hidden`);
       filmBoard.classList.remove(`visually-hidden`);
-      return cards;
+      return movies;
 
     case `Watchlist`:
-      return cards.filter((it) => it.isInWatchlist);
+      return movies.filter((it) => it.isInWatchlist);
 
     case `History`:
-      return cards.filter((it) => it.isWatched);
+      return movies.filter((it) => it.isWatched);
 
     case `Favorites`:
-      return cards.filter((it) => it.isFavourite);
+      return movies.filter((it) => it.isFavourite);
 
     default:
-      return cards;
+      return movies;
   }
 };
 
@@ -72,18 +72,18 @@ FILTERS.forEach((item) => {
 
   filterComponent.onFilter = (evt) => {
     const filterName = evt.target.textContent;
-    const filteredTasks = filterCards(initialCards, filterName);
+    const filteredTasks = filterMovies(initialMovies, filterName);
 
-    cinemaCardsContainer.innerHTML = ``;
-    filteredTasks.forEach((card) => renderCards(card, cinemaCardsContainer));
+    moviesContainer.innerHTML = ``;
+    filteredTasks.forEach((movie) => renderMovie(movie, moviesContainer));
   };
 });
 
-initialCards.forEach((item) => renderCards(item, cinemaCardsContainer));
+initialMovies.forEach((item) => renderMovie(item, moviesContainer));
 
-getCards(2).forEach((item) => renderCards(item, topRatedContainer, false));
+getMovies(2).forEach((item) => renderMovie(item, topRatedContainer, false));
 
-getCards(2).forEach((item) => renderCards(item, mostCommentedContainer, false));
+getMovies(2).forEach((item) => renderMovie(item, mostCommentedContainer, false));
 
 const statButtonElement = document.querySelector(`.main-navigation__item--additional`);
 const filmBoard = document.querySelector(`.films`);
@@ -123,7 +123,7 @@ const getRankLabel = (genre) => {
 };
 
 const onStatClick = () => {
-  drawStat(initialCards);
+  drawStat(initialMovies);
 
   statBoard.classList.remove(`visually-hidden`);
   filmBoard.classList.add(`visually-hidden`);
@@ -145,4 +145,4 @@ const onStatClick = () => {
 
 statButtonElement.addEventListener(`click`, onStatClick);
 
-export {updateCard};
+export {updateMovie};

@@ -1,29 +1,29 @@
-import {Card} from './card';
+import {Movie} from './movie';
 import {Popup} from './popup';
-import {updateCard} from './main';
+import {updateMovie} from './main';
 
 export default (item, container, flag = true) => {
-  const cardComponent = new Card(item, flag);
+  const movieComponent = new Movie(item, flag);
   const popupComponent = new Popup(item);
   const body = document.querySelector(`body`);
-  container.appendChild(cardComponent.render());
+  container.appendChild(movieComponent.render());
 
-  cardComponent.onPopup = () => {
+  movieComponent.onPopup = () => {
     popupComponent.render();
     body.appendChild(popupComponent.element);
   };
 
-  cardComponent.onAddToWatchList = (boolean) => {
+  movieComponent.onAddToWatchList = (boolean) => {
     item.isInWatchlist = boolean;
     popupComponent.update(item);
   };
 
-  cardComponent.onMarkAsWatched = (boolean) => {
+  movieComponent.onMarkAsWatched = (boolean) => {
     item.isWatched = boolean;
     popupComponent.update(item);
   };
 
-  cardComponent.onMarkAsFavorite = (boolean) => {
+  movieComponent.onMarkAsFavorite = (boolean) => {
     item.isFavourite = boolean;
     popupComponent.update(item);
   };
@@ -34,11 +34,11 @@ export default (item, container, flag = true) => {
   };
 
   popupComponent.onSubmit = (obj, comments) => {
-    const updatedCard = updateCard(item, obj);
+    const updatedMovie = updateMovie(item, obj);
     if (comments) {
-      updatedCard.comments = comments;
+      updatedMovie.comments = comments;
     }
-    cardComponent.update(updatedCard);
+    movieComponent.update(updatedMovie);
     body.removeChild(popupComponent.element);
     popupComponent.unrender();
   };

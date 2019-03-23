@@ -56,7 +56,7 @@ class Popup extends Component {
   }
 
   get template() {
-    const cardMarkup = `
+    const popupMarkup = `
     <section class="film-details">
     <form class="film-details__inner" action="" method="get">
       <div class="film-details__close">
@@ -189,9 +189,9 @@ class Popup extends Component {
   </section>
   `.trim();
 
-    const cardTemplate = document.createElement(`template`);
-    cardTemplate.innerHTML = cardMarkup;
-    return cardTemplate.content.cloneNode(true).firstChild;
+    const popupTemplate = document.createElement(`template`);
+    popupTemplate.innerHTML = popupMarkup;
+    return popupTemplate.content.cloneNode(true).firstChild;
   }
 
   set onClose(fn) {
@@ -229,12 +229,12 @@ class Popup extends Component {
       comment: {},
       score: ``,
     };
-    const cardSubmitMapper = Popup.createMapper(entry);
+    const popupSubmitMapper = Popup.createMapper(entry);
 
     for (const pair of formData.entries()) {
       const [property, value] = pair;
-      if (cardSubmitMapper[property]) {
-        cardSubmitMapper[property](value);
+      if (popupSubmitMapper[property]) {
+        popupSubmitMapper[property](value);
       }
     }
     return entry;

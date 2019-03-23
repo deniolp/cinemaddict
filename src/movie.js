@@ -1,7 +1,7 @@
 import utils from './utils';
 import {Component} from './component';
 
-class Card extends Component {
+class Movie extends Component {
   constructor({title, poster, description, rating, releaseDate, duration,
     genres, comments, score, isInWatchlist, isWatched, isFavourite}, isControls = true) {
     super();
@@ -136,4 +136,4 @@ class Card extends Component {
   }
 }
 
-export {Card};
+export {Movie};
