@@ -216,7 +216,7 @@ class Popup extends Component {
   }
 
   _onAddCommentKeydown(evt) {
-    if (evt.keyCode === KEYCODE_ENTER) {
+    if (evt.keyCode === KEYCODE_ENTER && evt.metaKey) {
       evt.preventDefault();
       const newData = this._prepareData();
 
