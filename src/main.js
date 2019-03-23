@@ -31,6 +31,7 @@ const initialMovies = getMovies(7);
 
 const filtersContainer = document.querySelector(`.main-navigation`);
 const moviesContainer = document.querySelector(`.films-list__container`);
+const profileRankElement = document.querySelector(`.profile__rating`);
 const topRatedContainer = document.querySelector(`section.films-list--extra .films-list__container`);
 const mostCommentedContainer = document.querySelector(`section.films-list--extra:last-of-type .films-list__container`);
 
@@ -162,9 +163,11 @@ const getRankLabel = (genre) => {
   }
 };
 
-const onStatClick = () => {
-  drawStat(initialMovies);
+drawStat(initialMovies);
+const rankLabel = getRankLabel(watchedStatistics.mostWatchedGenre);
+profileRankElement.innerHTML = rankLabel;
 
+const onStatClick = () => {
   statBoard.classList.remove(`visually-hidden`);
   filmBoard.classList.add(`visually-hidden`);
 
@@ -177,8 +180,6 @@ const onStatClick = () => {
   ${hours} <span class="statistic__item-description">h</span> ${mins} <span class="statistic__item-description">m</span>
   `;
   textStatistic[2].innerHTML = watchedStatistics.mostWatchedGenre;
-
-  const rankLabel = getRankLabel(watchedStatistics.mostWatchedGenre);
 
   rankLabelElement.innerHTML = rankLabel;
 };
