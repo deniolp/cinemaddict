@@ -67,11 +67,12 @@ const filterMovies = (movies, filterName) => {
       return movies.filter((it) => it.isFavourite);
 
     case `Most rated`:
-      const copy = [...movies];
-      return copy.sort((a, b) => b.rating - a.rating);
+      const copiedForRated = [...movies];
+      return copiedForRated.sort((a, b) => b.rating - a.rating);
 
-      // case `Most commented`:
-      //   return movies.sort((a, b) => b.comments.length - a.comments.length);
+    case `Most commented`:
+      const copiedForCommented = [...movies];
+      return copiedForCommented.sort((a, b) => b.comments.length - a.comments.length);
 
     default:
       return movies;
@@ -123,8 +124,8 @@ const renderMovie = (item, container, flag = true) => {
     const updatedMovie = updateMovie(item, obj);
     if (comments) {
       updatedMovie.comments = comments;
-      // mostCommentedContainer.innerHTML = ``;
-      // filterMovies(initialMovies, `Most commented`).splice(0, 2).forEach((it) => renderMovie(it, mostCommentedContainer, false));
+      mostCommentedContainer.innerHTML = ``;
+      filterMovies(initialMovies, `Most commented`).splice(0, 2).forEach((it) => renderMovie(it, mostCommentedContainer, false));
     }
     movieComponent.update(updatedMovie);
   };
@@ -149,7 +150,7 @@ updateFilters();
 
 initialMovies.forEach((item) => renderMovie(item, moviesContainer));
 filterMovies(initialMovies, `Most rated`).splice(0, 2).forEach((item) => renderMovie(item, topRatedContainer, false));
-// filterMovies(initialMovies, `Most commented`).splice(0, 2).forEach((item) => renderMovie(item, mostCommentedContainer, false));
+filterMovies(initialMovies, `Most commented`).splice(0, 2).forEach((item) => renderMovie(item, mostCommentedContainer, false));
 
 const statButtonElement = document.querySelector(`.main-navigation__item--additional`);
 const filmBoard = document.querySelector(`.films`);
