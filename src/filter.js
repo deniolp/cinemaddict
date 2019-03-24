@@ -1,13 +1,12 @@
 import {Component} from './component';
 
 class Filter extends Component {
-  constructor({name, hasAmount = true, isActive = false, isAdditional = false, amount = 0}) {
+  constructor({name, hasAmount = true, isActive = false, isAdditional = false}) {
     super();
     this._name = name;
     this._hasAmount = hasAmount;
     this._isActive = isActive;
     this._isAdditional = isAdditional;
-    this._amount = amount;
 
     this._onFilter = null;
     this._onFilterClick = this._onFilterClick.bind(this);

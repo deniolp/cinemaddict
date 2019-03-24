@@ -5,6 +5,11 @@ import utils from './utils';
 import {Movie} from './movie';
 import {Popup} from './popup';
 
+const FilterWithAmountNames = {
+  watchlist: `Watchlist`,
+  history: `History`,
+  favorites: `Favorites`,
+};
 const FILTERS = [
   {
     name: `All`,
@@ -12,18 +17,18 @@ const FILTERS = [
     isActive: true,
   },
   {
-    name: `Watchlist`
+    name: FilterWithAmountNames.watchlist,
   },
   {
-    name: `History`,
+    name: FilterWithAmountNames.history,
   },
   {
-    name: `Favorites`
+    name: FilterWithAmountNames.favorites,
   },
   {
     name: `Stats`,
     hasAmount: false,
-    isAdditional: true
+    isAdditional: true,
   }
 ];
 
@@ -52,13 +57,13 @@ const filterMovies = (movies, filterName) => {
       filmBoard.classList.remove(`visually-hidden`);
       return movies;
 
-    case `Watchlist`:
+    case FilterWithAmountNames.watchlist:
       return movies.filter((it) => it.isInWatchlist);
 
-    case `History`:
+    case FilterWithAmountNames.history:
       return movies.filter((it) => it.isWatched);
 
-    case `Favorites`:
+    case FilterWithAmountNames.favorites:
       return movies.filter((it) => it.isFavourite);
 
     default:
@@ -68,7 +73,7 @@ const filterMovies = (movies, filterName) => {
 
 const updateFilters = () => {
   Array.from(countElements).forEach((item, index) => {
-    item.textContent = filterMovies(initialMovies, [`Watchlist`, `History`, `Favorites`][index]).length;
+    item.textContent = filterMovies(initialMovies, Object.values(FilterWithAmountNames)[index]).length;
   });
 };
 
