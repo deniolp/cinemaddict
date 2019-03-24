@@ -66,6 +66,12 @@ const filterMovies = (movies, filterName) => {
   }
 };
 
+const updateFilters = () => {
+  Array.from(countElements).forEach((item, index) => {
+    item.textContent = filterMovies(initialMovies, [`Watchlist`, `History`, `Favorites`][index]).length;
+  });
+};
+
 const renderMovie = (item, container, flag = true) => {
   const movieComponent = new Movie(item, flag);
   const popupComponent = new Popup(item);
@@ -80,21 +86,25 @@ const renderMovie = (item, container, flag = true) => {
   movieComponent.onAddToWatchList = (boolean) => {
     item.isInWatchlist = boolean;
     popupComponent.update(item);
+    updateFilters();
   };
 
   movieComponent.onMarkAsWatched = (boolean) => {
     item.isWatched = boolean;
     popupComponent.update(item);
+    updateFilters();
   };
 
   movieComponent.onMarkAsFavorite = (boolean) => {
     item.isFavourite = boolean;
     popupComponent.update(item);
+    updateFilters();
   };
 
   popupComponent.onClose = () => {
     body.removeChild(popupComponent.element);
     popupComponent.unrender();
+    updateFilters();
   };
 
   popupComponent.onSubmit = (obj, comments) => {
@@ -108,7 +118,7 @@ const renderMovie = (item, container, flag = true) => {
 
 
 FILTERS.forEach((item) => {
-  const filterComponent = new Filter(item.name, item.hasAmount, item.isActive, item.isAdditional, item.amount);
+  const filterComponent = new Filter(item);
   filtersContainer.appendChild(filterComponent.render());
 
   filterComponent.onFilter = (evt) => {
@@ -119,6 +129,9 @@ FILTERS.forEach((item) => {
     filteredTasks.forEach((movie) => renderMovie(movie, moviesContainer));
   };
 });
+
+const countElements = document.querySelectorAll(`.main-navigation__item-count`);
+updateFilters();
 
 initialMovies.forEach((item) => renderMovie(item, moviesContainer));
 
