@@ -54,7 +54,7 @@ class Movie extends Component {
     </p>
     <img src="./images/posters/${this._poster}.jpg" alt="${this._title}" class="film-card__poster">
     ${this._isControls ? descriptionElement : ``}
-    <button class="film-card__comments">${this._comments.length} comments</button>
+    <button class="film-card__comments"${this._isControls ? `` : ` disabled`}>${this._comments.length} comments</button>
 
     ${this._isControls ? formElement : ``}
   </article>
