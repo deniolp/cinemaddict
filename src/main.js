@@ -126,7 +126,7 @@ const renderMovie = (item, container, flag = true) => {
       updatedMovie.comments = comments;
       mostCommentedContainer.innerHTML = ``;
       topRatedContainer.innerHTML = ``;
-      filterMovies(initialMovies, `Most rated`).splice(0, 2).forEach((item) => renderMovie(item, topRatedContainer, false));
+      filterMovies(initialMovies, `Most rated`).splice(0, 2).forEach((it) => renderMovie(it, topRatedContainer, false));
       filterMovies(initialMovies, `Most commented`).splice(0, 2).forEach((it) => renderMovie(it, mostCommentedContainer, false));
     }
     movieComponent.update(updatedMovie);
