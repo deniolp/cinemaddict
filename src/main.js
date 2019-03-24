@@ -67,12 +67,10 @@ const filterMovies = (movies, filterName) => {
       return movies.filter((it) => it.isFavourite);
 
     case `Most rated`:
-      const copiedForRated = [...movies];
-      return copiedForRated.sort((a, b) => b.rating - a.rating);
+      return [...movies].sort((a, b) => b.rating - a.rating);
 
     case `Most commented`:
-      const copiedForCommented = [...movies];
-      return copiedForCommented.sort((a, b) => b.comments.length - a.comments.length);
+      return [...movies].sort((a, b) => b.comments.length - a.comments.length);
 
     default:
       return movies;
@@ -126,11 +124,15 @@ const renderMovie = (item, container, flag = true) => {
       updatedMovie.comments = comments;
       mostCommentedContainer.innerHTML = ``;
       topRatedContainer.innerHTML = ``;
-      filterMovies(initialMovies, `Most rated`).splice(0, 2).forEach((it) => renderMovie(it, topRatedContainer, false));
-      filterMovies(initialMovies, `Most commented`).splice(0, 2).forEach((it) => renderMovie(it, mostCommentedContainer, false));
+      renderMoviesInBottom();
     }
     movieComponent.update(updatedMovie);
   };
+};
+
+const renderMoviesInBottom = () => {
+  filterMovies(initialMovies, `Most rated`).splice(0, 2).forEach((item) => renderMovie(item, topRatedContainer, false));
+  filterMovies(initialMovies, `Most commented`).splice(0, 2).forEach((item) => renderMovie(item, mostCommentedContainer, false));
 };
 
 
@@ -151,8 +153,7 @@ const countElements = document.querySelectorAll(`.main-navigation__item-count`);
 updateFilters();
 
 initialMovies.forEach((item) => renderMovie(item, moviesContainer));
-filterMovies(initialMovies, `Most rated`).splice(0, 2).forEach((item) => renderMovie(item, topRatedContainer, false));
-filterMovies(initialMovies, `Most commented`).splice(0, 2).forEach((item) => renderMovie(item, mostCommentedContainer, false));
+renderMoviesInBottom();
 
 const statButtonElement = document.querySelector(`.main-navigation__item--additional`);
 const filmBoard = document.querySelector(`.films`);
