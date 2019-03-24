@@ -66,6 +66,13 @@ const filterMovies = (movies, filterName) => {
     case FilterWithAmountNames.favorites:
       return movies.filter((it) => it.isFavourite);
 
+    case `Most rated`:
+      const copy = [...movies];
+      return copy.sort((a, b) => b.rating - a.rating);
+
+      // case `Most commented`:
+      //   return movies.sort((a, b) => b.comments.length - a.comments.length);
+
     default:
       return movies;
   }
@@ -116,6 +123,8 @@ const renderMovie = (item, container, flag = true) => {
     const updatedMovie = updateMovie(item, obj);
     if (comments) {
       updatedMovie.comments = comments;
+      // mostCommentedContainer.innerHTML = ``;
+      // filterMovies(initialMovies, `Most commented`).splice(0, 2).forEach((it) => renderMovie(it, mostCommentedContainer, false));
     }
     movieComponent.update(updatedMovie);
   };
@@ -139,10 +148,8 @@ const countElements = document.querySelectorAll(`.main-navigation__item-count`);
 updateFilters();
 
 initialMovies.forEach((item) => renderMovie(item, moviesContainer));
-
-getMovies(2).forEach((item) => renderMovie(item, topRatedContainer, false));
-
-getMovies(2).forEach((item) => renderMovie(item, mostCommentedContainer, false));
+filterMovies(initialMovies, `Most rated`).splice(0, 2).forEach((item) => renderMovie(item, topRatedContainer, false));
+// filterMovies(initialMovies, `Most commented`).splice(0, 2).forEach((item) => renderMovie(item, mostCommentedContainer, false));
 
 const statButtonElement = document.querySelector(`.main-navigation__item--additional`);
 const filmBoard = document.querySelector(`.films`);
