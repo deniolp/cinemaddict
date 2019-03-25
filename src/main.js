@@ -5,25 +5,30 @@ import utils from './utils';
 import {Movie} from './movie';
 import {Popup} from './popup';
 
+const FilterWithAmountNames = {
+  watchlist: `Watchlist`,
+  history: `History`,
+  favorites: `Favorites`,
+};
 const FILTERS = [
   {
     name: `All`,
     hasAmount: false,
-    isActive: true
+    isActive: true,
   },
   {
-    name: `Watchlist`
+    name: FilterWithAmountNames.watchlist,
   },
   {
-    name: `History`
+    name: FilterWithAmountNames.history,
   },
   {
-    name: `Favorites`
+    name: FilterWithAmountNames.favorites,
   },
   {
     name: `Stats`,
     hasAmount: false,
-    isAdditional: true
+    isAdditional: true,
   }
 ];
 
@@ -52,18 +57,30 @@ const filterMovies = (movies, filterName) => {
       filmBoard.classList.remove(`visually-hidden`);
       return movies;
 
-    case `Watchlist`:
+    case FilterWithAmountNames.watchlist:
       return movies.filter((it) => it.isInWatchlist);
 
-    case `History`:
+    case FilterWithAmountNames.history:
       return movies.filter((it) => it.isWatched);
 
-    case `Favorites`:
+    case FilterWithAmountNames.favorites:
       return movies.filter((it) => it.isFavourite);
+
+    case `Most rated`:
+      return [...movies].sort((a, b) => b.rating - a.rating);
+
+    case `Most commented`:
+      return [...movies].sort((a, b) => b.comments.length - a.comments.length);
 
     default:
       return movies;
   }
+};
+
+const updateFilters = () => {
+  Array.from(countElements).forEach((item, index) => {
+    item.textContent = filterMovies(initialMovies, Object.values(FilterWithAmountNames)[index]).length;
+  });
 };
 
 const renderMovie = (item, container, flag = true) => {
@@ -80,39 +97,51 @@ const renderMovie = (item, container, flag = true) => {
   movieComponent.onAddToWatchList = (boolean) => {
     item.isInWatchlist = boolean;
     popupComponent.update(item);
+    updateFilters();
   };
 
   movieComponent.onMarkAsWatched = (boolean) => {
     item.isWatched = boolean;
     popupComponent.update(item);
+    updateFilters();
   };
 
   movieComponent.onMarkAsFavorite = (boolean) => {
     item.isFavourite = boolean;
     popupComponent.update(item);
+    updateFilters();
   };
 
   popupComponent.onClose = () => {
     body.removeChild(popupComponent.element);
     popupComponent.unrender();
+    updateFilters();
   };
 
   popupComponent.onSubmit = (obj, comments) => {
     const updatedMovie = updateMovie(item, obj);
     if (comments) {
       updatedMovie.comments = comments;
+      mostCommentedContainer.innerHTML = ``;
+      topRatedContainer.innerHTML = ``;
+      renderMoviesInBottom();
     }
     movieComponent.update(updatedMovie);
   };
 };
 
+const renderMoviesInBottom = () => {
+  filterMovies(initialMovies, `Most rated`).splice(0, 2).forEach((item) => renderMovie(item, topRatedContainer, false));
+  filterMovies(initialMovies, `Most commented`).splice(0, 2).forEach((item) => renderMovie(item, mostCommentedContainer, false));
+};
+
 
 FILTERS.forEach((item) => {
-  const filterComponent = new Filter(item.name, item.hasAmount, item.isActive, item.isAdditional);
+  const filterComponent = new Filter(item);
   filtersContainer.appendChild(filterComponent.render());
 
   filterComponent.onFilter = (evt) => {
-    const filterName = evt.target.textContent;
+    const filterName = evt.target.firstChild.textContent;
     const filteredTasks = filterMovies(initialMovies, filterName);
 
     moviesContainer.innerHTML = ``;
@@ -120,11 +149,11 @@ FILTERS.forEach((item) => {
   };
 });
 
+const countElements = document.querySelectorAll(`.main-navigation__item-count`);
+updateFilters();
+
 initialMovies.forEach((item) => renderMovie(item, moviesContainer));
-
-getMovies(2).forEach((item) => renderMovie(item, topRatedContainer, false));
-
-getMovies(2).forEach((item) => renderMovie(item, mostCommentedContainer, false));
+renderMoviesInBottom();
 
 const statButtonElement = document.querySelector(`.main-navigation__item--additional`);
 const filmBoard = document.querySelector(`.films`);

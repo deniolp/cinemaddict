@@ -54,7 +54,7 @@ class Movie extends Component {
     </p>
     <img src="./images/posters/${this._poster}.jpg" alt="${this._title}" class="film-card__poster">
     ${this._isControls ? descriptionElement : ``}
-    <button class="film-card__comments">${this._comments.length} comments</button>
+    <button class="film-card__comments"${this._isControls ? `` : ` disabled`}>${this._comments.length} comments</button>
 
     ${this._isControls ? formElement : ``}
   </article>
@@ -120,9 +120,11 @@ class Movie extends Component {
 
   _removeListeners() {
     this._element.querySelector(`.film-card__comments`).removeEventListener(`click`, this._onCommentsClick);
-    this._element.querySelector(`.film-card__controls-item--add-to-watchlist`).removeEventListener(`click`, this._onAddToWatchlistClick);
-    this._element.querySelector(`.film-card__controls-item--mark-as-watched`).removeEventListener(`click`, this._onMarkAsWatchedClick);
-    this._element.querySelector(`.film-card__controls-item--favorite`).removeEventListener(`click`, this._onMarkAsFavoriteClick);
+    if (this._element.querySelector(`.film-card__controls`)) {
+      this._element.querySelector(`.film-card__controls-item--add-to-watchlist`).removeEventListener(`click`, this._onAddToWatchlistClick);
+      this._element.querySelector(`.film-card__controls-item--mark-as-watched`).removeEventListener(`click`, this._onMarkAsWatchedClick);
+      this._element.querySelector(`.film-card__controls-item--favorite`).removeEventListener(`click`, this._onMarkAsFavoriteClick);
+    }
   }
 
   update(data) {
