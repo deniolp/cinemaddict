@@ -29,7 +29,7 @@ class Popup extends Component {
 
   _getScore() {
     const arr = [];
-    for (let i = 1; i < 10; i++) {
+    for (let i = 1; i <= 10; i++) {
       arr.push(`
       <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${i}" id="rating-${i}" ${i === +this._score ? `checked` : ``}>
       <label class="film-details__user-rating-label" for="rating-${i}">${i}</label>
