@@ -104,6 +104,9 @@ const renderMovie = (item, container, flag = true) => {
   movieComponent.onMarkAsWatched = (boolean) => {
     item.isWatched = boolean;
     popupComponent.update(item);
+    drawStat(initialMovies);
+    rankLabel = getRankLabel(watchedStatistics.mostWatchedGenre);
+    profileRankElement.innerHTML = rankLabel;
     updateFilters();
   };
 
