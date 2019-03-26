@@ -1,6 +1,6 @@
 import {Filter} from './filter';
 import getMovies from './get-movies';
-import {drawStat, watchedStatistics} from './draw-stat';
+import {drawStat, unrenderStat, watchedStatistics} from './draw-stat';
 import utils from './utils';
 import {Movie} from './movie';
 import {Popup} from './popup';
@@ -53,6 +53,7 @@ const updateMovie = (movieToUpdate, newMovie) => {
 const filterMovies = (movies, filterName) => {
   switch (filterName.trim()) {
     case `All`:
+      unrenderStat();
       statBoard.classList.add(`visually-hidden`);
       filmBoard.classList.remove(`visually-hidden`);
       return movies;
@@ -197,6 +198,7 @@ let rankLabel = getRankLabel(watchedStatistics.mostWatchedGenre);
 profileRankElement.innerHTML = rankLabel;
 
 const onStatClick = () => {
+  unrenderStat();
   drawStat(initialMovies);
   rankLabel = getRankLabel(watchedStatistics.mostWatchedGenre);
   profileRankElement.innerHTML = rankLabel;

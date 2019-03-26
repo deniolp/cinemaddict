@@ -6,12 +6,12 @@ const BAR_HEIGHT = 50;
 const statisticCtx = document.querySelector(`.statistic__chart`);
 statisticCtx.height = BAR_HEIGHT * 5;
 let watchedStatistics = {};
+let myChart = null;
 
 const drawStat = (movies) => {
   const genresStat = getStat(movies);
 
-  // eslint-disable-next-line no-unused-vars
-  const myChart = new Chart(statisticCtx, {
+  myChart = new Chart(statisticCtx, {
     plugins: [ChartDataLabels],
     type: `horizontalBar`,
     data: {
@@ -69,6 +69,10 @@ const drawStat = (movies) => {
   });
 };
 
+const unrenderStat = () => {
+  myChart.destroy();
+};
+
 const getTotalDuration = (movies) => {
   return movies.reduce((acc, movie) => {
     return acc + movie.duration;
@@ -102,4 +106,4 @@ const getStat = (movies) => {
   return {labels, values};
 };
 
-export {drawStat, watchedStatistics};
+export {drawStat, unrenderStat, watchedStatistics};
