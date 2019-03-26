@@ -128,6 +128,8 @@ const renderMovie = (item, container, flag = true) => {
       updatedMovie.comments = comments;
       mostCommentedContainer.innerHTML = ``;
       topRatedContainer.innerHTML = ``;
+      moviesContainer.innerHTML = ``;
+      initialMovies.forEach((it) => renderMovie(it, moviesContainer));
       renderMoviesInBottom();
     }
     movieComponent.update(updatedMovie);
