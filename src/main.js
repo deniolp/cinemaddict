@@ -5,7 +5,7 @@ import utils from './utils';
 import {Movie} from './movie';
 import {Popup} from './popup';
 
-const FilterWithAmountNames = {
+const FilterWithNumberNames = {
   watchlist: `Watchlist`,
   history: `History`,
   favorites: `Favorites`,
@@ -17,13 +17,13 @@ const FILTERS = [
     isActive: true,
   },
   {
-    name: FilterWithAmountNames.watchlist,
+    name: FilterWithNumberNames.watchlist,
   },
   {
-    name: FilterWithAmountNames.history,
+    name: FilterWithNumberNames.history,
   },
   {
-    name: FilterWithAmountNames.favorites,
+    name: FilterWithNumberNames.favorites,
   },
   {
     name: `Stats`,
@@ -58,13 +58,13 @@ const filterMovies = (movies, filterName) => {
       filmBoard.classList.remove(`visually-hidden`);
       return movies;
 
-    case FilterWithAmountNames.watchlist:
+    case FilterWithNumberNames.watchlist:
       return movies.filter((it) => it.isInWatchlist);
 
-    case FilterWithAmountNames.history:
+    case FilterWithNumberNames.history:
       return movies.filter((it) => it.isWatched);
 
-    case FilterWithAmountNames.favorites:
+    case FilterWithNumberNames.favorites:
       return movies.filter((it) => it.isFavourite);
 
     case `Most rated`:
@@ -80,7 +80,7 @@ const filterMovies = (movies, filterName) => {
 
 const updateFilters = () => {
   Array.from(countElements).forEach((item, index) => {
-    item.textContent = filterMovies(initialMovies, Object.values(FilterWithAmountNames)[index]).length;
+    item.textContent = filterMovies(initialMovies, Object.values(FilterWithNumberNames)[index]).length;
   });
 };
 
@@ -99,6 +99,7 @@ const renderMovie = (item, container, flag = true) => {
     item.isInWatchlist = boolean;
     popupComponent.update(item);
     updateFilters();
+    updateMoviesInBottom();
   };
 
   movieComponent.onMarkAsWatched = (boolean) => {
@@ -108,12 +109,14 @@ const renderMovie = (item, container, flag = true) => {
     rankLabel = getRankLabel(watchedStatistics.mostWatchedGenre);
     profileRankElement.innerHTML = rankLabel;
     updateFilters();
+    updateMoviesInBottom();
   };
 
   movieComponent.onMarkAsFavorite = (boolean) => {
     item.isFavourite = boolean;
     popupComponent.update(item);
     updateFilters();
+    updateMoviesInBottom();
   };
 
   popupComponent.onClose = () => {
@@ -126,17 +129,17 @@ const renderMovie = (item, container, flag = true) => {
     const updatedMovie = updateMovie(item, obj);
     if (comments) {
       updatedMovie.comments = comments;
-      mostCommentedContainer.innerHTML = ``;
-      topRatedContainer.innerHTML = ``;
-      moviesContainer.innerHTML = ``;
-      initialMovies.forEach((it) => renderMovie(it, moviesContainer));
-      renderMoviesInBottom();
     }
+    moviesContainer.innerHTML = ``;
+    initialMovies.forEach((it) => renderMovie(it, moviesContainer));
+    updateMoviesInBottom();
     movieComponent.update(updatedMovie);
   };
 };
 
-const renderMoviesInBottom = () => {
+const updateMoviesInBottom = () => {
+  mostCommentedContainer.innerHTML = ``;
+  topRatedContainer.innerHTML = ``;
   filterMovies(initialMovies, `Most rated`).splice(0, 2).forEach((item) => renderMovie(item, topRatedContainer, false));
   filterMovies(initialMovies, `Most commented`).splice(0, 2).forEach((item) => renderMovie(item, mostCommentedContainer, false));
 };
@@ -159,7 +162,7 @@ const countElements = document.querySelectorAll(`.main-navigation__item-count`);
 updateFilters();
 
 initialMovies.forEach((item) => renderMovie(item, moviesContainer));
-renderMoviesInBottom();
+updateMoviesInBottom();
 
 const statButtonElement = document.querySelector(`.main-navigation__item--additional`);
 const filmBoard = document.querySelector(`.films`);
