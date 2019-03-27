@@ -31,6 +31,7 @@ class Popup extends Component {
     this._onSubmit = null;
     this._onClose = null;
     this._onAddComment = null;
+    this._onVote = null;
     this._onCloseClick = this._onCloseClick.bind(this);
     this._onAddCommentKeydown = this._onAddCommentKeydown.bind(this);
     this._onVoteClick = this._onVoteClick.bind(this);
@@ -225,6 +226,10 @@ class Popup extends Component {
     this._onAddComment = fn;
   }
 
+  set onVote(fn) {
+    this._onVote = fn;
+  }
+
   _onCloseClick() {
     const newData = this._prepareData();
 
@@ -252,8 +257,9 @@ class Popup extends Component {
     if (evt.target.tagName === `INPUT`) {
       const newData = this._prepareData();
       this.update(newData);
-
-      this.rerender();
+      if (typeof this._onVote === `function`) {
+        this._onVote(newData);
+      }
     }
   }
 

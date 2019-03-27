@@ -31,7 +31,7 @@ const FILTERS = [
     isAdditional: true,
   }
 ];
-const AUTHORIZATION = `Basic uhiuy378xy4c9o&Y*&T&FH`;
+const AUTHORIZATION = `Basic uhiuy37^%8xy4c9o&Y*&T&FH`;
 const END_POINT = `https://es8-demo-srv.appspot.com/moowle/`;
 
 let initialMovies = [];
@@ -102,9 +102,15 @@ const renderMovie = (item, container, flag = true) => {
   const popupComponent = new Popup(item);
   const body = document.querySelector(`body`);
   container.appendChild(movieComponent.render());
+
   const onCommentFocus = () => {
     popupComponent.element.querySelector(`.film-details__comment-input`).style.border = ``;
     popupComponent.element.querySelector(`.film-details__comment-input`).removeEventListener(`focus`, onCommentFocus);
+  };
+
+  const onScoresMouse = () => {
+    popupComponent.element.querySelector(`.film-details__user-rating-score`).style.backgroundColor = ``;
+    popupComponent.element.querySelector(`.film-details__user-rating-score`).removeEventListener(`mouseover`, onScoresMouse);
   };
 
   movieComponent.onPopup = () => {
@@ -168,15 +174,36 @@ const renderMovie = (item, container, flag = true) => {
       item.comments.pop();
       popupComponent.element.querySelector(`.film-details__comment-input`).disabled = false;
       popupComponent.element.querySelector(`.film-details__comment-input`).style.border = `3px solid red`;
-      popupComponent.element.querySelector(`.film-details__inner`).animate([
-        {transform: `translateX(0)`},
-        {transform: `translateX(-10px)`},
-        {transform: `translateX(10px)`}
-      ], {
-        duration: 100,
-        iterations: 5,
-      });
+
+      shakeElement(popupComponent.element.querySelector(`.film-details__inner`));
       popupComponent.element.querySelector(`.film-details__comment-input`).addEventListener(`focus`, onCommentFocus);
+    });
+  };
+
+  popupComponent.onVote = (obj) => {
+    const scoreInputs = popupComponent.element.querySelectorAll(`.film-details__user-rating-input`);
+    Array.from(scoreInputs).forEach((it) => {
+      it.disabled = true;
+    });
+    item.personalRating = obj.personalRating;
+
+    api.updateMovie({id: item.id, data: item.toRAW()})
+    .then((newMovie) => {
+      Array.from(scoreInputs).forEach((it) => {
+        it.disabled = false;
+      });
+      movieComponent.update(newMovie);
+      popupComponent.update(newMovie);
+      popupComponent.rerender();
+    })
+    .catch(() => {
+      Array.from(scoreInputs).forEach((it) => {
+        it.disabled = false;
+      });
+      popupComponent.element.querySelector(`.film-details__user-rating-score`).style.backgroundColor = `red`;
+      shakeElement(popupComponent.element.querySelector(`.film-details__user-rating-score`));
+
+      popupComponent.element.querySelector(`.film-details__user-rating-score`).addEventListener(`mouseover`, onScoresMouse);
     });
   };
 
@@ -191,6 +218,17 @@ const renderMovie = (item, container, flag = true) => {
           updateMoviesInBottom();
         });
   };
+};
+
+const shakeElement = (element) => {
+  element.animate([
+    {transform: `translateX(0)`},
+    {transform: `translateX(-10px)`},
+    {transform: `translateX(10px)`}
+  ], {
+    duration: 100,
+    iterations: 5,
+  });
 };
 
 const updateMoviesInBottom = () => {
