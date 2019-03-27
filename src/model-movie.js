@@ -7,7 +7,6 @@ export default class ModelMovie {
     this.actors = data[`film_info`][`actors`];
     this.ageRating = data[`film_info`][`age_rating`];
     this.description = data[`film_info`][`description`];
-    this.description = data[`film_info`][`description`];
     this.releaseDate = data[`film_info`][`release`][`date`];
     this.releaseCountry = data[`film_info`][`release`][`release_country`];
     this.runtime = data[`film_info`][`runtime`];
@@ -20,6 +19,19 @@ export default class ModelMovie {
     this.isFavourite = data[`user_details`][`favorite`];
     this.isInWatchlist = data[`user_details`][`watchlist`];
     this.comments = data[`comments`] || [];
+  }
+
+  toRAW() {
+    return {
+      'id': this.id,
+      'user_details': {
+        'personal_rating': this.personalRating,
+        'already_watched': this.isWatched,
+        'favorite': this.isFavourite,
+        'watchlist': this.isInWatchlist,
+      },
+      'comments': this.comments,
+    };
   }
 
   static parseMovie(data) {

@@ -138,10 +138,14 @@ const renderMovie = (item, container, flag = true) => {
     if (comments) {
       updatedMovie.comments = comments;
     }
-    moviesContainer.innerHTML = ``;
-    initialMovies.forEach((it) => renderMovie(it, moviesContainer));
-    updateMoviesInBottom();
-    movieComponent.update(updatedMovie);
+
+    api.updateMovie({id: updatedMovie.id, data: updatedMovie.toRAW()})
+        .then((newMovie) => {
+          moviesContainer.innerHTML = ``;
+          initialMovies.forEach((it) => renderMovie(it, moviesContainer));
+          updateMoviesInBottom();
+          movieComponent.update(newMovie);
+        });
   };
 };
 

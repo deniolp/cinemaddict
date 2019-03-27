@@ -3,7 +3,9 @@ import {Component} from './component';
 import moment from 'moment';
 
 class Movie extends Component {
-  constructor({id, title, poster, altTitle, actors, ageRating, description, totalRating, releaseDate, releaseCountry, runtime, genre, director, writers, comments, personalRating, isInWatchlist, isWatched, isFavourite}, isControls = true) {
+  constructor({id, title, poster, altTitle, actors, ageRating, description, totalRating,
+    releaseDate, releaseCountry, runtime, genre, director, writers, comments, personalRating,
+    isInWatchlist, isWatched, isFavourite}, isControls = true) {
     super();
     this._id = id;
     this._title = title;
