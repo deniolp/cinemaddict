@@ -11,6 +11,10 @@ const checkStatus = (response) => {
   }
 };
 
+const toJSON = (response) => {
+  return response.json();
+};
+
 const API = class {
   constructor({endPoint, authorization}) {
     this._endPoint = endPoint;
@@ -18,11 +22,20 @@ const API = class {
   }
 
   getMovies() {
-
+    return this._load({url: `movies`})
+    .then(toJSON);
   }
 
-  updateMovie() {
-
+  updateMovie({id, data}) {
+    return this._load({
+      url: `movies/${id}`,
+      method: Method.PUT,
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': `application/json`
+      })
+    })
+    .then(toJSON);
   }
 
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {
