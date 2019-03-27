@@ -265,6 +265,9 @@ api.getMovies()
   initialMovies = movies;
   initialMovies.forEach((it) => renderMovie(it, moviesContainer));
 })
+.catch(() => {
+  moviesContainerTitle.textContent = `Something went wrong while loading movies. Check your connection or try again later`;
+})
 .then(() => {
   updateMoviesInBottom();
   renderFilters();
