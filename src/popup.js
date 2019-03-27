@@ -60,7 +60,7 @@ class Popup extends Component {
     return this._comments.map((item) => {
       return `
       <li class="film-details__comment">
-      <span class="film-details__comment-emoji">${item.emotion}</span>
+      <span class="film-details__comment-emoji">${this._emotionMapper(item.emotion)}</span>
       <div>
         <p class="film-details__comment-text">${item.comment}</p>
         <p class="film-details__comment-info">
@@ -186,7 +186,7 @@ class Popup extends Component {
 
         <div class="film-details__user-score">
           <div class="film-details__user-rating-poster">
-            <img src="images/posters/${this._poster}.jpg" alt="Film ${this._title}" class="film-details__user-rating-img">
+            <img src="/${this._poster}" alt="Film ${this._title}" class="film-details__user-rating-img">
           </div>
 
           <section class="film-details__user-rating-inner">
@@ -240,7 +240,7 @@ class Popup extends Component {
         author: `Someone`,
         date: new Date(),
         comment: newData.comment.comment,
-        emotion: this._emotionMapper(newData.comment.emotion),
+        emotion: newData.comment.emotion,
       });
 
       this.update(newData);
