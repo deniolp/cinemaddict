@@ -89,13 +89,17 @@ const sortObject = (obj) => {
 const getStat = (movies) => {
   const genresStats = {};
   const filteredMovies = movies.filter((movie) => movie.isWatched);
+  const allGenres = [];
   watchedStatistics.watchedAmount = filteredMovies.length;
   watchedStatistics.watchedDuration = getTotalDuration(filteredMovies);
   filteredMovies.forEach((movie) => {
-    if (genresStats.hasOwnProperty([...movie.genre][0])) {
-      genresStats[[...movie.genre][0]]++;
-    } else {
-      genresStats[[...movie.genre][0]] = 1;
+    for (let value of [...movie.genre]) {
+      allGenres.push(value);
+      if (genresStats.hasOwnProperty(value)) {
+        genresStats[value]++;
+      } else {
+        genresStats[value] = 1;
+      }
     }
   });
 
