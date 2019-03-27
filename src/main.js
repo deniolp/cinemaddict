@@ -34,11 +34,6 @@ const FILTERS = [
 const AUTHORIZATION = `Basic uhiuy378xy4c9o&Y*&T&FH`;
 const END_POINT = `https://es8-demo-srv.appspot.com/moowle/`;
 
-const api = new API({
-  endPoint: END_POINT,
-  authorization: AUTHORIZATION,
-});
-
 let initialMovies = [];
 let rankLabel = ``;
 const filtersContainer = document.querySelector(`.main-navigation`);
@@ -46,6 +41,15 @@ const moviesContainer = document.querySelector(`.films-list__container`);
 const profileRankElement = document.querySelector(`.profile__rating`);
 const topRatedContainer = document.querySelector(`section.films-list--extra .films-list__container`);
 const mostCommentedContainer = document.querySelector(`section.films-list--extra:last-of-type .films-list__container`);
+const filmBoard = document.querySelector(`.films`);
+const statBoard = document.querySelector(`.statistic`);
+const textStatistic = document.querySelectorAll(`p.statistic__item-text`);
+const rankLabelElement = document.querySelector(`.statistic__rank-label`);
+
+const api = new API({
+  endPoint: END_POINT,
+  authorization: AUTHORIZATION,
+});
 
 const updateMovie = (movieToUpdate, newMovie) => {
   for (const key of Object.keys(newMovie)) {
@@ -167,36 +171,26 @@ const updateMoviesInBottom = () => {
   filterMovies(initialMovies, `Most commented`).splice(0, 2).forEach((item) => renderMovie(item, mostCommentedContainer, false));
 };
 
-api.getMovies()
-.then((movies) => {
-  initialMovies = movies;
-  initialMovies.forEach((it) => renderMovie(it, moviesContainer));
-})
-.then(() => {
-  updateMoviesInBottom();
-  updateFilters();
-  drawStat(initialMovies);
-  profileRankElement.innerHTML = getRankLabel(watchedStatistics.mostWatchedGenre);
-});
+const renderFilters = () => {
+  FILTERS.forEach((item) => {
+    const filterComponent = new Filter(item);
+    filtersContainer.appendChild(filterComponent.render());
 
-FILTERS.forEach((item) => {
-  const filterComponent = new Filter(item);
-  filtersContainer.appendChild(filterComponent.render());
+    filterComponent.onFilter = (evt) => {
+      const filterName = evt.target.firstChild.textContent;
+      const filteredTasks = filterMovies(initialMovies, filterName);
 
-  filterComponent.onFilter = (evt) => {
-    const filterName = evt.target.firstChild.textContent;
-    const filteredTasks = filterMovies(initialMovies, filterName);
+      moviesContainer.innerHTML = ``;
+      filteredTasks.forEach((movie) => renderMovie(movie, moviesContainer));
+    };
+  });
+};
 
-    moviesContainer.innerHTML = ``;
-    filteredTasks.forEach((movie) => renderMovie(movie, moviesContainer));
-  };
-});
+const initStatButton = () => {
+  const statButtonElement = document.querySelector(`.main-navigation__item--additional`);
 
-const statButtonElement = document.querySelector(`.main-navigation__item--additional`);
-const filmBoard = document.querySelector(`.films`);
-const statBoard = document.querySelector(`.statistic`);
-const textStatistic = document.querySelectorAll(`p.statistic__item-text`);
-const rankLabelElement = document.querySelector(`.statistic__rank-label`);
+  statButtonElement.addEventListener(`click`, onStatClick);
+};
 
 const getRankLabel = (genre) => {
   switch (genre) {
@@ -254,4 +248,16 @@ const onStatClick = () => {
   rankLabelElement.innerHTML = rankLabel;
 };
 
-statButtonElement.addEventListener(`click`, onStatClick);
+api.getMovies()
+.then((movies) => {
+  initialMovies = movies;
+  initialMovies.forEach((it) => renderMovie(it, moviesContainer));
+})
+.then(() => {
+  updateMoviesInBottom();
+  renderFilters();
+  updateFilters();
+  drawStat(initialMovies);
+  profileRankElement.innerHTML = getRankLabel(watchedStatistics.mostWatchedGenre);
+  initStatButton();
+});
