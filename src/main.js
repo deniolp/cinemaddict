@@ -108,11 +108,6 @@ const renderMovie = (item, container, flag = true) => {
     popupComponent.element.querySelector(`.film-details__comment-input`).removeEventListener(`focus`, onCommentFocus);
   };
 
-  const onScoresMouse = () => {
-    popupComponent.element.querySelector(`.film-details__user-rating-score`).style.backgroundColor = ``;
-    popupComponent.element.querySelector(`.film-details__user-rating-score`).removeEventListener(`mouseover`, onScoresMouse);
-  };
-
   movieComponent.onPopup = () => {
     popupComponent.render();
     body.appendChild(popupComponent.element);
@@ -182,6 +177,7 @@ const renderMovie = (item, container, flag = true) => {
   };
 
   popupComponent.onVote = (obj) => {
+    popupComponent.element.querySelector(`.film-details__user-rating-score`).style.backgroundColor = ``;
     const scoreInputs = popupComponent.element.querySelectorAll(`.film-details__user-rating-input`);
     Array.from(scoreInputs).forEach((it) => {
       it.disabled = true;
@@ -203,8 +199,6 @@ const renderMovie = (item, container, flag = true) => {
       });
       popupComponent.element.querySelector(`.film-details__user-rating-score`).style.backgroundColor = `red`;
       shakeElement(popupComponent.element.querySelector(`.film-details__user-rating-score`));
-
-      popupComponent.element.querySelector(`.film-details__user-rating-score`).addEventListener(`mouseover`, onScoresMouse);
     });
   };
 
