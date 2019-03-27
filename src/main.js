@@ -102,6 +102,10 @@ const renderMovie = (item, container, flag = true) => {
   const popupComponent = new Popup(item);
   const body = document.querySelector(`body`);
   container.appendChild(movieComponent.render());
+  const onCommentFocus = () => {
+    popupComponent.element.querySelector(`.film-details__comment-input`).style.border = ``;
+    popupComponent.element.querySelector(`.film-details__comment-input`).removeEventListener(`focus`, onCommentFocus);
+  };
 
   movieComponent.onPopup = () => {
     popupComponent.render();
@@ -149,12 +153,35 @@ const renderMovie = (item, container, flag = true) => {
     updateFilters();
   };
 
-  popupComponent.onSubmit = (obj, comments) => {
+  popupComponent.onAddComment = (obj) => {
+    item.comments.push(obj.comment);
+    popupComponent.element.querySelector(`.film-details__comment-input`).disabled = true;
+
+    api.updateMovie({id: item.id, data: item.toRAW()})
+    .then((newMovie) => {
+      movieComponent.update(newMovie);
+      popupComponent.update(newMovie);
+      popupComponent.rerender();
+      popupComponent.element.querySelector(`.film-details__comment-input`).disabled = false;
+    })
+    .catch(() => {
+      item.comments.pop();
+      popupComponent.element.querySelector(`.film-details__comment-input`).disabled = false;
+      popupComponent.element.querySelector(`.film-details__comment-input`).style.border = `3px solid red`;
+      popupComponent.element.querySelector(`.film-details__inner`).animate([
+        {transform: `translateX(0)`},
+        {transform: `translateX(-10px)`},
+        {transform: `translateX(10px)`}
+      ], {
+        duration: 100,
+        iterations: 5,
+      });
+      popupComponent.element.querySelector(`.film-details__comment-input`).addEventListener(`focus`, onCommentFocus);
+    });
+  };
+
+  popupComponent.onSubmit = (obj) => {
     const updatedMovie = updateMovie(item, obj);
-    if (comments) {
-      updatedMovie.comments = comments;
-      popupComponent.element.querySelector(`.film-details__comment-input`).disabled = true;
-    }
 
     api.updateMovie({id: updatedMovie.id, data: updatedMovie.toRAW()})
         .then((newMovie) => {

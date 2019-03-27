@@ -143,7 +143,7 @@ class Movie extends Component {
     this._personalRating = data.personalRating;
     this._comments = data.comments;
 
-    this._rerender();
+    this.rerender();
   }
 }
 

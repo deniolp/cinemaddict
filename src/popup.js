@@ -30,6 +30,7 @@ class Popup extends Component {
 
     this._onSubmit = null;
     this._onClose = null;
+    this._onAddComment = null;
     this._onCloseClick = this._onCloseClick.bind(this);
     this._onAddCommentKeydown = this._onAddCommentKeydown.bind(this);
     this._onVoteClick = this._onVoteClick.bind(this);
@@ -220,6 +221,10 @@ class Popup extends Component {
     this._onClose = fn;
   }
 
+  set onAddComment(fn) {
+    this._onAddComment = fn;
+  }
+
   _onCloseClick() {
     const newData = this._prepareData();
 
@@ -237,21 +242,9 @@ class Popup extends Component {
     if (evt.keyCode === KEYCODE_ENTER && evt.metaKey) {
       evt.preventDefault();
       const newData = this._prepareData();
-
-      this._comments.push({
-        author: `Someone`,
-        date: new Date(),
-        comment: newData.comment.comment,
-        emotion: newData.comment.emotion,
-      });
-
-      this.update(newData);
-
-      if (typeof this._onSubmit === `function`) {
-        this._onSubmit(newData, this._comments);
+      if (typeof this._onAddComment === `function`) {
+        this._onAddComment(newData);
       }
-
-      this._rerender();
     }
   }
 
@@ -260,11 +253,7 @@ class Popup extends Component {
       const newData = this._prepareData();
       this.update(newData);
 
-      if (typeof this._onSubmit === `function`) {
-        this._onSubmit(newData);
-      }
-
-      this._rerender();
+      this.rerender();
     }
   }
 
@@ -291,7 +280,12 @@ class Popup extends Component {
       isInWatchlist: ``,
       isWatched: ``,
       isFavourite: ``,
-      comment: {},
+      comment: {
+        author: `Someone`,
+        comment: ``,
+        date: new Date(),
+        emotion: ``,
+      },
       personalRating: ``,
     };
     const popupSubmitMapper = Popup.createMapper(entry);
@@ -310,6 +304,9 @@ class Popup extends Component {
     this._isWatched = data.isWatched;
     this._isFavourite = data.isFavourite;
     this._personalRating = data.personalRating;
+    if (data.comments) {
+      this._comments = data.comments;
+    }
   }
 
   _addListeners() {
