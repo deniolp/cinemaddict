@@ -4,18 +4,25 @@ import moment from 'moment';
 const KEYCODE_ENTER = 13;
 
 class Popup extends Component {
-  constructor({title, poster, description, rating, releaseDate, duration,
-    genres, comments, score, isInWatchlist, isWatched, isFavourite}) {
+  constructor({id, title, poster, altTitle, actors, ageRating, description, totalRating, releaseDate, releaseCountry, runtime,
+    genre, director, writers, comments, personalRating, isInWatchlist, isWatched, isFavourite}) {
     super();
+    this._id = id;
     this._title = title;
     this._poster = poster;
+    this._altTitle = altTitle;
+    this._actors = actors;
+    this._ageRating = ageRating;
     this._description = description;
-    this._rating = rating;
+    this._totalRating = totalRating;
     this._releaseDate = releaseDate;
-    this._duration = duration;
-    this._genres = genres;
+    this._releaseCountry = releaseCountry;
+    this._runtime = runtime;
+    this._genre = genre;
+    this._director = director;
+    this._writers = writers;
     this._comments = comments;
-    this._score = score;
+    this._personalRating = personalRating;
     this._isInWatchlist = isInWatchlist;
     this._isWatched = isWatched;
     this._isFavourite = isFavourite;
@@ -31,23 +38,35 @@ class Popup extends Component {
     const arr = [];
     for (let i = 1; i <= 10; i++) {
       arr.push(`
-      <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${i}" id="rating-${i}" ${i === +this._score ? `checked` : ``}>
+      <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${i}" id="rating-${i}" ${i === +this._personalRating.toFixed() ? `checked` : ``}>
       <label class="film-details__user-rating-label" for="rating-${i}">${i}</label>
       `);
     }
     return arr.join(``);
   }
 
+  _getGenres() {
+    if ([...this._genre].length > 0) {
+      return [...this._genre].map((item) => {
+        return `
+        <span class="film-details__genre">${item}</span>
+        `;
+      }).join(``);
+    } else {
+      return ``;
+    }
+  }
+
   _getComment() {
     return this._comments.map((item) => {
       return `
       <li class="film-details__comment">
-      <span class="film-details__comment-emoji">${item.emoji}</span>
+      <span class="film-details__comment-emoji">${item.emotion}</span>
       <div>
         <p class="film-details__comment-text">${item.comment}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${item.author}</span>
-          <span class="film-details__comment-day">${moment(item.time).fromNow()}</span>
+          <span class="film-details__comment-day">${moment(item.date).fromNow()}</span>
         </p>
       </div>
     </li>
@@ -64,55 +83,53 @@ class Popup extends Component {
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src="images/posters/${this._poster}.jpg" alt="${this._title}">
+          <img class="film-details__poster-img" src="/${this._poster}" alt="Film ${this._title}">
 
-          <p class="film-details__age">18+</p>
+          <p class="film-details__age">${this._ageRating}+</p>
         </div>
 
         <div class="film-details__info">
           <div class="film-details__info-head">
             <div class="film-details__title-wrap">
               <h3 class="film-details__title">${this._title}</h3>
-              <p class="film-details__title-original">${this._title}</p>
+              <p class="film-details__title-original">${this._altTitle}</p>
             </div>
 
             <div class="film-details__rating">
-              <p class="film-details__total-rating">${this._rating}</p>
-              <p class="film-details__user-rating">Your rate ${this._score}</p>
+              <p class="film-details__total-rating">${this._totalRating}</p>
+              <p class="film-details__user-rating">Your rate ${this._personalRating.toFixed()}</p>
             </div>
           </div>
 
           <table class="film-details__table">
             <tr class="film-details__row">
               <td class="film-details__term">Director</td>
-              <td class="film-details__cell">Brad Bird</td>
+              <td class="film-details__cell">${this._director}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Writers</td>
-              <td class="film-details__cell">Brad Bird</td>
+              <td class="film-details__cell">${this._writers.join(`, `)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Actors</td>
-              <td class="film-details__cell">Samuel L. Jackson, Catherine Keener, Sophia Bush</td>
+              <td class="film-details__cell">${this._actors.join(`, `)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${this._releaseDate} (USA)</td>
+              <td class="film-details__cell">${moment(this.releaseDate).format(`DD MMMM YYYY`)} (${this._releaseCountry})</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>
-              <td class="film-details__cell">${this._duration} min</td>
+              <td class="film-details__cell">${this._runtime} min</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
-              <td class="film-details__cell">USA</td>
+              <td class="film-details__cell">${this._releaseCountry}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Genres</td>
               <td class="film-details__cell">
-                <span class="film-details__genre">${[...this._genres][0]}</span>
-                <span class="film-details__genre">${[...this._genres][1]}</span>
-                <span class="film-details__genre">${[...this._genres][2]}</span></td>
+              ${this._getGenres()}</td>
             </tr>
           </table>
 
@@ -170,7 +187,7 @@ class Popup extends Component {
 
         <div class="film-details__user-score">
           <div class="film-details__user-rating-poster">
-            <img src="images/posters/${this._poster}.jpg" alt="${this._title}" class="film-details__user-rating-img">
+            <img src="images/posters/${this._poster}.jpg" alt="Film ${this._title}" class="film-details__user-rating-img">
           </div>
 
           <section class="film-details__user-rating-inner">
@@ -222,9 +239,9 @@ class Popup extends Component {
 
       this._comments.push({
         author: `Someone`,
-        time: new Date(),
+        date: new Date(),
         comment: newData.comment.comment,
-        emoji: this._emojiMapper(newData.comment.emoji),
+        emotion: this._emotionMapper(newData.comment.emotion),
       });
 
       this.update(newData);
@@ -255,7 +272,7 @@ class Popup extends Component {
     return this._processForm(formData);
   }
 
-  _emojiMapper(key) {
+  _emotionMapper(key) {
     switch (key) {
       case `sleeping`:
         return `😴`;
@@ -274,7 +291,7 @@ class Popup extends Component {
       isWatched: ``,
       isFavourite: ``,
       comment: {},
-      score: ``,
+      personalRating: ``,
     };
     const popupSubmitMapper = Popup.createMapper(entry);
 
@@ -291,7 +308,7 @@ class Popup extends Component {
     this._isInWatchlist = data.isInWatchlist;
     this._isWatched = data.isWatched;
     this._isFavourite = data.isFavourite;
-    this._score = data.score;
+    this._personalRating = data.personalRating;
   }
 
   _addListeners() {
@@ -341,10 +358,10 @@ class Popup extends Component {
         target.comment.comment = value;
       },
       'comment-emoji': (value) => {
-        target.comment.emoji = value;
+        target.comment.emotion = value;
       },
       'score': (value) => {
-        target.score = value;
+        target.personalRating = value;
       }
     };
   }

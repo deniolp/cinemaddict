@@ -1,9 +1,9 @@
 import {Filter} from './filter';
-import getMovies from './get-movies';
 import {drawStat, unrenderStat, watchedStatistics} from './draw-stat';
 import utils from './utils';
 import {Movie} from './movie';
 import {Popup} from './popup';
+import {API} from './api';
 
 const FilterWithNumberNames = {
   watchlist: `Watchlist`,
@@ -31,14 +31,26 @@ const FILTERS = [
     isAdditional: true,
   }
 ];
+const AUTHORIZATION = `Basic uhiuy378xy4c9o&Y*&T&FH`;
+const END_POINT = `https://es8-demo-srv.appspot.com/moowle/`;
 
-const initialMovies = getMovies(7);
+const api = new API({
+  endPoint: END_POINT,
+  authorization: AUTHORIZATION,
+});
 
+let initialMovies = [];
 const filtersContainer = document.querySelector(`.main-navigation`);
 const moviesContainer = document.querySelector(`.films-list__container`);
 const profileRankElement = document.querySelector(`.profile__rating`);
 const topRatedContainer = document.querySelector(`section.films-list--extra .films-list__container`);
 const mostCommentedContainer = document.querySelector(`section.films-list--extra:last-of-type .films-list__container`);
+
+api.getMovies()
+.then((movies) => {
+  initialMovies = movies;
+  initialMovies.forEach(renderMovie);
+});
 
 const updateMovie = (movieToUpdate, newMovie) => {
   for (const key of Object.keys(newMovie)) {
