@@ -106,6 +106,10 @@ const renderMovie = (item, container, flag = true) => {
   movieComponent.onAddToWatchList = (boolean) => {
     item.isInWatchlist = boolean;
     popupComponent.update(item);
+    api.updateMovie({id: item.id, data: item.toRAW()})
+        .then((newMovie) => {
+          movieComponent.update(newMovie);
+        });
     updateFilters();
     updateMoviesInBottom();
   };
@@ -113,9 +117,12 @@ const renderMovie = (item, container, flag = true) => {
   movieComponent.onMarkAsWatched = (boolean) => {
     item.isWatched = boolean;
     popupComponent.update(item);
+    api.updateMovie({id: item.id, data: item.toRAW()})
+        .then((newMovie) => {
+          movieComponent.update(newMovie);
+        });
     drawStat(initialMovies);
-    rankLabel = getRankLabel(watchedStatistics.mostWatchedGenre);
-    profileRankElement.innerHTML = rankLabel;
+    profileRankElement.innerHTML = getRankLabel(watchedStatistics.mostWatchedGenre);
     updateFilters();
     updateMoviesInBottom();
   };
@@ -123,6 +130,10 @@ const renderMovie = (item, container, flag = true) => {
   movieComponent.onMarkAsFavorite = (boolean) => {
     item.isFavourite = boolean;
     popupComponent.update(item);
+    api.updateMovie({id: item.id, data: item.toRAW()})
+        .then((newMovie) => {
+          movieComponent.update(newMovie);
+        });
     updateFilters();
     updateMoviesInBottom();
   };
@@ -165,8 +176,7 @@ api.getMovies()
   updateMoviesInBottom();
   updateFilters();
   drawStat(initialMovies);
-  rankLabel = getRankLabel(watchedStatistics.mostWatchedGenre);
-  profileRankElement.innerHTML = rankLabel;
+  profileRankElement.innerHTML = getRankLabel(watchedStatistics.mostWatchedGenre);
 });
 
 FILTERS.forEach((item) => {
