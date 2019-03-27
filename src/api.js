@@ -1,3 +1,5 @@
+import ModelMovie from "./model-movie";
+
 const Method = {
   GET: `GET`,
   PUT: `PUT`,
@@ -23,7 +25,8 @@ const API = class {
 
   getMovies() {
     return this._load({url: `movies`})
-    .then(toJSON);
+    .then(toJSON)
+    .then(ModelMovie.parseMovies);
   }
 
   updateMovie({id, data}) {
@@ -35,7 +38,8 @@ const API = class {
         'Content-Type': `application/json`
       })
     })
-    .then(toJSON);
+    .then(toJSON)
+    .then(ModelMovie.parseMovie);
   }
 
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {
