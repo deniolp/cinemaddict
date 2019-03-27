@@ -75,7 +75,7 @@ const unrenderStat = () => {
 
 const getTotalDuration = (movies) => {
   return movies.reduce((acc, movie) => {
-    return acc + movie.duration;
+    return acc + movie.runtime;
   }, 0);
 };
 
