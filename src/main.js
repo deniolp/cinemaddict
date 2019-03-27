@@ -153,14 +153,15 @@ const renderMovie = (item, container, flag = true) => {
     const updatedMovie = updateMovie(item, obj);
     if (comments) {
       updatedMovie.comments = comments;
+      popupComponent.element.querySelector(`.film-details__comment-input`).disabled = true;
     }
 
     api.updateMovie({id: updatedMovie.id, data: updatedMovie.toRAW()})
         .then((newMovie) => {
+          movieComponent.update(newMovie);
           moviesContainer.innerHTML = ``;
           initialMovies.forEach((it) => renderMovie(it, moviesContainer));
           updateMoviesInBottom();
-          movieComponent.update(newMovie);
         });
   };
 };
