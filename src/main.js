@@ -38,6 +38,7 @@ let initialMovies = [];
 let rankLabel = ``;
 const filtersContainer = document.querySelector(`.main-navigation`);
 const moviesContainer = document.querySelector(`.films-list__container`);
+const moviesContainerTitle = document.querySelector(`.films-list__title`);
 const profileRankElement = document.querySelector(`.profile__rating`);
 const topRatedContainer = document.querySelector(`section.films-list--extra .films-list__container`);
 const mostCommentedContainer = document.querySelector(`section.films-list--extra:last-of-type .films-list__container`);
@@ -248,8 +249,19 @@ const onStatClick = () => {
   rankLabelElement.innerHTML = rankLabel;
 };
 
+const showEmptyBoard = () => {
+  moviesContainerTitle.textContent = `Loading movies...`;
+  moviesContainerTitle.classList.remove(`visually-hidden`);
+};
+
+const removeEmptyBoard = () => {
+  moviesContainerTitle.classList.add(`visually-hidden`);
+};
+
+showEmptyBoard();
 api.getMovies()
 .then((movies) => {
+  removeEmptyBoard();
   initialMovies = movies;
   initialMovies.forEach((it) => renderMovie(it, moviesContainer));
 })
