@@ -4,7 +4,6 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 const BAR_HEIGHT = 50;
 
 const statisticCtx = document.querySelector(`.statistic__chart`);
-statisticCtx.height = BAR_HEIGHT * 5;
 let watchedStatistics = {};
 let myChart = null;
 
@@ -64,7 +63,8 @@ const drawStat = (movies) => {
       },
       tooltips: {
         enabled: false
-      }
+      },
+      maintainAspectRatio: false
     }
   });
 };
@@ -106,6 +106,8 @@ const getStat = (movies) => {
   const labels = sortObject(genresStats).map((item) => item[0]);
   const values = sortObject(genresStats).map((item) => item[1]);
   watchedStatistics.mostWatchedGenre = labels[0];
+
+  statisticCtx.height = BAR_HEIGHT * labels.length;
 
   return {labels, values};
 };

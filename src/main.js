@@ -140,6 +140,7 @@ const renderMovie = (item, container, flag = true) => {
     profileRankElement.innerHTML = getRankLabel(watchedStatistics.mostWatchedGenre);
     updateFilters();
     updateMoviesInBottom();
+    unrenderStat();
   };
 
   movieComponent.onMarkAsFavorite = (boolean) => {
