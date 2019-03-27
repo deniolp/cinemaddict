@@ -40,6 +40,7 @@ const api = new API({
 });
 
 let initialMovies = [];
+let rankLabel = ``;
 const filtersContainer = document.querySelector(`.main-navigation`);
 const moviesContainer = document.querySelector(`.films-list__container`);
 const profileRankElement = document.querySelector(`.profile__rating`);
@@ -159,6 +160,9 @@ api.getMovies()
 .then(() => {
   updateMoviesInBottom();
   updateFilters();
+  drawStat(initialMovies);
+  rankLabel = getRankLabel(watchedStatistics.mostWatchedGenre);
+  profileRankElement.innerHTML = rankLabel;
 });
 
 FILTERS.forEach((item) => {
@@ -185,20 +189,23 @@ const getRankLabel = (genre) => {
     case `Comedy`:
       return `ComedyMan`;
 
-    case `History`:
-      return `HistoryLover`;
+    case `Thriller`:
+      return `ThrillerMan`;
 
     case `Drama`:
       return `DramaTic`;
 
+    case `Sci-Fi`:
+      return `Sci-Fighter`;
+
     case `Horror`:
       return `HorrorAble`;
 
-    case `Series`:
-      return `SeriesLonger`;
+    case `Animation`:
+      return `Animator`;
 
-    case `Western`:
-      return `Gunner`;
+    case `Family`:
+      return `FamilyMan`;
 
     case `Action`:
       return `ActionEr`;
@@ -210,10 +217,6 @@ const getRankLabel = (genre) => {
       return `Uups`;
   }
 };
-
-drawStat(initialMovies);
-let rankLabel = getRankLabel(watchedStatistics.mostWatchedGenre);
-profileRankElement.innerHTML = rankLabel;
 
 const onStatClick = () => {
   unrenderStat();

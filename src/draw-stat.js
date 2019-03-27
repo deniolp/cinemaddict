@@ -92,10 +92,10 @@ const getStat = (movies) => {
   watchedStatistics.watchedAmount = filteredMovies.length;
   watchedStatistics.watchedDuration = getTotalDuration(filteredMovies);
   filteredMovies.forEach((movie) => {
-    if (genresStats.hasOwnProperty([...movie.genres][0])) {
-      genresStats[[...movie.genres][0]]++;
+    if (genresStats.hasOwnProperty([...movie.genre][0])) {
+      genresStats[[...movie.genre][0]]++;
     } else {
-      genresStats[[...movie.genres][0]] = 1;
+      genresStats[[...movie.genre][0]] = 1;
     }
   });
 
