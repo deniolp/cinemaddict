@@ -61,7 +61,7 @@ class Movie extends Component {
       <span class="film-card__duration">${hours}h&nbsp;${mins}m</span>
       <span class="film-card__genre">${[...this._genre].length ? [...this._genre][0] : ``}</span>
     </p>
-    <img src="/${this._poster}" alt="Film ${this._title}" class="film-card__poster">
+    <img src="./${this._poster}" alt="Film ${this._title}" class="film-card__poster">
     ${this._isControls ? descriptionElement : ``}
     <button class="film-card__comments">${this._comments.length} comments</button>
 

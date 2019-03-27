@@ -86,7 +86,7 @@ class Popup extends Component {
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src="/${this._poster}" alt="Film ${this._title}">
+          <img class="film-details__poster-img" src="./${this._poster}" alt="Film ${this._title}">
 
           <p class="film-details__age">${this._ageRating}+</p>
         </div>
@@ -190,7 +190,7 @@ class Popup extends Component {
 
         <div class="film-details__user-score">
           <div class="film-details__user-rating-poster">
-            <img src="/${this._poster}" alt="Film ${this._title}" class="film-details__user-rating-img">
+            <img src="./${this._poster}" alt="Film ${this._title}" class="film-details__user-rating-img">
           </div>
 
           <section class="film-details__user-rating-inner">
