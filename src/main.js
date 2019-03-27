@@ -46,12 +46,6 @@ const profileRankElement = document.querySelector(`.profile__rating`);
 const topRatedContainer = document.querySelector(`section.films-list--extra .films-list__container`);
 const mostCommentedContainer = document.querySelector(`section.films-list--extra:last-of-type .films-list__container`);
 
-api.getMovies()
-.then((movies) => {
-  initialMovies = movies;
-  initialMovies.forEach(renderMovie);
-});
-
 const updateMovie = (movieToUpdate, newMovie) => {
   for (const key of Object.keys(newMovie)) {
     if (key in movieToUpdate) {
@@ -80,7 +74,7 @@ const filterMovies = (movies, filterName) => {
       return movies.filter((it) => it.isFavourite);
 
     case `Most rated`:
-      return [...movies].sort((a, b) => b.rating - a.rating);
+      return [...movies].sort((a, b) => b.totalRating - a.totalRating);
 
     case `Most commented`:
       return [...movies].sort((a, b) => b.comments.length - a.comments.length);
@@ -91,6 +85,7 @@ const filterMovies = (movies, filterName) => {
 };
 
 const updateFilters = () => {
+  const countElements = document.querySelectorAll(`.main-navigation__item-count`);
   Array.from(countElements).forEach((item, index) => {
     item.textContent = filterMovies(initialMovies, Object.values(FilterWithNumberNames)[index]).length;
   });
@@ -156,6 +151,15 @@ const updateMoviesInBottom = () => {
   filterMovies(initialMovies, `Most commented`).splice(0, 2).forEach((item) => renderMovie(item, mostCommentedContainer, false));
 };
 
+api.getMovies()
+.then((movies) => {
+  initialMovies = movies;
+  initialMovies.forEach((it) => renderMovie(it, moviesContainer));
+})
+.then(() => {
+  updateMoviesInBottom();
+  updateFilters();
+});
 
 FILTERS.forEach((item) => {
   const filterComponent = new Filter(item);
@@ -169,12 +173,6 @@ FILTERS.forEach((item) => {
     filteredTasks.forEach((movie) => renderMovie(movie, moviesContainer));
   };
 });
-
-const countElements = document.querySelectorAll(`.main-navigation__item-count`);
-updateFilters();
-
-initialMovies.forEach((item) => renderMovie(item, moviesContainer));
-updateMoviesInBottom();
 
 const statButtonElement = document.querySelector(`.main-navigation__item--additional`);
 const filmBoard = document.querySelector(`.films`);

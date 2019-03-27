@@ -1,6 +1,5 @@
 export default class ModelMovie {
   constructor(data) {
-    console.log(data);
     this.id = data[`id`];
     this.title = data[`film_info`][`title`];
     this.poster = data[`film_info`][`poster`];
@@ -16,12 +15,11 @@ export default class ModelMovie {
     this.director = data[`film_info`][`director`];
     this.writers = data[`film_info`][`writers`] || [];
     this.totalRating = data[`film_info`][`total_rating`];
-    this.personalRating = data[`user_details`][`personal_rating`];
+    this.personalRating = parseFloat(data[`user_details`][`personal_rating`]).toFixed();
     this.isWatched = data[`user_details`][`already_watched`];
     this.isFavourite = data[`user_details`][`favorite`];
     this.isInWatchlist = data[`user_details`][`watchlist`];
     this.comments = data[`comments`] || [];
-    console.log(this.comments);
   }
 
   static parseMovie(data) {

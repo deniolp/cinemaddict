@@ -4,8 +4,7 @@ import moment from 'moment';
 const KEYCODE_ENTER = 13;
 
 class Popup extends Component {
-  constructor({id, title, poster, altTitle, actors, ageRating, description, totalRating, releaseDate, releaseCountry, runtime,
-    genre, director, writers, comments, personalRating, isInWatchlist, isWatched, isFavourite}) {
+  constructor({id, title, poster, altTitle, actors, ageRating, description, totalRating, releaseDate, releaseCountry, runtime, genre, director, writers, comments, personalRating, isInWatchlist, isWatched, isFavourite}) {
     super();
     this._id = id;
     this._title = title;
@@ -38,7 +37,7 @@ class Popup extends Component {
     const arr = [];
     for (let i = 1; i <= 10; i++) {
       arr.push(`
-      <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${i}" id="rating-${i}" ${i === +this._personalRating.toFixed() ? `checked` : ``}>
+      <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${i}" id="rating-${i}" ${i === +this._personalRating ? `checked` : ``}>
       <label class="film-details__user-rating-label" for="rating-${i}">${i}</label>
       `);
     }
@@ -97,7 +96,7 @@ class Popup extends Component {
 
             <div class="film-details__rating">
               <p class="film-details__total-rating">${this._totalRating}</p>
-              <p class="film-details__user-rating">Your rate ${this._personalRating.toFixed()}</p>
+              <p class="film-details__user-rating">Your rate ${this._personalRating}</p>
             </div>
           </div>
 
