@@ -35,6 +35,7 @@ const AUTHORIZATION = `Basic uhiuy37^%8xy4c9o&Y*&T&FH`;
 const END_POINT = `https://es8-demo-srv.appspot.com/moowle/`;
 
 let initialMovies = [];
+let filteredMovies = [];
 let rankLabel = ``;
 const filtersContainer = document.querySelector(`.main-navigation`);
 const moviesContainer = document.querySelector(`.films-list__container`);
@@ -68,6 +69,7 @@ const filterMovies = (movies, filterName) => {
       unrenderStat();
       statBoard.classList.add(`visually-hidden`);
       filmBoard.classList.remove(`visually-hidden`);
+      filteredMovies = movies;
       return movies;
 
     case FilterWithNumberNames.watchlist:
@@ -149,12 +151,6 @@ const renderMovie = (item, container, flag = true) => {
     updateMoviesInBottom();
   };
 
-  popupComponent.onClose = () => {
-    body.removeChild(popupComponent.element);
-    popupComponent.unrender();
-    updateFilters();
-  };
-
   popupComponent.onAddComment = (obj) => {
     item.comments.push(obj.comment);
     popupComponent.element.querySelector(`.film-details__comment-input`).disabled = true;
@@ -202,6 +198,12 @@ const renderMovie = (item, container, flag = true) => {
     });
   };
 
+  popupComponent.onClose = () => {
+    body.removeChild(popupComponent.element);
+    popupComponent.unrender();
+    updateFilters();
+  };
+
   popupComponent.onSubmit = (obj) => {
     const updatedMovie = updateMovie(item, obj);
 
@@ -209,7 +211,11 @@ const renderMovie = (item, container, flag = true) => {
         .then((newMovie) => {
           movieComponent.update(newMovie);
           moviesContainer.innerHTML = ``;
-          initialMovies.forEach((it) => renderMovie(it, moviesContainer));
+          if (filteredMovies.length > 0) {
+            filteredMovies.forEach((it) => renderMovie(it, moviesContainer));
+          } else {
+            initialMovies.forEach((it) => renderMovie(it, moviesContainer));
+          }
           updateMoviesInBottom();
         });
   };
@@ -240,10 +246,10 @@ const renderFilters = () => {
 
     filterComponent.onFilter = (evt) => {
       const filterName = evt.target.firstChild.textContent;
-      const filteredTasks = filterMovies(initialMovies, filterName);
+      filteredMovies = filterMovies(initialMovies, filterName);
 
       moviesContainer.innerHTML = ``;
-      filteredTasks.forEach((movie) => renderMovie(movie, moviesContainer));
+      filteredMovies.forEach((movie) => renderMovie(movie, moviesContainer));
     };
   });
 };
