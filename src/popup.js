@@ -28,7 +28,6 @@ class Popup extends Component {
     this._isWatched = isWatched;
     this._isFavourite = isFavourite;
 
-    this._onSubmit = null;
     this._onClose = null;
     this._onAddComment = null;
     this._onVote = null;
@@ -214,10 +213,6 @@ class Popup extends Component {
     return popupTemplate.content.cloneNode(true).firstChild;
   }
 
-  set onSubmit(fn) {
-    this._onSubmit = fn;
-  }
-
   set onClose(fn) {
     this._onClose = fn;
   }
@@ -234,12 +229,8 @@ class Popup extends Component {
     const newData = this._prepareData();
 
     this.update(newData);
-
-    if (typeof this._onSubmit === `function`) {
-      this._onSubmit(newData);
-    }
     if (typeof this._onClose === `function`) {
-      this._onClose();
+      this._onClose(newData);
     }
   }
 

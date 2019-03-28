@@ -198,13 +198,7 @@ const renderMovie = (item, container, flag = true) => {
     });
   };
 
-  popupComponent.onClose = () => {
-    body.removeChild(popupComponent.element);
-    popupComponent.unrender();
-    updateFilters();
-  };
-
-  popupComponent.onSubmit = (obj) => {
+  popupComponent.onClose = (obj) => {
     const updatedMovie = updateMovie(item, obj);
 
     api.updateMovie({id: updatedMovie.id, data: updatedMovie.toRAW()})
@@ -218,6 +212,9 @@ const renderMovie = (item, container, flag = true) => {
           }
           updateMoviesInBottom();
         });
+    body.removeChild(popupComponent.element);
+    popupComponent.unrender();
+    updateFilters();
   };
 };
 
