@@ -48,15 +48,11 @@ class Popup extends Component {
   }
 
   _getGenres() {
-    if ([...this._genre].length > 0) {
-      return [...this._genre].map((item) => {
-        return `
-        <span class="film-details__genre">${item}</span>
-        `;
-      }).join(``);
-    } else {
-      return ``;
-    }
+    return [...this._genre].map((item) => {
+      return `
+      <span class="film-details__genre">${item}</span>
+      `;
+    }).join(``);
   }
 
   _getComment() {
