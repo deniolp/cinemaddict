@@ -30,6 +30,17 @@ const FILTERS = [
     isAdditional: true,
   }
 ];
+const RankLabels = {
+  'Comedy': `ComedyMan`,
+  'Thriller': `ThrillerMan`,
+  'Drama': `DramaTic`,
+  'Sci-Fi': `Sci-Fighter`,
+  'Horror': `HorrorAble`,
+  'Animation': `Animator`,
+  'Family': `FamilyMan`,
+  'Action': `ActionEr`,
+  'Adventure': `Driver`
+};
 const AUTHORIZATION = `Basic uhiuy37^%8xy4c9o&Y*&T&FH`;
 const END_POINT = `https://es8-demo-srv.appspot.com/moowle/`;
 
@@ -133,7 +144,7 @@ const renderMovie = (item, container, flag = true) => {
           movieComponent.update(newMovie);
         });
     drawStat(initialMovies);
-    profileRankElement.innerHTML = getRankLabel(watchedStatistics.mostWatchedGenre);
+    profileRankElement.innerHTML = RankLabels[watchedStatistics.mostWatchedGenre];
     updateFilters();
     updateMoviesInBottom();
     unrenderStat();
@@ -263,44 +274,10 @@ const initStatButton = () => {
   statButtonElement.addEventListener(`click`, onStatClick);
 };
 
-const getRankLabel = (genre) => {
-  switch (genre) {
-    case `Comedy`:
-      return `ComedyMan`;
-
-    case `Thriller`:
-      return `ThrillerMan`;
-
-    case `Drama`:
-      return `DramaTic`;
-
-    case `Sci-Fi`:
-      return `Sci-Fighter`;
-
-    case `Horror`:
-      return `HorrorAble`;
-
-    case `Animation`:
-      return `Animator`;
-
-    case `Family`:
-      return `FamilyMan`;
-
-    case `Action`:
-      return `ActionEr`;
-
-    case `Adventure`:
-      return `Driver`;
-
-    default:
-      return `Uups`;
-  }
-};
-
 const onStatClick = () => {
   unrenderStat();
   drawStat(initialMovies);
-  rankLabel = getRankLabel(watchedStatistics.mostWatchedGenre);
+  rankLabel = RankLabels[watchedStatistics.mostWatchedGenre];
   profileRankElement.innerHTML = rankLabel;
 
   statBoard.classList.remove(`visually-hidden`);
@@ -343,6 +320,6 @@ api.getMovies()
   renderFilters();
   updateFilters();
   drawStat(initialMovies);
-  profileRankElement.innerHTML = getRankLabel(watchedStatistics.mostWatchedGenre);
+  profileRankElement.innerHTML = RankLabels[watchedStatistics.mostWatchedGenre];
   initStatButton();
 });
