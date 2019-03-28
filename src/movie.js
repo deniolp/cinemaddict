@@ -1,20 +1,29 @@
 import utils from './utils';
 import {Component} from './component';
+import moment from 'moment';
 
 class Movie extends Component {
-  constructor({title, poster, description, rating, releaseDate, duration,
-    genres, comments, score, isInWatchlist, isWatched, isFavourite}, isControls = true) {
+  constructor({id, title, poster, altTitle, actors, ageRating, description, totalRating,
+    releaseDate, releaseCountry, runtime, genre, director, writers, comments, personalRating,
+    isInWatchlist, isWatched, isFavourite}, isControls = true) {
     super();
+    this._id = id;
     this._title = title;
     this._poster = poster;
+    this._altTitle = altTitle;
+    this._actors = actors;
+    this._ageRating = ageRating;
     this._description = description;
-    this._rating = rating;
+    this._totalRating = totalRating;
     this._releaseDate = releaseDate;
-    this._duration = duration;
-    this._genres = genres;
+    this._releaseCountry = releaseCountry;
+    this._runtime = runtime;
+    this._genre = genre;
+    this._director = director;
+    this._writers = writers;
     this._isControls = isControls;
     this._comments = comments;
-    this._score = score;
+    this._personalRating = personalRating;
     this._isInWatchlist = isInWatchlist;
     this._isWatched = isWatched;
     this._isFavourite = isFavourite;
@@ -30,7 +39,7 @@ class Movie extends Component {
   }
 
   get template() {
-    const [hours, mins] = utils.countDuration(this._duration);
+    const [hours, mins] = utils.countDuration(this._runtime);
 
     const descriptionElement = `
   <p class="film-card__description">${this._description}</p>
@@ -46,15 +55,15 @@ class Movie extends Component {
     const cardMarkup = `
   <article class="film-card${this._isControls ? `` : ` film-card--no-controls`}">
     <h3 class="film-card__title">${this._title}</h3>
-    <p class="film-card__rating">${this._rating}</p>
+    <p class="film-card__rating">${this._totalRating}</p>
     <p class="film-card__info">
-      <span class="film-card__year">${this._releaseDate.match(/\d{4}/)[0]}</span>
+      <span class="film-card__year">${moment(this._releaseDate).format(`YYYY`)}</span>
       <span class="film-card__duration">${hours}h&nbsp;${mins}m</span>
-      <span class="film-card__genre">${[...this._genres][0]}</span>
+      <span class="film-card__genre">${[...this._genre].length ? [...this._genre][0] : ``}</span>
     </p>
-    <img src="./images/posters/${this._poster}.jpg" alt="${this._title}" class="film-card__poster">
+    <img src="./${this._poster}" alt="Film ${this._title}" class="film-card__poster">
     ${this._isControls ? descriptionElement : ``}
-    <button class="film-card__comments"${this._isControls ? `` : ` disabled`}>${this._comments.length} comments</button>
+    <button class="film-card__comments">${this._comments.length} comments</button>
 
     ${this._isControls ? formElement : ``}
   </article>
@@ -131,10 +140,10 @@ class Movie extends Component {
     this._isInWatchlist = data.isInWatchlist;
     this._isWatched = data.isWatched;
     this._isFavourite = data.isFavourite;
-    this._score = data.score;
+    this._personalRating = data.personalRating;
     this._comments = data.comments;
 
-    this._rerender();
+    this.rerender();
   }
 }
 

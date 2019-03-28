@@ -26,7 +26,7 @@ class Component {
     this._element = null;
   }
 
-  _rerender() {
+  rerender() {
     this._removeListeners();
     this._element.innerHTML = this.template.innerHTML;
     this._addListeners();

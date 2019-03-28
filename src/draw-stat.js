@@ -4,14 +4,13 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 const BAR_HEIGHT = 50;
 
 const statisticCtx = document.querySelector(`.statistic__chart`);
-statisticCtx.height = BAR_HEIGHT * 5;
 let watchedStatistics = {};
+let myChart = null;
 
 const drawStat = (movies) => {
   const genresStat = getStat(movies);
 
-  // eslint-disable-next-line no-unused-vars
-  const myChart = new Chart(statisticCtx, {
+  myChart = new Chart(statisticCtx, {
     plugins: [ChartDataLabels],
     type: `horizontalBar`,
     data: {
@@ -64,14 +63,19 @@ const drawStat = (movies) => {
       },
       tooltips: {
         enabled: false
-      }
+      },
+      maintainAspectRatio: false
     }
   });
 };
 
+const unrenderStat = () => {
+  myChart.destroy();
+};
+
 const getTotalDuration = (movies) => {
   return movies.reduce((acc, movie) => {
-    return acc + movie.duration;
+    return acc + movie.runtime;
   }, 0);
 };
 
@@ -85,13 +89,17 @@ const sortObject = (obj) => {
 const getStat = (movies) => {
   const genresStats = {};
   const filteredMovies = movies.filter((movie) => movie.isWatched);
+  const allGenres = [];
   watchedStatistics.watchedAmount = filteredMovies.length;
   watchedStatistics.watchedDuration = getTotalDuration(filteredMovies);
   filteredMovies.forEach((movie) => {
-    if (genresStats.hasOwnProperty([...movie.genres][0])) {
-      genresStats[[...movie.genres][0]]++;
-    } else {
-      genresStats[[...movie.genres][0]] = 1;
+    for (let value of [...movie.genre]) {
+      allGenres.push(value);
+      if (genresStats.hasOwnProperty(value)) {
+        genresStats[value]++;
+      } else {
+        genresStats[value] = 1;
+      }
     }
   });
 
@@ -99,7 +107,9 @@ const getStat = (movies) => {
   const values = sortObject(genresStats).map((item) => item[1]);
   watchedStatistics.mostWatchedGenre = labels[0];
 
+  statisticCtx.height = BAR_HEIGHT * labels.length;
+
   return {labels, values};
 };
 
-export {drawStat, watchedStatistics};
+export {drawStat, unrenderStat, watchedStatistics};
