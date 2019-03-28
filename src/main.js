@@ -14,7 +14,6 @@ const FILTERS = [
   {
     name: `All`,
     hasAmount: false,
-    isActive: true,
   },
   {
     name: FilterWithNumberNames.watchlist,
@@ -241,7 +240,14 @@ const renderFilters = () => {
     const filterComponent = new Filter(item);
     filtersContainer.appendChild(filterComponent.render());
 
+    if (filterComponent.template.firstChild.textContent) {
+      filtersContainer.querySelector(`.main-navigation__item`).classList.add(`main-navigation__item--active`);
+    }
+
     filterComponent.onFilter = (evt) => {
+      const filtersElements = filtersContainer.querySelectorAll(`.main-navigation__item`);
+      filtersElements.forEach((it) => it.classList.remove(`main-navigation__item--active`));
+      evt.target.classList.add(`main-navigation__item--active`);
       const filterName = evt.target.firstChild.textContent;
       filteredMovies = filterMovies(initialMovies, filterName);
 
