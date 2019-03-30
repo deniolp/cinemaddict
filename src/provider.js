@@ -42,6 +42,10 @@ const Provider = class {
     }
   }
 
+  syncMovies() {
+    return this._api.syncMovies({movies: objectToArray(this._store.getAll())});
+  }
+
   _isOnline() {
     return window.navigator.onLine;
   }

@@ -43,7 +43,7 @@ const RankLabels = {
   'Action': `ActionEr`,
   'Adventure': `Driver`
 };
-const AUTHORIZATION = `Basic uhiuy37^%8xy4c9o&Y*&T&FH`;
+const AUTHORIZATION = `Basic uhiuy37^%8x4c9o&Y*&T&FH`;
 const END_POINT = `https://es8-demo-srv.appspot.com/moowle/`;
 const MOVIES_STORE_KEY = `movies-store-key`;
 const api = new API({
@@ -308,6 +308,14 @@ const showEmptyBoard = () => {
 const removeEmptyBoard = () => {
   moviesContainerTitle.classList.add(`visually-hidden`);
 };
+
+window.addEventListener(`offline`, () => {
+  document.title = `${document.title}[OFFLINE]`;
+});
+window.addEventListener(`online`, () => {
+  document.title = document.title.split(`[OFFLINE]`)[0];
+  provider.syncMovies();
+});
 
 showEmptyBoard();
 provider.getMovies()

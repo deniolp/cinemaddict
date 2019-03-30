@@ -3,6 +3,7 @@ import ModelMovie from "./model-movie";
 const Method = {
   GET: `GET`,
   PUT: `PUT`,
+  POST: `POST`,
 };
 
 const checkStatus = (response) => {
@@ -40,6 +41,18 @@ const API = class {
     })
     .then(toJSON)
     .then(ModelMovie.parseMovie);
+  }
+
+  syncMovies({movies}) {
+    return this._load({
+      url: `movies/sync`,
+      method: Method.POST,
+      body: JSON.stringify(movies),
+      headers: new Headers({
+        'Content-Type': `application/json`
+      })
+    })
+    .then(toJSON);
   }
 
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {

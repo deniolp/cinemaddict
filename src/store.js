@@ -1,5 +1,5 @@
 const Store = class {
-  constructor(key, storage) {
+  constructor({key, storage}) {
     this._storage = storage;
     this._storeKey = key;
   }
