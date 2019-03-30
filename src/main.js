@@ -5,6 +5,7 @@ import {Movie} from './movie';
 import {Popup} from './popup';
 import {API} from './api';
 import {Provider} from './provider';
+import {Store} from './store';
 
 const FilterWithNumberNames = {
   watchlist: `Watchlist`,
@@ -44,10 +45,12 @@ const RankLabels = {
 };
 const AUTHORIZATION = `Basic uhiuy37^%8xy4c9o&Y*&T&FH`;
 const END_POINT = `https://es8-demo-srv.appspot.com/moowle/`;
+const MOVIES_STORE_KEY = `movies-store-key`;
 const api = new API({
   endPoint: END_POINT,
   authorization: AUTHORIZATION,
 });
+const store = new Store({key: MOVIES_STORE_KEY, storage: localStorage});
 const provider = new Provider({api, store});
 
 let initialMovies = [];
