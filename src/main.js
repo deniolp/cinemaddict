@@ -4,6 +4,7 @@ import utils from './utils';
 import {Movie} from './movie';
 import {Popup} from './popup';
 import {API} from './api';
+import {Provider} from './provider';
 
 const FilterWithNumberNames = {
   watchlist: `Watchlist`,
