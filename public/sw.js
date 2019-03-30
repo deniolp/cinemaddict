@@ -5,7 +5,7 @@ self.addEventListener(`install`, (evt) => {
   const openCache = caches.open(CACHE_NAME)
     .then((cache) => {
       return cache.addAll([
-        `/`,
+        `./`,
       ]);
     });
 
