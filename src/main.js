@@ -43,6 +43,11 @@ const RankLabels = {
 };
 const AUTHORIZATION = `Basic uhiuy37^%8xy4c9o&Y*&T&FH`;
 const END_POINT = `https://es8-demo-srv.appspot.com/moowle/`;
+const api = new API({
+  endPoint: END_POINT,
+  authorization: AUTHORIZATION,
+});
+const provider = new Provider({api, store});
 
 let initialMovies = [];
 let filteredMovies = [];
@@ -57,11 +62,6 @@ const filmBoard = document.querySelector(`.films`);
 const statBoard = document.querySelector(`.statistic`);
 const textStatistic = document.querySelectorAll(`p.statistic__item-text`);
 const rankLabelElement = document.querySelector(`.statistic__rank-label`);
-
-const api = new API({
-  endPoint: END_POINT,
-  authorization: AUTHORIZATION,
-});
 
 const updateMovie = (movieToUpdate, newMovie) => {
   for (const key of Object.keys(newMovie)) {
@@ -128,7 +128,7 @@ const renderMovie = (item, container, flag = true) => {
   movieComponent.onAddToWatchList = (boolean) => {
     item.isInWatchlist = boolean;
     popupComponent.update(item);
-    api.updateMovie({id: item.id, data: item.toRAW()})
+    provider.updateMovie({id: item.id, data: item.toRAW()})
         .then((newMovie) => {
           movieComponent.update(newMovie);
         });
@@ -139,7 +139,7 @@ const renderMovie = (item, container, flag = true) => {
   movieComponent.onMarkAsWatched = (boolean) => {
     item.isWatched = boolean;
     popupComponent.update(item);
-    api.updateMovie({id: item.id, data: item.toRAW()})
+    provider.updateMovie({id: item.id, data: item.toRAW()})
         .then((newMovie) => {
           movieComponent.update(newMovie);
         });
@@ -153,7 +153,7 @@ const renderMovie = (item, container, flag = true) => {
   movieComponent.onMarkAsFavorite = (boolean) => {
     item.isFavourite = boolean;
     popupComponent.update(item);
-    api.updateMovie({id: item.id, data: item.toRAW()})
+    provider.updateMovie({id: item.id, data: item.toRAW()})
         .then((newMovie) => {
           movieComponent.update(newMovie);
         });
@@ -165,7 +165,7 @@ const renderMovie = (item, container, flag = true) => {
     item.comments.push(obj.comment);
     popupComponent.element.querySelector(`.film-details__comment-input`).disabled = true;
 
-    api.updateMovie({id: item.id, data: item.toRAW()})
+    provider.updateMovie({id: item.id, data: item.toRAW()})
     .then((newMovie) => {
       movieComponent.update(newMovie);
       popupComponent.update(newMovie);
@@ -190,7 +190,7 @@ const renderMovie = (item, container, flag = true) => {
     });
     item.personalRating = obj.personalRating;
 
-    api.updateMovie({id: item.id, data: item.toRAW()})
+    provider.updateMovie({id: item.id, data: item.toRAW()})
     .then((newMovie) => {
       Array.from(scoreInputs).forEach((it) => {
         it.disabled = false;
@@ -211,7 +211,7 @@ const renderMovie = (item, container, flag = true) => {
   popupComponent.onClose = (obj) => {
     const updatedMovie = updateMovie(item, obj);
 
-    api.updateMovie({id: updatedMovie.id, data: updatedMovie.toRAW()})
+    provider.updateMovie({id: updatedMovie.id, data: updatedMovie.toRAW()})
         .then((newMovie) => {
           movieComponent.update(newMovie);
           moviesContainer.innerHTML = ``;
@@ -306,7 +306,7 @@ const removeEmptyBoard = () => {
 };
 
 showEmptyBoard();
-api.getMovies()
+provider.getMovies()
 .then((movies) => {
   removeEmptyBoard();
   initialMovies = movies;
