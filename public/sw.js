@@ -6,6 +6,7 @@ self.addEventListener(`install`, (evt) => {
     .then((cache) => {
       return cache.addAll([
         `./`,
+        `./index.html`,
       ]);
     });
 
