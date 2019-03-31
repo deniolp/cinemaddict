@@ -44,7 +44,7 @@ const RankLabels = {
   'Adventure': `Driver`
 };
 const AUTHORIZATION = `Basic uhiuy37^%8x4c9o&Y*&T&FH`;
-const END_POINT = `https://es8-demo-srv.appspot.com/moowle/`;
+const END_POINT = `https://es8-demo-srv.appspot.com/moowle`;
 const MOVIES_STORE_KEY = `movies-store-key`;
 const api = new API({
   endPoint: END_POINT,

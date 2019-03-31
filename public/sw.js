@@ -5,8 +5,10 @@ self.addEventListener(`install`, (evt) => {
   const openCache = caches.open(CACHE_NAME)
     .then((cache) => {
       return cache.addAll([
-        `./`,
         `./index.html`,
+        `./bundle.js`,
+        `./css/`,
+        `./images/`,
       ]);
     });
 
@@ -26,13 +28,13 @@ self.addEventListener(`fetch`, (evt) => {
 
         return response.clone();
       })
-    .catch(() => {
-      caches.match(evt.request)
-      .then((response) => {
-        console.log(`Find in cache`, {response});
-        return response;
-      });
-    })
+      .catch(() => {
+        caches.match(evt.request)
+        .then((response) => {
+          console.log(`Find in cache`, {response});
+          return response;
+        });
+      })
     .catch((error) => console.error(error))
   );
 });
