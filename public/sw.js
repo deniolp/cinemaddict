@@ -7,8 +7,21 @@ self.addEventListener(`install`, (evt) => {
       return cache.addAll([
         `./index.html`,
         `./bundle.js`,
-        `./css/`,
-        `./images/`,
+        `./css/main.css`,
+        `./css/normalize.css`,
+        `./images/posters/accused.jpg`,
+        `./images/posters/blackmail.jpg`,
+        `./images/posters/blue-blazes.jpg`,
+        `./images/posters/fuga-da-new-york.jpg`,
+        `./images/posters/moonrise.jpg`,
+        `./images/posters/three-friends.jpg`,
+        `./images/background.png`,
+        `./images/icon-favorite.png`,
+        `./images/icon-favorite.svg`,
+        `./images/icon-watched.png`,
+        `./images/icon-watched.svg`,
+        `./images/icon-watchlist.png`,
+        `./images/icon-watchlist.svg`,
       ]);
     });
 
