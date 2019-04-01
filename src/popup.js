@@ -247,9 +247,12 @@ class Popup extends Component {
     if (evt.keyCode === KEYCODE_ENTER && evt.metaKey) {
       evt.preventDefault();
       const newData = this._prepareData();
+
       if (typeof this._onAddComment === `function`) {
         this._onAddComment(newData);
       }
+      const userControlsBlock = this._element.querySelector(`.film-details__user-rating-controls`);
+      userControlsBlock.classList.remove(`visually-hidden`);
     }
   }
 

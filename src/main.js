@@ -127,6 +127,8 @@ const renderMovie = (item, container, flag = true) => {
   movieComponent.onPopup = () => {
     popupComponent.render();
     body.appendChild(popupComponent.element);
+    const userControlBlock = popupComponent.element.querySelector(`.film-details__user-rating-controls`);
+    userControlBlock.classList.add(`visually-hidden`);
   };
 
   movieComponent.onAddToWatchList = (boolean) => {
