@@ -2,6 +2,7 @@ import {Component} from './component';
 import moment from 'moment';
 
 const KEYCODE_ENTER = 13;
+const KEYCODE_ESC = 27;
 
 class Popup extends Component {
   constructor({id, title, poster, altTitle, actors, ageRating, description, totalRating,
@@ -34,6 +35,7 @@ class Popup extends Component {
     this._onCloseClick = this._onCloseClick.bind(this);
     this._onAddCommentKeydown = this._onAddCommentKeydown.bind(this);
     this._onVoteClick = this._onVoteClick.bind(this);
+    this._onEscPress = this._onEscPress.bind(this);
   }
 
   _getScore() {
@@ -230,6 +232,17 @@ class Popup extends Component {
     }
   }
 
+  _onEscPress(evt) {
+    if (evt.keyCode === KEYCODE_ESC) {
+      const newData = this._prepareData();
+
+      this.update(newData);
+      if (typeof this._onClose === `function`) {
+        this._onClose(newData);
+      }
+    }
+  }
+
   _onAddCommentKeydown(evt) {
     if (evt.keyCode === KEYCODE_ENTER && evt.metaKey) {
       evt.preventDefault();
@@ -306,12 +319,14 @@ class Popup extends Component {
     this._element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._onCloseClick);
     this._element.querySelector(`.film-details__comment-input`).addEventListener(`keydown`, this._onAddCommentKeydown);
     this._element.querySelector(`.film-details__user-rating-score`).addEventListener(`click`, this._onVoteClick);
+    window.addEventListener(`keydown`, this._onEscPress);
   }
 
   _removeListeners() {
     this._element.querySelector(`.film-details__close-btn`).removeEventListener(`click`, this._onCloseClick);
     this._element.querySelector(`.film-details__comment-input`).removeEventListener(`keydown`, this._onAddComment);
     this._element.querySelector(`.film-details__user-rating-score`).removeEventListener(`click`, this._onVoteClick);
+    window.removeEventListener(`keydown`, this._onEscPress);
   }
 
   unrender() {
