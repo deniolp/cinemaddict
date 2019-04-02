@@ -153,7 +153,7 @@ const renderMovie = (item, container, flag = true) => {
           movieComponent.update(newMovie);
         });
     drawStat(initialMovies);
-    profileRankElement.innerHTML = RankLabels[watchedStatistics.mostWatchedGenre];
+    profileRankElement.innerHTML = getRank(watchedStatistics.watchedAmount);
     updateFilters();
     updateMoviesInBottom();
     unrenderStat();
@@ -265,6 +265,18 @@ const shakeElement = (element) => {
   });
 };
 
+const getRank = (num) => {
+  if (num > 0 && num <= 10) {
+    return `Novice`;
+  } else if (num > 10 && num <= 20) {
+    return `Fan`;
+  } else if (num > 20) {
+    return `Movie buff`;
+  } else {
+    return ``;
+  }
+};
+
 const updateMoviesInBottom = () => {
   mostCommentedContainer.innerHTML = ``;
   topRatedContainer.innerHTML = ``;
@@ -355,6 +367,6 @@ provider.getMovies()
   renderFilters();
   updateFilters();
   drawStat(initialMovies);
-  profileRankElement.innerHTML = RankLabels[watchedStatistics.mostWatchedGenre];
+  profileRankElement.innerHTML = getRank(watchedStatistics.watchedAmount);
   initStatButton();
 });
