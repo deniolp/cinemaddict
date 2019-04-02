@@ -46,6 +46,7 @@ const RankLabels = {
 const AUTHORIZATION = `Basic uhiy37^%8x4c9o&Y*&T&FH`;
 const END_POINT = `https://es8-demo-srv.appspot.com/moowle`;
 const MOVIES_STORE_KEY = `movies-store-key`;
+const MOVIES_PER_PAGE = 5;
 const api = new API({
   endPoint: END_POINT,
   authorization: AUTHORIZATION,
@@ -56,6 +57,9 @@ const provider = new Provider({api, store});
 let initialMovies = [];
 let filteredMovies = [];
 let rankLabel = ``;
+let moviesCounter = 0;
+let isNotFilteredMovies = true;
+
 const filtersContainer = document.querySelector(`.main-navigation`);
 const moviesContainer = document.querySelector(`.films-list__container`);
 const moviesContainerTitle = document.querySelector(`.films-list__title`);
@@ -67,6 +71,7 @@ const statBoard = document.querySelector(`.statistic`);
 const textStatistic = document.querySelectorAll(`p.statistic__item-text`);
 const rankLabelElement = document.querySelector(`.statistic__rank-label`);
 const statOnFooter = document.querySelector(`.footer__statistics`);
+const showMoreMoviesButton = document.querySelector(`.films-list__show-more`);
 
 const updateMovie = (movieToUpdate, newMovie) => {
   for (const key of Object.keys(newMovie)) {
@@ -242,9 +247,11 @@ const renderMovie = (item, container, flag = true) => {
           movieComponent.update(newMovie);
           moviesContainer.innerHTML = ``;
           if (filteredMovies.length > 0) {
-            filteredMovies.forEach((it) => renderMovie(it, moviesContainer));
+            moviesCounter = 0;
+            renderMovies(false);
           } else {
-            initialMovies.forEach((it) => renderMovie(it, moviesContainer));
+            moviesCounter = 0;
+            renderMovies();
           }
           updateMoviesInBottom();
         });
@@ -301,7 +308,8 @@ const renderFilters = () => {
       filteredMovies = filterMovies(initialMovies, filterName);
 
       moviesContainer.innerHTML = ``;
-      filteredMovies.forEach((movie) => renderMovie(movie, moviesContainer));
+      moviesCounter = 0;
+      renderMovies(false);
     };
   });
 };
@@ -343,6 +351,31 @@ const removeEmptyBoard = () => {
   moviesContainerTitle.classList.add(`visually-hidden`);
 };
 
+const renderMovies = (flag = true) => {
+  let movies = [];
+  if (flag) {
+    isNotFilteredMovies = true;
+    movies = initialMovies;
+  } else {
+    movies = filteredMovies;
+    isNotFilteredMovies = false;
+    if (movies.length > 5) {
+      showMoreMoviesButton.classList.remove(`visually-hidden`);
+    }
+  }
+
+  for (let i = 0; i < MOVIES_PER_PAGE; i++) {
+    if (moviesCounter + i >= movies.length) {
+      break;
+    }
+    renderMovie(movies[moviesCounter + i], moviesContainer);
+  }
+  moviesCounter = moviesCounter + MOVIES_PER_PAGE;
+  if (moviesCounter >= movies.length) {
+    showMoreMoviesButton.classList.add(`visually-hidden`);
+  }
+};
+
 window.addEventListener(`offline`, () => {
   document.title = `${document.title}[OFFLINE]`;
 });
@@ -351,12 +384,16 @@ window.addEventListener(`online`, () => {
   provider.syncMovies();
 });
 
+showMoreMoviesButton.addEventListener(`click`, () => {
+  renderMovies(isNotFilteredMovies);
+});
+
 showEmptyBoard();
 provider.getMovies()
 .then((movies) => {
   removeEmptyBoard();
   initialMovies = movies;
-  initialMovies.forEach((it) => renderMovie(it, moviesContainer));
+  renderMovies();
   statOnFooter.textContent = `${initialMovies.length} movies inside`;
 })
 .catch(() => {
