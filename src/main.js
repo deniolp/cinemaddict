@@ -43,7 +43,7 @@ const RankLabels = {
   'Action': `ActionEr`,
   'Adventure': `Driver`
 };
-const AUTHORIZATION = `Basic uhiuy37^%8x4c9o&Y*&T&FH`;
+const AUTHORIZATION = `Basic uhiy37^%8x4c9o&Y*&T&FH`;
 const END_POINT = `https://es8-demo-srv.appspot.com/moowle`;
 const MOVIES_STORE_KEY = `movies-store-key`;
 const api = new API({
@@ -171,9 +171,10 @@ const renderMovie = (item, container, flag = true) => {
 
   popupComponent.onAddComment = (obj) => {
     item.comments.push(obj.comment);
+    const updatedMovie = updateMovie(item, obj);
     popupComponent.element.querySelector(`.film-details__comment-input`).disabled = true;
 
-    provider.updateMovie({id: item.id, data: item.toRAW()})
+    provider.updateMovie({id: updatedMovie.id, data: updatedMovie.toRAW()})
     .then((newMovie) => {
       movieComponent.update(newMovie);
       popupComponent.update(newMovie);
@@ -210,8 +211,9 @@ const renderMovie = (item, container, flag = true) => {
       it.disabled = true;
     });
     item.personalRating = obj.personalRating;
+    const updatedMovie = updateMovie(item, obj);
 
-    provider.updateMovie({id: item.id, data: item.toRAW()})
+    provider.updateMovie({id: updatedMovie.id, data: updatedMovie.toRAW()})
     .then((newMovie) => {
       Array.from(scoreInputs).forEach((it) => {
         it.disabled = false;
