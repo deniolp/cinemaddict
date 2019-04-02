@@ -32,15 +32,17 @@ class Popup extends Component {
     this._onClose = null;
     this._onAddComment = null;
     this._onVote = null;
+    this._onRemoveComment = null;
     this._onCloseClick = this._onCloseClick.bind(this);
     this._onAddCommentKeydown = this._onAddCommentKeydown.bind(this);
+    this._onRemoveCommentClick = this._onRemoveCommentClick.bind(this);
     this._onVoteClick = this._onVoteClick.bind(this);
     this._onEscPress = this._onEscPress.bind(this);
   }
 
   _getScore() {
     const arr = [];
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i < 10; i++) {
       arr.push(`
       <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${i}" id="rating-${i}" ${i === +this._personalRating ? `checked` : ``}>
       <label class="film-details__user-rating-label" for="rating-${i}">${i}</label>
@@ -219,6 +221,10 @@ class Popup extends Component {
     this._onAddComment = fn;
   }
 
+  set onRemoveComment(fn) {
+    this._onRemoveComment = fn;
+  }
+
   set onVote(fn) {
     this._onVote = fn;
   }
@@ -253,6 +259,12 @@ class Popup extends Component {
       }
       const userControlsBlock = this._element.querySelector(`.film-details__user-rating-controls`);
       userControlsBlock.classList.remove(`visually-hidden`);
+    }
+  }
+
+  _onRemoveCommentClick() {
+    if (typeof this._onRemoveComment === `function`) {
+      this._onRemoveComment();
     }
   }
 
@@ -321,6 +333,7 @@ class Popup extends Component {
   _addListeners() {
     this._element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._onCloseClick);
     this._element.querySelector(`.film-details__comment-input`).addEventListener(`keydown`, this._onAddCommentKeydown);
+    this._element.querySelector(`.film-details__watched-reset`).addEventListener(`click`, this._onRemoveCommentClick);
     this._element.querySelector(`.film-details__user-rating-score`).addEventListener(`click`, this._onVoteClick);
     window.addEventListener(`keydown`, this._onEscPress);
   }

@@ -128,7 +128,9 @@ const renderMovie = (item, container, flag = true) => {
     popupComponent.render();
     body.appendChild(popupComponent.element);
     const userControlBlock = popupComponent.element.querySelector(`.film-details__user-rating-controls`);
-    userControlBlock.classList.add(`visually-hidden`);
+    if (!userControlBlock.classList.contains(`visually-hidden`)) {
+      userControlBlock.classList.add(`visually-hidden`);
+    }
   };
 
   movieComponent.onAddToWatchList = (boolean) => {
@@ -188,6 +190,19 @@ const renderMovie = (item, container, flag = true) => {
     });
   };
 
+  popupComponent.onRemoveComment = () => {
+    item.comments.pop();
+
+    provider.updateMovie({id: item.id, data: item.toRAW()})
+    .then((newMovie) => {
+      movieComponent.update(newMovie);
+      popupComponent.update(newMovie);
+      popupComponent.rerender();
+      const userControlBlock = popupComponent.element.querySelector(`.film-details__user-rating-controls`);
+      userControlBlock.classList.add(`visually-hidden`);
+    });
+  };
+
   popupComponent.onVote = (obj) => {
     popupComponent.element.querySelector(`.film-details__user-rating-score`).style.backgroundColor = ``;
     const scoreInputs = popupComponent.element.querySelectorAll(`.film-details__user-rating-input`);
@@ -204,6 +219,8 @@ const renderMovie = (item, container, flag = true) => {
       movieComponent.update(newMovie);
       popupComponent.update(newMovie);
       popupComponent.rerender();
+      const userControlBlock = popupComponent.element.querySelector(`.film-details__user-rating-controls`);
+      userControlBlock.classList.add(`visually-hidden`);
     })
     .catch(() => {
       Array.from(scoreInputs).forEach((it) => {
