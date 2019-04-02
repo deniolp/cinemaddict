@@ -66,6 +66,7 @@ const filmBoard = document.querySelector(`.films`);
 const statBoard = document.querySelector(`.statistic`);
 const textStatistic = document.querySelectorAll(`p.statistic__item-text`);
 const rankLabelElement = document.querySelector(`.statistic__rank-label`);
+const statOnFooter = document.querySelector(`.footer__statistics`);
 
 const updateMovie = (movieToUpdate, newMovie) => {
   for (const key of Object.keys(newMovie)) {
@@ -344,6 +345,7 @@ provider.getMovies()
   removeEmptyBoard();
   initialMovies = movies;
   initialMovies.forEach((it) => renderMovie(it, moviesContainer));
+  statOnFooter.textContent = `${initialMovies.length} movies inside`;
 })
 .catch(() => {
   moviesContainerTitle.textContent = `Something went wrong while loading movies. Check your connection or try again later`;
