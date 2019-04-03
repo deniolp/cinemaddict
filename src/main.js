@@ -1,5 +1,5 @@
 import {Filter} from './filter';
-import {drawStat, unrenderStat, watchedStatistics} from './draw-stat';
+import {drawStat, unrenderStat, statForImport} from './draw-stat';
 import utils from './utils';
 import {Movie} from './movie';
 import {Popup} from './popup';
@@ -342,18 +342,18 @@ const initStatButton = () => {
 };
 
 const fillStatElements = () => {
-  rankLabel = RankLabels[watchedStatistics.mostWatchedGenre];
+  rankLabel = RankLabels[statForImport.mostWatchedGenre];
 
   textStatistic[0].innerHTML = `
-  ${watchedStatistics.watchedAmount} <span class="statistic__item-description">movies</span>
+  ${statForImport.watchedAmount} <span class="statistic__item-description">movies</span>
   `;
 
-  const [hours, mins] = utils.countDuration(watchedStatistics.watchedDuration);
+  const [hours, mins] = utils.countDuration(statForImport.watchedDuration);
   textStatistic[1].innerHTML = `
   ${hours} <span class="statistic__item-description">h</span> ${mins} <span class="statistic__item-description">m</span>
   `;
-  if (watchedStatistics.mostWatchedGenre) {
-    textStatistic[2].innerHTML = watchedStatistics.mostWatchedGenre;
+  if (statForImport.mostWatchedGenre) {
+    textStatistic[2].innerHTML = statForImport.mostWatchedGenre;
   } else {
     textStatistic[2].innerHTML = ``;
   }
@@ -520,6 +520,6 @@ provider.getMovies()
   renderFilters();
   updateFilters();
   drawStat(initialMovies);
-  profileRankElement.innerHTML = getRank(watchedStatistics.watchedAmount);
+  profileRankElement.innerHTML = getRank(statForImport.watchedAmount);
   initStatButton();
 });

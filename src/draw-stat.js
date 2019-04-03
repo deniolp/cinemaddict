@@ -114,4 +114,6 @@ const getStat = (movies) => {
   return {labels, values};
 };
 
-export {drawStat, unrenderStat, watchedStatistics};
+const statForImport = watchedStatistics;
+
+export {drawStat, unrenderStat, statForImport};
