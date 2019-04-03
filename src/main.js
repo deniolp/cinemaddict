@@ -61,7 +61,6 @@ let filteredMovies = [];
 let rankLabel = ``;
 let moviesCounter = 0;
 let isNotFilteredMovies = true;
-let filtersElements = null;
 
 const filtersContainer = document.querySelector(`.main-navigation`);
 const moviesContainer = document.querySelector(`.films-list__container`);
@@ -321,7 +320,6 @@ const renderFilters = () => {
     }
 
     filterComponent.onFilter = (evt) => {
-      filtersElements = filtersContainer.querySelectorAll(`.main-navigation__item`);
       removeActiveFromFilters();
       evt.target.classList.add(`main-navigation__item--active`);
       const filterName = evt.target.firstChild.textContent;
@@ -460,6 +458,7 @@ const onStatButtonClick = (evt) => {
 };
 
 const removeActiveFromFilters = () => {
+  const filtersElements = filtersContainer.querySelectorAll(`.main-navigation__item`);
   filtersElements.forEach((it) => it.classList.remove(`main-navigation__item--active`));
 };
 
@@ -491,6 +490,7 @@ searchInputElement.addEventListener(`keyup`, () => {
     renderMovies();
     showMoreMoviesButton.classList.remove(`visually-hidden`);
     removeActiveFromFilters();
+    const filtersElements = filtersContainer.querySelectorAll(`.main-navigation__item`);
     filtersElements[0].classList.add(`main-navigation__item--active`);
   }
 });
