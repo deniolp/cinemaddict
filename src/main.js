@@ -48,6 +48,7 @@ const AUTHORIZATION = `Basic uhiy37^%8x4c9o&Y*&T&FH`;
 const END_POINT = `https://es8-demo-srv.appspot.com/moowle`;
 const MOVIES_STORE_KEY = `movies-store-key`;
 const MOVIES_PER_PAGE = 5;
+const KEYCODE_ENTER = 13;
 const api = new API({
   endPoint: END_POINT,
   authorization: AUTHORIZATION,
@@ -120,7 +121,7 @@ const filterMovies = (movies, filterName, value = false) => {
       return [...movies].sort((a, b) => b.comments.length - a.comments.length);
 
     case `search`:
-      return movies.filter((movie) => movie.title.split(` `).find((it) => it === value));
+      return movies.filter((movie) => movie.title.split(` `).find((it) => it.toLowerCase() === value));
 
     default:
       return movies;
@@ -469,17 +470,26 @@ showMoreMoviesButton.addEventListener(`click`, () => {
 });
 
 searchInputElement.addEventListener(`keyup`, () => {
-  const inputValue = searchInputElement.value;
+  const inputValue = searchInputElement.value.toLowerCase();
   filteredMovies = filterMovies(initialMovies, `search`, inputValue);
   if (filteredMovies.length > 0) {
     moviesContainer.innerHTML = ``;
+    moviesCounter = 0;
+    renderMovies(false);
   }
+
   if (searchInputElement.value === ``) {
     moviesContainer.innerHTML = ``;
+    moviesCounter = 0;
     renderMovies();
+    showMoreMoviesButton.classList.remove(`visually-hidden`);
   }
-  moviesCounter = 0;
-  renderMovies(false);
+});
+
+searchInputElement.addEventListener(`keydown`, (evt) => {
+  if (evt.keyCode === KEYCODE_ENTER) {
+    evt.preventDefault();
+  }
 });
 
 statisticButtons.forEach((item) => item.addEventListener(`click`, onStatButtonClick));
