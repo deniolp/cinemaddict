@@ -96,12 +96,21 @@ const filterMovies = (movies, filterName, value = false) => {
       return movies;
 
     case FilterWithNumberNames.watchlist:
+      unrenderStat();
+      statBoard.classList.add(`visually-hidden`);
+      filmBoard.classList.remove(`visually-hidden`);
       return movies.filter((it) => it.isInWatchlist);
 
     case FilterWithNumberNames.history:
+      unrenderStat();
+      statBoard.classList.add(`visually-hidden`);
+      filmBoard.classList.remove(`visually-hidden`);
       return movies.filter((it) => it.isWatched);
 
     case FilterWithNumberNames.favorites:
+      unrenderStat();
+      statBoard.classList.add(`visually-hidden`);
+      filmBoard.classList.remove(`visually-hidden`);
       return movies.filter((it) => it.isFavourite);
 
     case `Most rated`:
@@ -166,8 +175,8 @@ const renderMovie = (item, container, flag = true) => {
         .then((newMovie) => {
           movieComponent.update(newMovie);
         });
-    drawStat(initialMovies);
-    profileRankElement.innerHTML = getRank(watchedStatistics.watchedAmount);
+    const watchedMovies = initialMovies.filter((movie) => movie.isWatched);
+    profileRankElement.innerHTML = getRank(watchedMovies.length);
     updateFilters();
     updateMoviesInBottom();
     unrenderStat();

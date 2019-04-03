@@ -70,7 +70,9 @@ const drawStat = (movies) => {
 };
 
 const unrenderStat = () => {
-  myChart.destroy();
+  if (myChart) {
+    myChart.destroy();
+  }
 };
 
 const getTotalDuration = (movies) => {
