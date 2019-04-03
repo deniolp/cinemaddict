@@ -328,6 +328,7 @@ const renderFilters = () => {
 
       moviesContainer.innerHTML = ``;
       moviesCounter = 0;
+      searchInputElement.value = ``;
       renderMovies(false);
     };
   });
