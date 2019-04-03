@@ -2,7 +2,6 @@ import Component from './component';
 import moment from 'moment';
 
 const KEYCODE_ENTER = 13;
-const KEYCODE_CTRL = 17;
 const KEYCODE_ESC = 27;
 
 export default class Popup extends Component {
@@ -251,7 +250,7 @@ export default class Popup extends Component {
   }
 
   _onAddCommentKeydown(evt) {
-    if (evt.keyCode === KEYCODE_ENTER && evt.metaKey || evt.keyCode === KEYCODE_CTRL && evt.keyCode === KEYCODE_ENTER) {
+    if (evt.keyCode === KEYCODE_ENTER && evt.metaKey || evt.keyCode === KEYCODE_ENTER && evt.ctrlKey) {
       evt.preventDefault();
       const newData = this._prepareData();
 
