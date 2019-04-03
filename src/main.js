@@ -1,11 +1,11 @@
-import {Filter} from './filter';
+import Filter from './filter';
 import {drawStat, unrenderStat, statForImport} from './draw-stat';
 import utils from './utils';
-import {Movie} from './movie';
-import {Popup} from './popup';
-import {API} from './api';
-import {Provider} from './provider';
-import {Store} from './store';
+import Movie from './movie';
+import Popup from './popup';
+import API from './api';
+import Provider from './provider';
+import Store from './store';
 import moment from 'moment';
 
 const FilterWithNumberNames = {

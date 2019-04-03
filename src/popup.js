@@ -1,10 +1,10 @@
-import {Component} from './component';
+import Component from './component';
 import moment from 'moment';
 
 const KEYCODE_ENTER = 13;
 const KEYCODE_ESC = 27;
 
-class Popup extends Component {
+export default class Popup extends Component {
   constructor({id, title, poster, altTitle, actors, ageRating, description, totalRating,
     releaseDate, releaseCountry, runtime, genre, director, writers, comments, personalRating,
     isInWatchlist, isWatched, isFavourite}) {
@@ -389,5 +389,3 @@ class Popup extends Component {
     };
   }
 }
-
-export {Popup};

@@ -1,8 +1,8 @@
 import utils from './utils';
-import {Component} from './component';
+import Component from './component';
 import moment from 'moment';
 
-class Movie extends Component {
+export default class Movie extends Component {
   constructor({id, title, poster, altTitle, actors, ageRating, description, totalRating,
     releaseDate, releaseCountry, runtime, genre, director, writers, comments, personalRating,
     isInWatchlist, isWatched, isFavourite}, isControls = true) {
@@ -146,5 +146,3 @@ class Movie extends Component {
     this.rerender();
   }
 }
-
-export {Movie};
