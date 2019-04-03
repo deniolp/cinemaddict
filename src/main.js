@@ -72,6 +72,7 @@ const textStatistic = document.querySelectorAll(`p.statistic__item-text`);
 const rankLabelElement = document.querySelector(`.statistic__rank-label`);
 const statOnFooter = document.querySelector(`.footer__statistics`);
 const showMoreMoviesButton = document.querySelector(`.films-list__show-more`);
+const searchInputElement = document.querySelector(`.search__field`);
 
 const updateMovie = (movieToUpdate, newMovie) => {
   for (const key of Object.keys(newMovie)) {
@@ -83,7 +84,7 @@ const updateMovie = (movieToUpdate, newMovie) => {
   return movieToUpdate;
 };
 
-const filterMovies = (movies, filterName) => {
+const filterMovies = (movies, filterName, value = false) => {
   switch (filterName.trim()) {
     case `All`:
       unrenderStat();
@@ -106,6 +107,9 @@ const filterMovies = (movies, filterName) => {
 
     case `Most commented`:
       return [...movies].sort((a, b) => b.comments.length - a.comments.length);
+
+    case `search`:
+      return movies.filter((movie) => movie.title.split(` `).find((it) => it === value));
 
     default:
       return movies;
@@ -386,6 +390,20 @@ window.addEventListener(`online`, () => {
 
 showMoreMoviesButton.addEventListener(`click`, () => {
   renderMovies(isNotFilteredMovies);
+});
+
+searchInputElement.addEventListener(`keyup`, () => {
+  const inputValue = searchInputElement.value;
+  filteredMovies = filterMovies(initialMovies, `search`, inputValue);
+  if (filteredMovies.length > 0) {
+    moviesContainer.innerHTML = ``;
+  }
+  if (searchInputElement.value === ``) {
+    moviesContainer.innerHTML = ``;
+    renderMovies();
+  }
+  moviesCounter = 0;
+  renderMovies(false);
 });
 
 showEmptyBoard();
