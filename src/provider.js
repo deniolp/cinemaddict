@@ -4,7 +4,7 @@ const objectToArray = (obj) => {
   return Object.keys(obj).map((id) => obj[id]);
 };
 
-const Provider = class {
+export default class {
   constructor({api, store}) {
     this._api = api;
     this._store = store;
@@ -49,6 +49,4 @@ const Provider = class {
   _isOnline() {
     return window.navigator.onLine;
   }
-};
-
-export {Provider};
+}

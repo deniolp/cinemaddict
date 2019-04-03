@@ -1,6 +1,6 @@
-import {Component} from './component';
+import Component from './component';
 
-class Filter extends Component {
+export default class Filter extends Component {
   constructor({name, hasAmount = true, isAdditional = false}) {
     super();
     this._name = name;
@@ -45,5 +45,3 @@ class Filter extends Component {
     }
   }
 }
-
-export {Filter};

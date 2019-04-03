@@ -70,7 +70,9 @@ const drawStat = (movies) => {
 };
 
 const unrenderStat = () => {
-  myChart.destroy();
+  if (myChart) {
+    myChart.destroy();
+  }
 };
 
 const getTotalDuration = (movies) => {
@@ -112,4 +114,6 @@ const getStat = (movies) => {
   return {labels, values};
 };
 
-export {drawStat, unrenderStat, watchedStatistics};
+const statForImport = watchedStatistics;
+
+export {drawStat, unrenderStat, statForImport};

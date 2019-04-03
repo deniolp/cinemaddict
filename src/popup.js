@@ -1,9 +1,10 @@
-import {Component} from './component';
+import Component from './component';
 import moment from 'moment';
 
 const KEYCODE_ENTER = 13;
+const KEYCODE_ESC = 27;
 
-class Popup extends Component {
+export default class Popup extends Component {
   constructor({id, title, poster, altTitle, actors, ageRating, description, totalRating,
     releaseDate, releaseCountry, runtime, genre, director, writers, comments, personalRating,
     isInWatchlist, isWatched, isFavourite}) {
@@ -31,14 +32,17 @@ class Popup extends Component {
     this._onClose = null;
     this._onAddComment = null;
     this._onVote = null;
+    this._onRemoveComment = null;
     this._onCloseClick = this._onCloseClick.bind(this);
     this._onAddCommentKeydown = this._onAddCommentKeydown.bind(this);
+    this._onRemoveCommentClick = this._onRemoveCommentClick.bind(this);
     this._onVoteClick = this._onVoteClick.bind(this);
+    this._onEscPress = this._onEscPress.bind(this);
   }
 
   _getScore() {
     const arr = [];
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i < 10; i++) {
       arr.push(`
       <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${i}" id="rating-${i}" ${i === +this._personalRating ? `checked` : ``}>
       <label class="film-details__user-rating-label" for="rating-${i}">${i}</label>
@@ -179,7 +183,7 @@ class Popup extends Component {
 
       <section class="film-details__user-rating-wrap">
         <div class="film-details__user-rating-controls">
-          <span class="film-details__watched-status film-details__watched-status${this._isWatched ? `--active` : ``}">Already watched</span>
+          <span class="film-details__watched-status ${this._isWatched ? `film-details__watched-status--active` : ``} ${this._isInWatchlist ? `film-details__watched-status--active` : ``}">${this._isWatched ? `Already watched` : ``} ${this._isInWatchlist ? `Will watch` : ``}</span>
           <button class="film-details__watched-reset" type="button">undo</button>
         </div>
 
@@ -217,6 +221,10 @@ class Popup extends Component {
     this._onAddComment = fn;
   }
 
+  set onRemoveComment(fn) {
+    this._onRemoveComment = fn;
+  }
+
   set onVote(fn) {
     this._onVote = fn;
   }
@@ -230,13 +238,33 @@ class Popup extends Component {
     }
   }
 
+  _onEscPress(evt) {
+    if (evt.keyCode === KEYCODE_ESC) {
+      const newData = this._prepareData();
+
+      this.update(newData);
+      if (typeof this._onClose === `function`) {
+        this._onClose(newData);
+      }
+    }
+  }
+
   _onAddCommentKeydown(evt) {
-    if (evt.keyCode === KEYCODE_ENTER && evt.metaKey) {
+    if (evt.keyCode === KEYCODE_ENTER && evt.metaKey || evt.keyCode === KEYCODE_ENTER && evt.ctrlKey) {
       evt.preventDefault();
       const newData = this._prepareData();
+
       if (typeof this._onAddComment === `function`) {
         this._onAddComment(newData);
       }
+      const userControlsBlock = this._element.querySelector(`.film-details__user-rating-controls`);
+      userControlsBlock.classList.remove(`visually-hidden`);
+    }
+  }
+
+  _onRemoveCommentClick() {
+    if (typeof this._onRemoveComment === `function`) {
+      this._onRemoveComment();
     }
   }
 
@@ -305,13 +333,16 @@ class Popup extends Component {
   _addListeners() {
     this._element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._onCloseClick);
     this._element.querySelector(`.film-details__comment-input`).addEventListener(`keydown`, this._onAddCommentKeydown);
+    this._element.querySelector(`.film-details__watched-reset`).addEventListener(`click`, this._onRemoveCommentClick);
     this._element.querySelector(`.film-details__user-rating-score`).addEventListener(`click`, this._onVoteClick);
+    window.addEventListener(`keydown`, this._onEscPress);
   }
 
   _removeListeners() {
     this._element.querySelector(`.film-details__close-btn`).removeEventListener(`click`, this._onCloseClick);
     this._element.querySelector(`.film-details__comment-input`).removeEventListener(`keydown`, this._onAddComment);
     this._element.querySelector(`.film-details__user-rating-score`).removeEventListener(`click`, this._onVoteClick);
+    window.removeEventListener(`keydown`, this._onEscPress);
   }
 
   unrender() {
@@ -324,6 +355,7 @@ class Popup extends Component {
       'watched': (value) => {
         if (value === `on`) {
           target.isWatched = true;
+          target.dateIsWatched = moment().format(`DD-MM-YYYY`);
         }
         if (value === ``) {
           target.isWatched = false;
@@ -357,5 +389,3 @@ class Popup extends Component {
     };
   }
 }
-
-export {Popup};
