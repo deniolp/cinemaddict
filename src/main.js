@@ -6,6 +6,7 @@ import {Popup} from './popup';
 import {API} from './api';
 import {Provider} from './provider';
 import {Store} from './store';
+import moment from 'moment';
 
 const FilterWithNumberNames = {
   watchlist: `Watchlist`,
@@ -73,6 +74,7 @@ const rankLabelElement = document.querySelector(`.statistic__rank-label`);
 const statOnFooter = document.querySelector(`.footer__statistics`);
 const showMoreMoviesButton = document.querySelector(`.films-list__show-more`);
 const searchInputElement = document.querySelector(`.search__field`);
+const statisticButtons = document.querySelectorAll(`.statistic__filters-input`);
 
 const updateMovie = (movieToUpdate, newMovie) => {
   for (const key of Object.keys(newMovie)) {
@@ -156,6 +158,9 @@ const renderMovie = (item, container, flag = true) => {
 
   movieComponent.onMarkAsWatched = (boolean) => {
     item.isWatched = boolean;
+    if (item.isWatched) {
+      item.dateIsWatched = moment().format(`DD-MM-YYYY`);
+    } // temp?
     popupComponent.update(item);
     provider.updateMovie({id: item.id, data: item.toRAW()})
         .then((newMovie) => {
@@ -324,14 +329,8 @@ const initStatButton = () => {
   statButtonElement.addEventListener(`click`, onStatClick);
 };
 
-const onStatClick = () => {
-  unrenderStat();
-  drawStat(initialMovies);
+const fillStatElements = () => {
   rankLabel = RankLabels[watchedStatistics.mostWatchedGenre];
-  profileRankElement.innerHTML = rankLabel;
-
-  statBoard.classList.remove(`visually-hidden`);
-  filmBoard.classList.add(`visually-hidden`);
 
   textStatistic[0].innerHTML = `
   ${watchedStatistics.watchedAmount} <span class="statistic__item-description">movies</span>
@@ -341,9 +340,24 @@ const onStatClick = () => {
   textStatistic[1].innerHTML = `
   ${hours} <span class="statistic__item-description">h</span> ${mins} <span class="statistic__item-description">m</span>
   `;
-  textStatistic[2].innerHTML = watchedStatistics.mostWatchedGenre;
+  if (watchedStatistics.mostWatchedGenre) {
+    textStatistic[2].innerHTML = watchedStatistics.mostWatchedGenre;
+  } else {
+    textStatistic[2].innerHTML = ``;
+  }
 
   rankLabelElement.innerHTML = rankLabel;
+};
+
+const onStatClick = () => {
+  unrenderStat();
+  drawStat(initialMovies);
+
+  fillStatElements();
+
+  statBoard.classList.remove(`visually-hidden`);
+  filmBoard.classList.add(`visually-hidden`);
+  document.querySelector(`#statistic-all-time`).checked = true;
 };
 
 const showEmptyBoard = () => {
@@ -379,6 +393,41 @@ const renderMovies = (flag = true) => {
     showMoreMoviesButton.classList.add(`visually-hidden`);
   }
 };
+// temp
+const getRandomNumber = (first, second) => {
+  const min = Math.floor(first);
+  const max = Math.ceil(second);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+// temp
+const addDateToIsWatched = (movies) => {
+  return movies.forEach((it) => {
+    it.dateIsWatched = `${getRandomNumber(1, 28)}-${getRandomNumber(1, 12)}-${getRandomNumber(2017, 2019)}`;
+  });
+};
+
+const filterByDateOfWatched = (filter, movies) => {
+  switch (filter) {
+    case `all-time`:
+      return movies;
+
+    case `today`:
+      return movies.filter((it) => {
+        return moment(it.dateIsWatched, `DD-MM-YYYY`).format(`DD-MM-YYYY`) === moment().format(`DD-MM-YYYY`);
+      });
+
+    default:
+      return movies;
+  }
+};
+
+const onStatButtonClick = (evt) => {
+  unrenderStat();
+  const watchedMovies = initialMovies.filter((movie) => movie.isWatched);
+  const filteredbyDateMovies = filterByDateOfWatched(evt.target.value, watchedMovies);
+  drawStat(filteredbyDateMovies);
+  fillStatElements();
+};
 
 window.addEventListener(`offline`, () => {
   document.title = `${document.title}[OFFLINE]`;
@@ -406,12 +455,15 @@ searchInputElement.addEventListener(`keyup`, () => {
   renderMovies(false);
 });
 
+statisticButtons.forEach((item) => item.addEventListener(`click`, onStatButtonClick));
+
 showEmptyBoard();
 provider.getMovies()
 .then((movies) => {
   removeEmptyBoard();
   initialMovies = movies;
   renderMovies();
+  addDateToIsWatched(initialMovies); // temp
   statOnFooter.textContent = `${initialMovies.length} movies inside`;
 })
 .catch(() => {

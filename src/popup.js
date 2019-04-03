@@ -355,6 +355,7 @@ class Popup extends Component {
       'watched': (value) => {
         if (value === `on`) {
           target.isWatched = true;
+          target.dateIsWatched = moment().format(`DD-MM-YYYY`);
         }
         if (value === ``) {
           target.isWatched = false;
