@@ -345,8 +345,11 @@ const fillStatElements = () => {
   } else {
     textStatistic[2].innerHTML = ``;
   }
-
-  rankLabelElement.innerHTML = rankLabel;
+  if (rankLabel) {
+    rankLabelElement.innerHTML = rankLabel;
+  } else {
+    rankLabelElement.innerHTML = ``;
+  }
 };
 
 const onStatClick = () => {
@@ -414,6 +417,21 @@ const filterByDateOfWatched = (filter, movies) => {
     case `today`:
       return movies.filter((it) => {
         return moment(it.dateIsWatched, `DD-MM-YYYY`).format(`DD-MM-YYYY`) === moment().format(`DD-MM-YYYY`);
+      });
+
+    case `week`:
+      return movies.filter((it) => {
+        return moment(it.dateIsWatched, `DD-MM-YYYY`) > moment().subtract(1, `week`);
+      });
+
+    case `month`:
+      return movies.filter((it) => {
+        return moment(it.dateIsWatched, `DD-MM-YYYY`) > moment().subtract(1, `month`);
+      });
+
+    case `year`:
+      return movies.filter((it) => {
+        return moment(it.dateIsWatched, `DD-MM-YYYY`) > moment().subtract(1, `year`);
       });
 
     default:
