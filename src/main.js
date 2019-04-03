@@ -61,6 +61,7 @@ let filteredMovies = [];
 let rankLabel = ``;
 let moviesCounter = 0;
 let isNotFilteredMovies = true;
+let filtersElements = null;
 
 const filtersContainer = document.querySelector(`.main-navigation`);
 const moviesContainer = document.querySelector(`.films-list__container`);
@@ -320,8 +321,8 @@ const renderFilters = () => {
     }
 
     filterComponent.onFilter = (evt) => {
-      const filtersElements = filtersContainer.querySelectorAll(`.main-navigation__item`);
-      filtersElements.forEach((it) => it.classList.remove(`main-navigation__item--active`));
+      filtersElements = filtersContainer.querySelectorAll(`.main-navigation__item`);
+      removeActiveFromFilters();
       evt.target.classList.add(`main-navigation__item--active`);
       const filterName = evt.target.firstChild.textContent;
       filteredMovies = filterMovies(initialMovies, filterName);
@@ -458,6 +459,10 @@ const onStatButtonClick = (evt) => {
   fillStatElements();
 };
 
+const removeActiveFromFilters = () => {
+  filtersElements.forEach((it) => it.classList.remove(`main-navigation__item--active`));
+};
+
 window.addEventListener(`offline`, () => {
   document.title = `${document.title}[OFFLINE]`;
 });
@@ -477,6 +482,7 @@ searchInputElement.addEventListener(`keyup`, () => {
     moviesContainer.innerHTML = ``;
     moviesCounter = 0;
     renderMovies(false);
+    removeActiveFromFilters();
   }
 
   if (searchInputElement.value === ``) {
@@ -484,6 +490,8 @@ searchInputElement.addEventListener(`keyup`, () => {
     moviesCounter = 0;
     renderMovies();
     showMoreMoviesButton.classList.remove(`visually-hidden`);
+    removeActiveFromFilters();
+    filtersElements[0].classList.add(`main-navigation__item--active`);
   }
 });
 
