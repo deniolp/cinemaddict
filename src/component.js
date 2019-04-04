@@ -5,6 +5,7 @@ export default class Component {
     }
 
     this._element = null;
+    this._elements = {};
   }
 
   get element() {
@@ -32,6 +33,7 @@ export default class Component {
     this._addListeners();
   }
 
+  _getElements() {}
   _addListeners() {}
   _removeListeners() {}
 }

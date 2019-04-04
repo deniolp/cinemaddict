@@ -142,8 +142,9 @@ const renderMovie = (item, container, flag = true) => {
   container.appendChild(movieComponent.render());
 
   const onCommentFocus = () => {
-    popupComponent.element.querySelector(`.film-details__comment-input`).style.border = ``;
-    popupComponent.element.querySelector(`.film-details__comment-input`).removeEventListener(`focus`, onCommentFocus);
+    const commentInputElement = popupComponent.element.querySelector(`.film-details__comment-input`);
+    commentInputElement.style.border = ``;
+    commentInputElement.removeEventListener(`focus`, onCommentFocus);
   };
 
   movieComponent.onPopup = () => {
@@ -197,22 +198,23 @@ const renderMovie = (item, container, flag = true) => {
   popupComponent.onAddComment = (obj) => {
     item.comments.push(obj.comment);
     const updatedMovie = updateMovie(item, obj);
-    popupComponent.element.querySelector(`.film-details__comment-input`).disabled = true;
+    const commentInputElement = popupComponent.element.querySelector(`.film-details__comment-input`);
+    commentInputElement.disabled = true;
 
     provider.updateMovie({id: updatedMovie.id, data: updatedMovie.toRAW()})
     .then((newMovie) => {
       movieComponent.update(newMovie);
       popupComponent.update(newMovie);
       popupComponent.rerender();
-      popupComponent.element.querySelector(`.film-details__comment-input`).disabled = false;
+      commentInputElement.disabled = false;
     })
     .catch(() => {
       item.comments.pop();
-      popupComponent.element.querySelector(`.film-details__comment-input`).disabled = false;
-      popupComponent.element.querySelector(`.film-details__comment-input`).style.border = `3px solid red`;
+      commentInputElement.disabled = false;
+      commentInputElement.style.border = `3px solid red`;
 
       shakeElement(popupComponent.element.querySelector(`.film-details__inner`));
-      popupComponent.element.querySelector(`.film-details__comment-input`).addEventListener(`focus`, onCommentFocus);
+      commentInputElement.addEventListener(`focus`, onCommentFocus);
     });
   };
 
@@ -230,7 +232,8 @@ const renderMovie = (item, container, flag = true) => {
   };
 
   popupComponent.onVote = (obj) => {
-    popupComponent.element.querySelector(`.film-details__user-rating-score`).style.backgroundColor = ``;
+    const voteAreaElement = popupComponent.element.querySelector(`.film-details__user-rating-score`);
+    voteAreaElement.style.backgroundColor = ``;
     const scoreInputs = popupComponent.element.querySelectorAll(`.film-details__user-rating-input`);
     Array.from(scoreInputs).forEach((it) => {
       it.disabled = true;
@@ -253,8 +256,8 @@ const renderMovie = (item, container, flag = true) => {
       Array.from(scoreInputs).forEach((it) => {
         it.disabled = false;
       });
-      popupComponent.element.querySelector(`.film-details__user-rating-score`).style.backgroundColor = `red`;
-      shakeElement(popupComponent.element.querySelector(`.film-details__user-rating-score`));
+      voteAreaElement.style.backgroundColor = `red`;
+      shakeElement(voteAreaElement);
     });
   };
 
@@ -294,13 +297,14 @@ const shakeElement = (element) => {
 const getRank = (num) => {
   if (num > 0 && num <= 10) {
     return `Novice`;
-  } else if (num > 10 && num <= 20) {
-    return `Fan`;
-  } else if (num > 20) {
-    return `Movie buff`;
-  } else {
-    return ``;
   }
+  if (num > 10 && num <= 20) {
+    return `Fan`;
+  }
+  if (num > 20) {
+    return `Movie buff`;
+  }
+  return ``;
 };
 
 const updateMoviesInBottom = () => {
@@ -395,12 +399,10 @@ const renderMovies = (flag = true) => {
     }
   }
 
-  for (let i = 0; i < MOVIES_PER_PAGE; i++) {
-    if (moviesCounter + i >= movies.length) {
-      break;
-    }
-    renderMovie(movies[moviesCounter + i], moviesContainer);
+  for (const movie of movies.slice(moviesCounter, MOVIES_PER_PAGE + moviesCounter)) {
+    renderMovie(movie, moviesContainer);
   }
+
   moviesCounter = moviesCounter + MOVIES_PER_PAGE;
   if (moviesCounter >= movies.length) {
     showMoreMoviesButton.classList.add(`visually-hidden`);
