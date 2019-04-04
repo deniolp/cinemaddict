@@ -257,7 +257,7 @@ export default class Popup extends Component {
       if (typeof this._onAddComment === `function`) {
         this._onAddComment(newData);
       }
-      this._elements.userRatingControls.classList.remove(`visually-hidden`);
+      this._userRatingControls.classList.remove(`visually-hidden`);
     }
   }
 
@@ -278,7 +278,7 @@ export default class Popup extends Component {
   }
 
   _prepareData() {
-    const formData = new FormData(this._elements.formElement);
+    const formData = new FormData(this._formElement);
     return this._processForm(formData);
   }
 
@@ -329,30 +329,30 @@ export default class Popup extends Component {
     }
   }
 
-  _getElements() {
-    this._elements.closeButtonElement = this._element.querySelector(`.film-details__close-btn`);
-    this._elements.commentInputElement = this._element.querySelector(`.film-details__comment-input`);
-    this._elements.commentResetElement = this._element.querySelector(`.film-details__watched-reset`);
-    this._elements.voteAreaElement = this._element.querySelector(`.film-details__user-rating-score`);
-    this._elements.userRatingControls = this._element.querySelector(`.film-details__user-rating-controls`);
-    this._elements.formElement = this._element.querySelector(`.film-details__inner`);
-    return this._elements;
+  _initElements() {
+    const element = this._element;
+    this._closeButtonElement = element.querySelector(`.film-details__close-btn`);
+    this._commentInputElement = element.querySelector(`.film-details__comment-input`);
+    this._commentResetElement = element.querySelector(`.film-details__watched-reset`);
+    this._voteAreaElement = element.querySelector(`.film-details__user-rating-score`);
+    this._userRatingControls = element.querySelector(`.film-details__user-rating-controls`);
+    this._formElement = element.querySelector(`.film-details__inner`);
   }
 
   _addListeners() {
-    this._getElements();
-    this._elements.closeButtonElement.addEventListener(`click`, this._onCloseClick);
-    this._elements.commentInputElement.addEventListener(`keydown`, this._onAddCommentKeydown);
-    this._elements.commentResetElement.addEventListener(`click`, this._onRemoveCommentClick);
-    this._elements.voteAreaElement.addEventListener(`click`, this._onVoteClick);
+    this._initElements();
+    this._closeButtonElement.addEventListener(`click`, this._onCloseClick);
+    this._commentInputElement.addEventListener(`keydown`, this._onAddCommentKeydown);
+    this._commentResetElement.addEventListener(`click`, this._onRemoveCommentClick);
+    this._voteAreaElement.addEventListener(`click`, this._onVoteClick);
     window.addEventListener(`keydown`, this._onEscPress);
   }
 
   _removeListeners() {
-    this._elements.closeButtonElement.removeEventListener(`click`, this._onCloseClick);
-    this._elements.commentInputElement.removeEventListener(`keydown`, this._onAddComment);
-    this._elements.commentResetElement.removeEventListener(`click`, this._onRemoveCommentClick);
-    this._elements.voteAreaElement.removeEventListener(`click`, this._onVoteClick);
+    this._closeButtonElement.removeEventListener(`click`, this._onCloseClick);
+    this._commentInputElement.removeEventListener(`keydown`, this._onAddComment);
+    this._commentResetElement.removeEventListener(`click`, this._onRemoveCommentClick);
+    this._voteAreaElement.removeEventListener(`click`, this._onVoteClick);
     window.removeEventListener(`keydown`, this._onEscPress);
   }
 

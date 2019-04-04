@@ -5,7 +5,6 @@ export default class Component {
     }
 
     this._element = null;
-    this._elements = {};
   }
 
   get element() {
