@@ -395,12 +395,10 @@ const renderMovies = (flag = true) => {
     }
   }
 
-  for (let i = 0; i < MOVIES_PER_PAGE; i++) {
-    if (moviesCounter + i >= movies.length) {
-      break;
-    }
-    renderMovie(movies[moviesCounter + i], moviesContainer);
+  for (const movie of movies.slice(moviesCounter, MOVIES_PER_PAGE + moviesCounter)) {
+    renderMovie(movie, moviesContainer);
   }
+
   moviesCounter = moviesCounter + MOVIES_PER_PAGE;
   if (moviesCounter >= movies.length) {
     showMoreMoviesButton.classList.add(`visually-hidden`);
