@@ -354,16 +354,8 @@ const fillStatElements = () => {
   textStatistic[1].innerHTML = `
   ${hours} <span class="statistic__item-description">h</span> ${mins} <span class="statistic__item-description">m</span>
   `;
-  if (statForImport.mostWatchedGenre) {
-    textStatistic[2].innerHTML = statForImport.mostWatchedGenre;
-  } else {
-    textStatistic[2].innerHTML = ``;
-  }
-  if (rankLabel) {
-    rankLabelElement.innerHTML = rankLabel;
-  } else {
-    rankLabelElement.innerHTML = ``;
-  }
+  textStatistic[2].innerHTML = statForImport.mostWatchedGenre ? statForImport.mostWatchedGenre : ``;
+  rankLabelElement.innerHTML = rankLabel ? rankLabel : ``;
 };
 
 const onStatClick = () => {
