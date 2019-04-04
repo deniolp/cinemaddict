@@ -118,21 +118,31 @@ export default class Movie extends Component {
     }
   }
 
+  _getElements() {
+    this._elements.cardComments = this._element.querySelector(`.film-card__comments`);
+    this._elements.cardControls = this._element.querySelector(`.film-card__controls`);
+    this._elements.cardAddToWatchlist = this._element.querySelector(`.film-card__controls-item--add-to-watchlist`);
+    this._elements.cardMarkAsWatched = this._element.querySelector(`.film-card__controls-item--mark-as-watched`);
+    this._elements.cardMarkAsFavorite = this._element.querySelector(`.film-card__controls-item--favorite`);
+    return this._elements;
+  }
+
   _addListeners() {
-    this._element.querySelector(`.film-card__comments`).addEventListener(`click`, this._onCommentsClick);
-    if (this._element.querySelector(`.film-card__controls`)) {
-      this._element.querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, this._onAddToWatchlistClick);
-      this._element.querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, this._onMarkAsWatchedClick);
-      this._element.querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, this._onMarkAsFavoriteClick);
+    this._getElements();
+    this._elements.cardComments.addEventListener(`click`, this._onCommentsClick);
+    if (this._elements.cardControls) {
+      this._elements.cardAddToWatchlist.addEventListener(`click`, this._onAddToWatchlistClick);
+      this._elements.cardMarkAsWatched.addEventListener(`click`, this._onMarkAsWatchedClick);
+      this._elements.cardMarkAsFavorite.addEventListener(`click`, this._onMarkAsFavoriteClick);
     }
   }
 
   _removeListeners() {
-    this._element.querySelector(`.film-card__comments`).removeEventListener(`click`, this._onCommentsClick);
-    if (this._element.querySelector(`.film-card__controls`)) {
-      this._element.querySelector(`.film-card__controls-item--add-to-watchlist`).removeEventListener(`click`, this._onAddToWatchlistClick);
-      this._element.querySelector(`.film-card__controls-item--mark-as-watched`).removeEventListener(`click`, this._onMarkAsWatchedClick);
-      this._element.querySelector(`.film-card__controls-item--favorite`).removeEventListener(`click`, this._onMarkAsFavoriteClick);
+    this._elements.cardComments.removeEventListener(`click`, this._onCommentsClick);
+    if (this._elements.cardControls) {
+      this._elements.cardAddToWatchlist.removeEventListener(`click`, this._onAddToWatchlistClick);
+      this._elements.cardMarkAsWatched.removeEventListener(`click`, this._onMarkAsWatchedClick);
+      this._elements.cardMarkAsFavorite.removeEventListener(`click`, this._onMarkAsFavoriteClick);
     }
   }
 

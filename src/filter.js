@@ -33,15 +33,21 @@ export default class Filter extends Component {
     }
   }
 
+  _getElements() {
+    this._elements.filterElement = this._element.querySelector(`.main-navigation__item`);
+    return this._elements;
+  }
+
   _addListeners() {
-    if (!this._element.querySelector(`.main-navigation__item`).classList.contains(`.main-navigation__item--additional`)) {
-      this._element.querySelector(`.main-navigation__item`).addEventListener(`click`, this._onFilterClick);
+    this._getElements();
+    if (!this._elements.filterElement.classList.contains(`.main-navigation__item--additional`)) {
+      this._elements.filterElement.addEventListener(`click`, this._onFilterClick);
     }
   }
 
   _removeListeners() {
-    if (!this._element.querySelector(`.main-navigation__item`).classList.contains(`.main-navigation__item--additional`)) {
-      this._element.querySelector(`.main-navigation__item`).removeEventListener(`click`, this._onFilterClick);
+    if (!this._elements.filterElement.classList.contains(`.main-navigation__item--additional`)) {
+      this._elements.filterElement.removeEventListener(`click`, this._onFilterClick);
     }
   }
 }
