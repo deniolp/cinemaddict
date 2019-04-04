@@ -297,13 +297,14 @@ const shakeElement = (element) => {
 const getRank = (num) => {
   if (num > 0 && num <= 10) {
     return `Novice`;
-  } else if (num > 10 && num <= 20) {
-    return `Fan`;
-  } else if (num > 20) {
-    return `Movie buff`;
-  } else {
-    return ``;
   }
+  if (num > 10 && num <= 20) {
+    return `Fan`;
+  }
+  if (num > 20) {
+    return `Movie buff`;
+  }
+  return ``;
 };
 
 const updateMoviesInBottom = () => {
