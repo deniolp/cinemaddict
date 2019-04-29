@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-let path = `/505149-cinemaddict-8/12/`;
+let path = `/cinemaddict/`;
 if (location.host === `localhost:8081`) {
   path = `/`;
 }
