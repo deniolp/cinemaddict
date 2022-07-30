@@ -34159,7 +34159,7 @@ const RankLabels = {
   'Adventure': `Driver`
 };
 const AUTHORIZATION = `Basic uhiy37^%8x4c9o&Y*&T&FH`;
-const END_POINT = `https://es8-demo-srv.appspot.com/moowle`;
+const END_POINT = `https://13.ecmascript.pages.academy/cinemaddict`;
 const MOVIES_STORE_KEY = `movies-store-key`;
 const MOVIES_PER_PAGE = 5;
 const KEYCODE_ENTER = 13;
